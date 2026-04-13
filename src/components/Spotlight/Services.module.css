@@ -1,41 +1,28 @@
 .section {
-  background-color: #FDFCFB; /* White */
-  color: #0A0A0A;
+  position: relative;
+  background-color: var(--cream);
+  padding: 6rem 0;
+  overflow: hidden;
 }
 
 .wrapper {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
-/* ---------- Marquee ---------- */
+/* Marquee - Light Mode */
 .marqueeWrapper {
-  width: 100vw;
-  max-width: 100%;
+  margin-bottom: 4rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.5rem 0;
   overflow: hidden;
-  white-space: nowrap;
-  padding: var(--space-4) 0;
-  border-bottom: 2px solid #C9A84C;
-  border-top: 2px solid #C9A84C;
-  margin-bottom: var(--space-12);
 }
 
 .marquee {
-  display: inline-block;
+  display: flex;
   white-space: nowrap;
   animation: marquee 30s linear infinite;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 500;
-  color: #0A0A0A;
-  text-transform: uppercase;
-}
-
-.marquee span {
-  padding-right: 50px;
 }
 
 @keyframes marquee {
@@ -43,56 +30,66 @@
   100% { transform: translateX(-50%); }
 }
 
-/* ---------- Services Grid ---------- */
-.container {
-  max-width: 1100px;
-  padding: 0 var(--space-6);
-  margin: 0 auto;
+.marquee span {
+  font-family: var(--font-accent);
+  font-size: 0.875rem;
+  letter-spacing: 0.5em;
+  color: #C9A84C;
+  text-transform: uppercase;
 }
 
-.servicesGrid {
+/* CAROUSEL GRID - Light Mode */
+.servicesCarousel {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-10);
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 5% 4rem 5%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-@media (min-width: 1024px) {
-  .servicesGrid {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
+.servicesCarousel::-webkit-scrollbar {
+  display: none;
 }
 
 .serviceCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-6);
-  flex: 1;
-  max-width: 320px;
+  flex: 0 0 calc(85vw);
+  scroll-snap-align: center;
+  position: relative;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.03);
+  padding: 3rem 2rem;
+  border-radius: 1.5rem;
+  transition: all 0.5s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+}
+
+@media (min-width: 768px) {
+  .serviceCard {
+    flex: 0 0 calc(33.333% - 1.5rem);
+    scroll-snap-align: start;
+  }
+}
+
+.serviceCard:hover {
+  border-color: #C9A84C;
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
 }
 
 .imageWrapper {
-  width: 250px;
-  height: 250px;
+  width: 100%;
+  aspect-ratio: 16/9;
   overflow: hidden;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-bottom: 2rem;
   position: relative;
-  /* Hover elevation */
-  transition: transform 0.4s ease, filter 0.4s ease;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+  background: #f0f0f0;
 }
 
-.serviceCard:hover .imageWrapper {
-  transform: translateY(-10px);
-  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
-}
+.shape1 { border-radius: 20px 100px 20px 20px; }
+.shape2 { border-radius: 50% 50% 0 0; }
+.shape3 { border-radius: 20px 20px 100px 20px; }
 
 .image {
   width: 100%;
@@ -102,31 +99,37 @@
 }
 
 .serviceCard:hover .image {
-  transform: scale(1.08); /* Internal zoom */
-}
-
-/* Unique Shapes utilizing advanced clip-path/border-radius */
-.shape1 {
-  clip-path: polygon(0% 0%, 100% 0%, 85% 50%, 100% 100%, 0% 100%, 15% 50%);
-}
-
-.shape2 {
-  border-radius: 50% 50% 0px 50%;
-}
-
-.shape3 {
-  clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%);
-  border-radius: 12px;
+  transform: scale(1.1);
 }
 
 .serviceTitle {
   font-family: var(--font-display);
-  font-size: var(--text-base);
-  font-weight: 500;
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  letter-spacing: 0.1em;
+  margin: 0;
   text-align: center;
-  letter-spacing: 0.15em;
-  color: #0A0A0A;
-  max-width: 220px;
-  line-height: 1.5;
+}
+
+/* Guide */
+.carouselGuide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.guideLine {
+  width: 40px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.guideText {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: rgba(0, 0, 0, 0.3);
   text-transform: uppercase;
 }

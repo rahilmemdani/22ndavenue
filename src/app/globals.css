@@ -103,7 +103,8 @@
 
   /* Transformation tokens */
   --pitch-black: #050505;
-  --cream: #FAFAFA;
+  --cream: #FAF9F6;
+  --text-dark: #1A1A1A;
 }
 
 /* Transformation Utilities */

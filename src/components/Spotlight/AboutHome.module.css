@@ -1,121 +1,148 @@
 .section {
   position: relative;
-  min-height: 100dvh;
-  background-color: #050505;
+  min-height: 80dvh;
+  background-color: var(--cream);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 4rem 0;
 }
 
-.container {
+.collageContainer {
   width: 100%;
   max-width: 1400px;
-  padding: 0 5%;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  height: 65vh; /* Reduced from 800px */
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
   z-index: 10;
 }
 
-/* Void Reveal Typography */
-.textStack {
-  position: relative;
-  text-align: center;
-  z-index: 20;
-}
-
-.outlineTitle {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 12vw, 10rem);
-  line-height: 0.85;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-  margin: 0;
-  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.section:hover .outlineTitle {
-  -webkit-text-stroke: 1px #C9A84C;
-}
-
-.solidTitle {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 5vw, 3rem);
-  color: #C9A84C;
-  text-transform: uppercase;
-  letter-spacing: 0.5em;
-  font-weight: 500;
-  margin-top: -1rem;
-  margin-bottom: 2rem;
-}
-
-.description {
-  font-family: var(--font-body);
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  color: rgba(255, 255, 255, 0.7);
-  max-width: 700px;
-  line-height: 1.6;
-  margin-top: 2rem;
-  opacity: 0.8;
-}
-
-/* Cinematic Background Card */
-.bgCard {
+/* Floating Images */
+.frame {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  height: 70%;
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(5, 5, 5, 0.95) 100%);
-  border: 1px solid rgba(201, 168, 76, 0.1);
-  border-radius: 2rem;
-  z-index: 0;
   overflow: hidden;
-  box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+  background-color: #f0f0f0;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-out;
 }
 
-.backdropImage {
-  position: absolute;
-  inset: 0;
+.frame1 {
+  grid-column: 1 / 5;
+  grid-row: 2 / 10;
+  z-index: 5;
+}
+
+.frame2 {
+  grid-column: 7 / 12;
+  grid-row: 1 / 7;
+  z-index: 4;
+}
+
+.frame3 {
+  grid-column: 9 / 13;
+  grid-row: 8 / 12;
+  z-index: 8;
+  border: 8px solid white;
+}
+
+.image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.15;
-  filter: grayscale(100%) contrast(120%);
-  transition: opacity 1s ease, transform 1s ease;
+  opacity: 0.12;
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.section:hover .backdropImage {
+.section:hover .image {
   opacity: 0.25;
   transform: scale(1.05);
 }
 
-.accentLine {
-  position: absolute;
-  bottom: 0;
-  left: 10%;
-  width: 80%;
-  height: 2px;
-  background: linear-gradient(to right, transparent, #C9A84C, transparent);
-  opacity: 0.3;
+/* Overlapping Typography */
+.textColumn {
+  grid-column: 3 / 11;
+  grid-row: 5 / 9;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none;
 }
 
-@media (max-width: 768px) {
-  .section {
-    min-height: 80vh;
+.mainTitle {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 15vw, 12rem);
+  line-height: 0.8;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--text-dark);
+  margin: 0;
+  letter-spacing: -0.05em;
+}
+
+.outlineText {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text-dark);
+  display: block;
+}
+
+.goldText {
+  color: #C9A84C;
+  font-style: italic;
+  display: block;
+  margin-top: -1rem;
+}
+
+.descriptionBox {
+  margin-top: 4rem;
+  max-width: 450px;
+  padding: 2rem;
+  background: white;
+  border-left: 2px solid #C9A84C;
+  box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.05);
+  pointer-events: auto;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Parallax Hints */
+@media (min-width: 1024px) {
+  .frame1 {
+    transform: translateY(-20px);
   }
-  .bgCard {
-    height: 90%;
-    width: 95%;
+
+  .frame2 {
+    transform: translateY(40px);
   }
-  .solidTitle {
-    font-size: 1rem;
-    letter-spacing: 0.3em;
+
+  .frame3 {
+    transform: translateY(-60px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .collageContainer {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 3rem;
+    padding: 0 5%;
+  }
+
+  .frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+  }
+
+  .textColumn {
+    padding: 2rem 0;
   }
 }

@@ -97,7 +97,7 @@ const TransformationHero = () => {
         <div className={styles.contentRow}>
 
           {/* Left Column: Typography */}
-          <div ref={headlineRef} className={styles.textColumn}>
+          <div className={styles.textColumn}>
             <span className={styles.brandLabel}>22nd Avenue</span>
             <h1 className={styles.headline}>
               CREATIVE
