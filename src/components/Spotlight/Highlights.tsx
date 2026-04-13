@@ -74,7 +74,7 @@ export function Highlights() {
               <div className={styles.textContent}>
                 <h3 className={styles.cardTitle}>ECO-FRIENDLY</h3>
                 <p className={styles.cardDesc}>
-                  Join our commitment to sustainability with eco-friendly fashion options. Style isn't mindful of our planet. Explore guilt-free shopping with our eco-conscious collections.
+                  Join our commitment to sustainability with eco-friendly fashion options. Style isn&apos;t mindful of our planet. Explore guilt-free shopping with our eco-conscious collections.
                 </p>
               </div>
               <button className={styles.exploreBtn}>

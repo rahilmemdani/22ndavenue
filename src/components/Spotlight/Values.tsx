@@ -41,7 +41,7 @@ export function Values() {
             >
               <div className={styles.card}>
                 <div className={styles.glare} />
-                <div className={styles.cardNumber}>CORE PRINCIPLE 0{i + 1} // VII</div>
+                <div className={styles.cardNumber}>CORE PRINCIPLE 0{i + 1} — VII</div>
                 <h3 className={styles.cardTitle}>{val.title}</h3>
                 <p className={styles.cardText}>{val.text}</p>
               </div>
