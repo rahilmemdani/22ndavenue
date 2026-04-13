@@ -35,7 +35,7 @@ export function Navbar() {
           <div className={styles.brand}>
             {!logoError ? (
               <img
-                src="public/assets/hero/logo.png"
+                src="assets/hero/logo.png"
                 alt="22nd Avenue"
                 className={styles.logoImage}
                 onError={() => setLogoError(true)}
