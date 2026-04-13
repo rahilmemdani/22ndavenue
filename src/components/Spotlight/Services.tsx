@@ -45,6 +45,15 @@ export function Services() {
   return (
     <section className={styles.section} id="services-section">
       <div className={styles.wrapper}>
+        {/* Standardized Header */}
+        <div className={styles.header}>
+          <ScrollReveal direction="up">
+            <h2 className={styles.sectionTitle}>
+              OUR <span className={styles.goldText}>SERVICES</span>
+            </h2>
+          </ScrollReveal>
+        </div>
+
         {/* Marquee Header */}
         <div className={styles.marqueeWrapper}>
           <div className={styles.marquee}>
