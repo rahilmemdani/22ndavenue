@@ -1,0 +1,111 @@
+.heroSequence {
+  position: relative;
+  height: 400vh; /* Giving ample time to scrub the 4-frame transformation */
+  background-color: #000; /* Pure black for the 'Void' effect */
+}
+
+.stickyCanvas {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  width: 100%;
+  position: relative;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.textContent {
+  max-width: 600px;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+  text-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: #C9A84C;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* The 'Void' Stage for the Transformation */
+.imageLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Align to the right for editorial layout */
+  z-index: 1;
+}
+
+@media (max-width: 1023px) {
+  .imageLayer {
+    justify-content: center;
+  }
+}
+
+.imageReveal {
+  width: 90vw;
+  height: 80vh;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+@media (min-width: 1024px) {
+  .imageReveal {
+    width: 55vw;
+    height: 90vh;
+    margin-right: 5vw;
+  }
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  /* High-end cinematic masking */
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+/* The IG Reel Flash Transition */
+.flashOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.4) 0%, rgba(255,255,255,0.8) 100%);
+  mix-blend-mode: color-dodge;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.blendGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #000 0%, transparent 40%, transparent 60%, #000 100%);
+  pointer-events: none;
+  z-index: 40;
+}

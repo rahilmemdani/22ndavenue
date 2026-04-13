@@ -1,0 +1,200 @@
+.hero {
+  position: relative;
+  height: 450vh;
+  background-color: #050505;
+  color: #fff;
+}
+
+.stickyWrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentRow {
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .contentRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
+}
+
+/* Left Column: Typography */
+.textColumn {
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
+  z-index: 20;
+}
+
+@media (min-width: 1024px) {
+  .textColumn {
+    width: 50%;
+  }
+}
+
+.brandLabel {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 2rem;
+  display: block;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6.5vw, 7.5rem);
+  line-height: 0.95;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.headline .italicGold {
+  font-style: italic;
+  color: #C9A84C;
+  display: block;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 340px;
+  line-height: 1.6;
+}
+
+/* Right Column: Image Frame */
+.imageColumn {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .imageColumn {
+    width: 45%;
+    justify-content: flex-end;
+  }
+}
+
+.imageFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #111;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 1023px) {
+  .imageFrame {
+    width: 65vw;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 767px) {
+  .imageFrame {
+    width: 85vw;
+  }
+}
+
+.modelImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Progress interface inside image frame */
+.interfaceOverlay {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 30;
+}
+
+.phaseTitle {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: #C9A84C;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.progressBar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.step {
+  height: 2px;
+  width: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.3s ease;
+}
+
+.stepActive {
+  background: #C9A84C;
+}
+
+/* Bottom elements */
+.scrollGuide {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 40;
+}
+
+.scrollText {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 40px;
+  background: #C9A84C;
+  margin: 0 auto;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 50;
+}

@@ -1,0 +1,144 @@
+.section {
+  padding: var(--space-12) 0 var(--space-24);
+  background: var(--bg-primary);
+}
+
+.sectionTitle {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: var(--space-8);
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 1024px) {
+  .bentoGrid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, auto);
+  }
+  
+  .imageLeft {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+  
+  .boxIndependent {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  
+  .boxExclusive {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  
+  .boxHQ {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  
+  .boxEco {
+    grid-column: 1;
+    grid-row: 4;
+  }
+  
+  .imageRight {
+    grid-column: 2;
+    grid-row: 3 / span 2;
+  }
+}
+
+.card {
+  background-color: #1a1a1a;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 100%;
+  min-height: 220px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 300px;
+}
+
+.textCard {
+  padding: var(--space-8);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .textCard {
+    flex-direction: row;
+  }
+}
+
+.textContent {
+  flex: 1;
+}
+
+.cardTitle {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: var(--space-3);
+  letter-spacing: 0.05em;
+}
+
+.cardDesc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+  font-weight: 300;
+  max-width: 450px;
+}
+
+.exploreBtn {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  transition: color var(--duration-fast);
+}
+
+.exploreBtn:hover {
+  color: #fff;
+}
+
+.arrowIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 10px;
+  transition: transform var(--duration-fast), border-color var(--duration-fast);
+}
+
+.exploreBtn:hover .arrowIcon {
+  transform: translate(2px, -2px);
+  border-color: #fff;
+}
