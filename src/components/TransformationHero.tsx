@@ -93,6 +93,22 @@ const TransformationHero = () => {
   return (
     <section id="hero-section" ref={sectionRef} className={styles.hero}>
       <div className={styles.stickyWrapper} style={{ height: "100dvh" }}>
+        
+        {/* Massive dynamic glassmorphic background */}
+        <div className={styles.heroBgContainer}>
+          {frames.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt=""
+              className={styles.heroBgImage}
+              style={{ opacity: i === currentFrame ? 1 : 0 }}
+            />
+          ))}
+          <div className={styles.heroBgGlassOverlay} />
+        </div>
+
+        <div className={styles.heroGlowBottom} />
 
         <div className={styles.contentRow}>
 

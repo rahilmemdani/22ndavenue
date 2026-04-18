@@ -10,7 +10,7 @@ export default function HomePage() {
     <main>
       <TransformationHero />
       <AboutHome />
-      {/* <Highlights /> */}
+      <Highlights />
       <Values />
       <Services />
       <FeaturedArtists />

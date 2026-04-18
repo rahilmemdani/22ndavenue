@@ -3,99 +3,105 @@
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import styles from "./Highlights.module.css";
 
+const bentoItems = [
+  {
+    id: "01",
+    title: "Curated Strategy",
+    desc: "We do not believe in mass-market approaches. Every campaign is a bespoke strategy tailored to your exact creative DNA.",
+    image: "https://images.unsplash.com/photo-1577726590216-953ebbb7f2da?q=80&w=1000&auto=format&fit=crop",
+    colSpan: 2,
+    rowSpan: 2
+  },
+  {
+    id: "02",
+    title: "Exclusive Networks",
+    desc: "Direct access to industry-leading brands, global networks, and premium collaborations.",
+    image: null,
+    colSpan: 1,
+    rowSpan: 1,
+    icon: "✦"
+  },
+  {
+    id: "03",
+    title: "Creative Control",
+    desc: "You never lose your voice. We amplify your vision while preserving your total artistic integrity.",
+    image: null,
+    colSpan: 1,
+    rowSpan: 1,
+    icon: "◈"
+  },
+  {
+    id: "04",
+    title: "Global Reach",
+    desc: "From local stages to international campaigns, we scale your presence boundlessly.",
+    image: "https://images.unsplash.com/photo-1517404215738-15263e9f9178?q=80&w=1000&auto=format&fit=crop",
+    colSpan: 2,
+    rowSpan: 1
+  }
+];
+
 export function Highlights() {
   return (
     <section className={styles.section} id="highlights-section">
+      <div className={styles.ambientGlow} />
+      
       <div className={`container ${styles.container}`}>
-        <ScrollReveal>
-          <span className={styles.eyebrow}>Why choose us</span>
-          <h2 className={styles.sectionTitle}>Our Advantages</h2>
-        </ScrollReveal>
+        <div className={styles.headerRow}>
+          <ScrollReveal direction="up" className={styles.headerText}>
+            <span className={styles.eyebrow}>Why Choose Us</span>
+            <h2 className={styles.sectionTitle}>
+              The <span className={styles.goldText}>Advantage</span>
+            </h2>
+            <p className={styles.subtitle}>
+              We are not just a management agency. We are an ecosystem built for creators who demand zero compromises. 
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal direction="left" delay={200} className={styles.statsBox}>
+            <div className={styles.statGroup}>
+              <span className={styles.statNumber}>150+</span>
+              <span className={styles.statLabel}>Global Campaigns</span>
+            </div>
+            <div className={styles.statDivider} />
+            <div className={styles.statGroup}>
+              <span className={styles.statNumber}>$50M</span>
+              <span className={styles.statLabel}>Brand Value Generated</span>
+            </div>
+          </ScrollReveal>
+        </div>
 
         <div className={styles.bentoGrid}>
-          {/* Left Large Image */}
-          <ScrollReveal delay={100} className={styles.imageLeft}>
-            <div className={styles.card}>
-              <img 
-                src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=1000&auto=format&fit=crop" 
-                alt="Advantage Image Left"
-                className={styles.image}
-              />
-            </div>
-          </ScrollReveal>
-
-          {/* Right Top Block */}
-          <ScrollReveal delay={200} className={styles.boxIndependent}>
-            <div className={`${styles.card} ${styles.textCard}`}>
-              <div className={styles.textContent}>
-                <h3 className={styles.cardTitle}>Independent Designers</h3>
-                <p className={styles.cardDesc}>
-                  Our platform celebrates the ingenuity of independent designers, offering a diverse array of fashion-forward garments that reflect clarity and innovation of the artists behind them. Explore curated collections showcasing unique creations.
-                </p>
+          {bentoItems.map((item, index) => (
+            <ScrollReveal 
+              key={item.id}
+              delay={200 + index * 100}
+              className={`${styles.bentoCard} ${item.colSpan === 2 ? styles.colSpan2 : ""} ${item.rowSpan === 2 ? styles.rowSpan2 : ""}`}
+            >
+              {item.image && (
+                <div className={styles.cardImageWrapper}>
+                  <img src={item.image} alt={item.title} className={styles.cardImage} />
+                  <div className={styles.cardImageOverlay} />
+                </div>
+              )}
+              
+              <div className={styles.cardContent}>
+                <div className={styles.cardHeader}>
+                  {item.icon ? (
+                    <span className={styles.cardIcon}>{item.icon}</span>
+                  ) : (
+                    <span className={styles.cardNumber}>{item.id}</span>
+                  )}
+                </div>
+                <div className={styles.cardTextGroup}>
+                  <h3 className={styles.cardTitle}>{item.title}</h3>
+                  <p className={styles.cardDesc}>{item.desc}</p>
+                </div>
               </div>
-              <button className={styles.exploreBtn}>
-                <span className={styles.arrowIcon}>↗</span> Explore
-              </button>
-            </div>
-          </ScrollReveal>
 
-          {/* Right Middle Block */}
-          <ScrollReveal delay={300} className={styles.boxExclusive}>
-            <div className={`${styles.card} ${styles.textCard}`}>
-              <div className={styles.textContent}>
-                <h3 className={styles.cardTitle}>Exclusive & Uniquity</h3>
-                <p className={styles.cardDesc}>
-                  Indulge in curated collections showcasing exclusive, one-of-a-kind pieces, each with its own story and charm. Experience the allure of unique fashion pieces that radiate sophistication and individuality.
-                </p>
-              </div>
-              <button className={styles.exploreBtn}>
-                <span className={styles.arrowIcon}>↗</span> Explore
-              </button>
-            </div>
-          </ScrollReveal>
-
-          {/* Left Bottom Block 1 */}
-          <ScrollReveal delay={400} className={styles.boxHQ}>
-            <div className={`${styles.card} ${styles.textCard}`}>
-              <div className={styles.textContent}>
-                <h3 className={styles.cardTitle}>High Quality</h3>
-                <p className={styles.cardDesc}>
-                  Embrace superior craftsmanship with our meticulously curated, enduring high-quality garments. Discover garments crafted with utmost attention to detail and finest materials.
-                </p>
-              </div>
-              <button className={styles.exploreBtn}>
-                <span className={styles.arrowIcon}>↗</span> Explore
-              </button>
-            </div>
-          </ScrollReveal>
-
-          {/* Left Bottom Block 2 */}
-          <ScrollReveal delay={500} className={styles.boxEco}>
-            <div className={`${styles.card} ${styles.textCard}`}>
-              <div className={styles.textContent}>
-                <h3 className={styles.cardTitle}>Eco-Friendly</h3>
-                <p className={styles.cardDesc}>
-                  Join our commitment to sustainability with eco-friendly fashion options. Style isn&apos;t mindful of our planet. Explore guilt-free shopping with our eco-conscious collections.
-                </p>
-              </div>
-              <button className={styles.exploreBtn}>
-                <span className={styles.arrowIcon}>↗</span> Explore
-              </button>
-            </div>
-          </ScrollReveal>
-
-          {/* Right Bottom Image */}
-          <ScrollReveal delay={600} className={styles.imageRight}>
-            <div className={styles.card}>
-              <img 
-                src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=1000&auto=format&fit=crop" 
-                alt="Advantage Image Right"
-                className={styles.image}
-                style={{ objectPosition: 'center 30%' }}
-              />
-            </div>
-          </ScrollReveal>
-
+              {/* Hover Glow Effect */}
+              <div className={styles.hoverGlow} />
+            </ScrollReveal>
+          ))}
         </div>
       </div>
     </section>
