@@ -100,8 +100,8 @@ const TransformationHero = () => {
           <div className={styles.textColumn}>
             <span className={styles.brandLabel}>22nd Avenue</span>
             <h1 className={styles.headline}>
-              CREATIVE
-              <span className={styles.italicGold}>TALENT</span>
+              Creative
+              <span className={styles.italicGold}>Talent</span>
             </h1>
             <p className={styles.description}>
               Where raw beauty meets editorial vision. Talent management reimagined for the modern era.

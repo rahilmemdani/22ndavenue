@@ -3,36 +3,80 @@
 import { useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
 
+// Creative nav labels matching the agency brief
 const navLinks = [
-  { href: "#hero-section", label: "START" },
-  { href: "#about-home", label: "ABOUT" },
-  { href: "#values-section", label: "VALUES" },
-  { href: "#services-section", label: "SERVICES" },
-  { href: "#featured-artists", label: "ROSTER" },
+  { href: "#hero-section", label: "The Spotlight", short: "Home" },
+  { href: "#about-home", label: "The Backstage", short: "About" },
+  { href: "#highlights-section", label: "Why Us", short: "Why Us" },
+  { href: "#values-section", label: "Values", short: "Values" },
+  { href: "#services-section", label: "Magic We Make", short: "Services" },
+  { href: "#featured-artists", label: "Talent Pool", short: "Roster" },
 ];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState("#hero-section");
   const [logoError, setLogoError] = useState(false);
 
+  // Track scroll to add backdrop shadow and active tab
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+
+      // Scroll Spy Logic
+      let currentActiveId = activeTab;
+      for (const link of navLinks) {
+        const id = link.href.substring(1);
+        const section = document.getElementById(id);
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          // If the section is currently occupying the middle part of the screen
+          if (rect.top <= window.innerHeight / 2.5 && rect.bottom >= window.innerHeight / 2.5) {
+            currentActiveId = link.href;
+          }
+        }
+      }
+      
+      setActiveTab(currentActiveId);
+    };
+
+    // Run once on load
+    onScroll();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const id = href.substring(1);
+    const element = document.getElementById(id);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop,
+        behavior: "smooth",
+      });
+      setActiveTab(href);
+      setIsOpen(false);
+    }
+  };
+
   // Prevent body scroll when sidebar is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <>
-      <nav className={styles.dock}>
+      <nav className={`${styles.dock} ${scrolled ? styles.dockScrolled : ""}`}>
         <div className={styles.capsule}>
-          {/* Logo / Brand Section */}
-          <div className={styles.brand}>
+
+          {/* Logo / Brand */}
+          <a href="#hero-section" className={styles.brand} onClick={() => setIsOpen(false)}>
             {!logoError ? (
               <img
                 src="assets/hero/logo.png"
@@ -42,25 +86,12 @@ export function Navbar() {
               />
             ) : (
               <div className={styles.logoText}>
-                22ND<span className={styles.logoAccent}>AVENUE</span>
+                22nd<span className={styles.logoAccent}>Avenue</span>
               </div>
             )}
-          </div>
+          </a>
 
-          <div style={{ width: "1px", height: "16px", background: "rgba(255,255,255,0.15)" }} />
-
-          {/* Mobile Menu Trigger */}
-          <button
-            className={styles.menuToggle}
-            onClick={toggleMenu}
-          >
-            <div className={styles.burger}>
-              <span />
-              <span />
-              <span />
-            </div>
-            <span>MENU</span>
-          </button>
+          <div className={styles.divider} />
 
           {/* Desktop Links */}
           <div className={styles.desktopNav}>
@@ -69,40 +100,88 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`${styles.navLinkDesktop} ${activeTab === link.href ? styles.active : ""}`}
-                onClick={() => setActiveTab(link.href)}
+                onClick={(e) => handleNavClick(e, link.href)}
               >
-                {link.label}
+                {link.short}
               </a>
             ))}
           </div>
 
-          <div style={{ width: "1px", height: "16px", background: "rgba(255,255,255,0.15)" }} />
+          <div className={styles.divider} />
 
-          <button className={styles.contactBtn}>CONTACT</button>
+          {/* CTA */}
+          <a href="#site-footer" className={styles.contactBtn} onClick={(e) => handleNavClick(e, "#site-footer")}>Let&apos;s Connect</a>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className={styles.menuToggle}
+            onClick={toggleMenu}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+          >
+            <div className={`${styles.burger} ${isOpen ? styles.burgerOpen : ""}`}>
+              <span />
+              <span />
+              <span />
+            </div>
+          </button>
+
         </div>
       </nav>
 
-      {/* Mobile Sidebar */}
-      <div className={`${styles.sidebarOverlay} ${isOpen ? styles.sidebarActive : ""}`}>
-        <button className={styles.closeBtn} onClick={() => setIsOpen(false)} aria-label="Close menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+      {/* Full-screen Mobile Menu */}
+      <div
+        className={`${styles.mobileOverlay} ${isOpen ? styles.mobileOverlayOpen : ""}`}
+        aria-hidden={!isOpen}
+      >
+        {/* Mobile menu header with logo */}
+        <div className={styles.mobileHeader}>
+          <div className={styles.mobileLogo}>
+            {!logoError ? (
+              <img
+                src="assets/hero/logo.png"
+                alt="22nd Avenue"
+                className={styles.mobileLogoImg}
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <span className={styles.mobileLogoText}>
+                22nd<span className={styles.logoAccent}>Avenue</span>
+              </span>
+            )}
+          </div>
+          <button
+            className={styles.closeBtn}
+            onClick={() => setIsOpen(false)}
+            aria-label="Close menu"
+          >
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M17 5L5 17M5 5l12 12" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
 
-        <ul className={styles.navList}>
-          {navLinks.map((link) => (
-            <li key={link.href} className={styles.navItem}>
-              <a
-                href={link.href}
-                className={styles.navLinkSidebar}
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label}
-              </a>
-            </li>
+        <nav className={styles.mobileNav}>
+          {navLinks.map((link, i) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`${styles.mobileLink} ${activeTab === link.href ? styles.active : ""}`}
+              style={{ transitionDelay: isOpen ? `${i * 60 + 100}ms` : "0ms" }}
+              onClick={(e) => handleNavClick(e, link.href)}
+            >
+              <span className={styles.mobileLinkLabel}>{link.label}</span>
+              <span className={styles.mobileLinkSub}>{link.short}</span>
+            </a>
           ))}
-        </ul>
+        </nav>
+
+        <div className={styles.mobileFooter} style={{ transitionDelay: isOpen ? "450ms" : "0ms" }}>
+          <a href="#site-footer" className={styles.mobileCtaBtn} onClick={(e) => handleNavClick(e, "#site-footer")}>
+            Let&apos;s Connect
+          </a>
+          <p className={styles.mobileEmail}>hello@22ndavenue.com</p>
+        </div>
       </div>
     </>
   );

@@ -8,7 +8,8 @@ export function Highlights() {
     <section className={styles.section} id="highlights-section">
       <div className={`container ${styles.container}`}>
         <ScrollReveal>
-          <h2 className={styles.sectionTitle}>OUR ADVANTAGES</h2>
+          <span className={styles.eyebrow}>Why choose us</span>
+          <h2 className={styles.sectionTitle}>Our Advantages</h2>
         </ScrollReveal>
 
         <div className={styles.bentoGrid}>
@@ -27,13 +28,13 @@ export function Highlights() {
           <ScrollReveal delay={200} className={styles.boxIndependent}>
             <div className={`${styles.card} ${styles.textCard}`}>
               <div className={styles.textContent}>
-                <h3 className={styles.cardTitle}>INDEPENDENT DESIGNERS</h3>
+                <h3 className={styles.cardTitle}>Independent Designers</h3>
                 <p className={styles.cardDesc}>
                   Our platform celebrates the ingenuity of independent designers, offering a diverse array of fashion-forward garments that reflect clarity and innovation of the artists behind them. Explore curated collections showcasing unique creations.
                 </p>
               </div>
               <button className={styles.exploreBtn}>
-                <span className={styles.arrowIcon}>↗</span> EXPLORE
+                <span className={styles.arrowIcon}>↗</span> Explore
               </button>
             </div>
           </ScrollReveal>
@@ -42,13 +43,13 @@ export function Highlights() {
           <ScrollReveal delay={300} className={styles.boxExclusive}>
             <div className={`${styles.card} ${styles.textCard}`}>
               <div className={styles.textContent}>
-                <h3 className={styles.cardTitle}>EXCLUSIVE & UNIQUITY</h3>
+                <h3 className={styles.cardTitle}>Exclusive & Uniquity</h3>
                 <p className={styles.cardDesc}>
                   Indulge in curated collections showcasing exclusive, one-of-a-kind pieces, each with its own story and charm. Experience the allure of unique fashion pieces that radiate sophistication and individuality.
                 </p>
               </div>
               <button className={styles.exploreBtn}>
-                <span className={styles.arrowIcon}>↗</span> EXPLORE
+                <span className={styles.arrowIcon}>↗</span> Explore
               </button>
             </div>
           </ScrollReveal>
@@ -57,13 +58,13 @@ export function Highlights() {
           <ScrollReveal delay={400} className={styles.boxHQ}>
             <div className={`${styles.card} ${styles.textCard}`}>
               <div className={styles.textContent}>
-                <h3 className={styles.cardTitle}>HIGH QUALITY</h3>
+                <h3 className={styles.cardTitle}>High Quality</h3>
                 <p className={styles.cardDesc}>
                   Embrace superior craftsmanship with our meticulously curated, enduring high-quality garments. Discover garments crafted with utmost attention to detail and finest materials.
                 </p>
               </div>
               <button className={styles.exploreBtn}>
-                <span className={styles.arrowIcon}>↗</span> EXPLORE
+                <span className={styles.arrowIcon}>↗</span> Explore
               </button>
             </div>
           </ScrollReveal>
@@ -72,13 +73,13 @@ export function Highlights() {
           <ScrollReveal delay={500} className={styles.boxEco}>
             <div className={`${styles.card} ${styles.textCard}`}>
               <div className={styles.textContent}>
-                <h3 className={styles.cardTitle}>ECO-FRIENDLY</h3>
+                <h3 className={styles.cardTitle}>Eco-Friendly</h3>
                 <p className={styles.cardDesc}>
                   Join our commitment to sustainability with eco-friendly fashion options. Style isn&apos;t mindful of our planet. Explore guilt-free shopping with our eco-conscious collections.
                 </p>
               </div>
               <button className={styles.exploreBtn}>
-                <span className={styles.arrowIcon}>↗</span> EXPLORE
+                <span className={styles.arrowIcon}>↗</span> Explore
               </button>
             </div>
           </ScrollReveal>

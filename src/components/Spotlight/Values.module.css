@@ -1,33 +1,36 @@
 .section {
+  background-color: var(--bg-primary, #050505);
+  padding: 8rem 0;
   position: relative;
-  min-height: 100dvh;
-  background-color: #050505;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6rem 0;
   overflow: hidden;
 }
 
-.container {
-  width: 100%;
+.headerArea {
   max-width: 1400px;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
+  margin: 0 auto;
+  padding: 0 5%;
+  margin-bottom: 3rem;
 }
 
-.header {
-  padding: 0 5%;
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 1rem;
+  opacity: 0.8;
 }
 
 .title {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
   color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: -0.02em;
   margin: 0;
+  line-height: 1.1;
 }
 
 .goldText {
@@ -35,112 +38,209 @@
   font-style: italic;
 }
 
-/* CAROUSEL CARDS */
-.carousel {
-  display: flex;
-  gap: 2rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 0 5% 4rem 5%;
-  scrollbar-width: none;
-}
-
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.card {
-  flex: 0 0 calc(85vw);
-  scroll-snap-align: center;
-  position: relative;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4rem 3rem;
-  border-radius: 2rem;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+/* Accordion Container */
+.accordionContainer {
   display: flex;
   flex-direction: column;
-  min-height: 450px;
-  overflow: hidden;
+  width: 100%;
+  height: 700px;
+  padding: 0 5%;
+  max-width: 1600px;
+  margin: 0 auto;
+  gap: 0.5rem;
 }
 
 @media (min-width: 768px) {
-  .card {
-    flex: 0 0 450px;
-    scroll-snap-align: start;
+  .accordionContainer {
+    flex-direction: row;
+    height: 550px;
+    gap: 1rem;
   }
 }
 
-.card:hover {
-  transform: translateY(-20px) scale(1.02);
-  border-color: #C9A84C;
-  background: rgba(40, 40, 40, 0.4);
+/* Individual Panel */
+.panel {
+  position: relative;
+  flex: 1;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  background: #111;
+  transition: flex 0.7s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.7s ease;
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-.cardNumber {
-  font-family: var(--font-accent);
-  font-size: 0.85rem;
-  color: #C9A84C;
-  letter-spacing: 0.5em;
-  margin-bottom: 3rem;
-  opacity: 0.6;
+.panelActive {
+  flex: 4;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border-color: rgba(201, 168, 76, 0.3);
 }
 
-.cardTitle {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  color: #fff;
-  line-height: 1.1;
-  margin-bottom: 2rem;
-  text-transform: uppercase;
-  font-style: italic;
+@media (max-width: 767px) {
+  .panelActive {
+    flex: 3;
+  }
 }
 
-.cardText {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.4);
-  line-height: 1.6;
-  max-width: 300px;
-}
-
-/* Glare Effect */
-.glare {
+/* Panel Background & Image */
+.panelBackground {
   position: absolute;
-  top: -100%;
-  left: -100%;
-  width: 300%;
-  height: 300%;
-  background: radial-gradient(circle at center, rgba(201, 168, 76, 0.1) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.card:hover .glare {
-  opacity: 1;
+.panelImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(80%) brightness(0.6);
+  transform: scale(1.1);
+  transition: filter 0.7s ease, transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  /* The image should always fill its expanded parent smoothly */
+  /* Giving it absolute centered positioning helps with flex resizing */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.1);
+  min-width: 100%;
+  min-height: 100%;
 }
 
-/* Guide */
-.guide {
+.panelActive .panelImage {
+  filter: grayscale(0%) brightness(0.85);
+  transform: translate(-50%, -50%) scale(1.0);
+}
+
+.panelOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.3) 50%, rgba(5,5,5,0.1) 100%);
+  transition: opacity 0.7s ease;
+}
+
+.panelActive .panelOverlay {
+  background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.1) 60%, rgba(5,5,5,0.0) 100%);
+}
+
+/* Panel Content Layout */
+.panelContent {
+  position: relative;
+  z-index: 10;
+  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
 }
 
-.line {
-  width: 60px;
-  height: 1px;
-  background: #C9A84C;
-  opacity: 0.4;
+@media (min-width: 768px) {
+  .panelContent {
+    padding: 2.5rem;
+  }
 }
 
-.guideText {
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.4em;
-  color: rgba(255,255,255,0.2);
+.panelTop {
+  display: flex;
+  align-items: flex-start;
+}
+
+.panelNumber {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #C9A84C;
+  opacity: 0.7;
+  letter-spacing: -0.02em;
+  transition: all 0.5s ease;
+}
+
+.panelActive .panelNumber {
+  opacity: 1;
+  transform: scale(1.1);
+  transform-origin: top left;
+}
+
+.panelBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.titleBox {
+  display: flex;
+  flex-direction: column;
+  /* Rotate titles vertically when inactive on desktop */
+}
+
+.panelTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+  color: #fff;
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+  transition: color 0.5s ease;
+}
+
+.panelSubtitle {
+  font-family: var(--font-accent);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 0.2rem;
+  white-space: nowrap;
+}
+
+.panelActive .panelTitle {
+  color: #C9A84C;
+}
+
+/* Hidden Text */
+.hiddenTextWrapper {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.panelActive .hiddenTextWrapper {
+  grid-template-rows: 1fr;
+}
+
+.panelText {
+  min-height: 0;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  max-width: 400px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
+}
+
+.panelActive .panelText {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Vertical text logic for inactive desktop items */
+@media (min-width: 768px) {
+  .panel:not(.panelActive) .titleBox {
+    transform: rotate(-90deg) translateX(10px) translateY(-5px);
+    transform-origin: bottom left;
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    width: max-content;
+  }
+  
+  .panel:not(.panelActive) .panelTitle {
+    font-size: 1.25rem;
+  }
 }
