@@ -1,16 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import styles from "./Navbar.module.css";
 
 // Creative nav labels matching the agency brief
 const navLinks = [
-  { href: "#hero-section", label: "The Spotlight", short: "Home" },
-  { href: "#about-home", label: "The Backstage", short: "About" },
-  { href: "#highlights-section", label: "Why Us", short: "Why Us" },
-  { href: "#values-section", label: "Values", short: "Values" },
-  { href: "#services-section", label: "Magic We Make", short: "Services" },
-  { href: "#featured-artists", label: "Talent Pool", short: "Roster" },
+  { href: "/#hero-section", label: "The Spotlight", short: "Home" },
+  { href: "/#about-home", label: "The Backstage", short: "About" },
+  { href: "/#highlights-section", label: "Why Us", short: "Why Us" },
+  { href: "/#values-section", label: "Values", short: "Values" },
+  { href: "/#services-section", label: "Magic We Make", short: "Services" },
+  { href: "/#featured-artists", label: "Talent Pool", short: "Roster" },
 ];
 
 export function Navbar() {
@@ -27,7 +28,8 @@ export function Navbar() {
       // Scroll Spy Logic
       let currentActiveId = activeTab;
       for (const link of navLinks) {
-        const id = link.href.substring(1);
+        const id = link.href.split("#")[1]; // Get just the ID part
+        if (!id) continue;
         const section = document.getElementById(id);
         if (section) {
           const rect = section.getBoundingClientRect();
@@ -37,7 +39,7 @@ export function Navbar() {
           }
         }
       }
-      
+
       setActiveTab(currentActiveId);
     };
 
@@ -48,19 +50,7 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const id = href.substring(1);
-    const element = document.getElementById(id);
-    if (element) {
-      window.scrollTo({
-        top: element.offsetTop,
-        behavior: "smooth",
-      });
-      setActiveTab(href);
-      setIsOpen(false);
-    }
-  };
+  // No manual handleNavClick needed: Next.js Link handles # hashes correctly
 
   // Prevent body scroll when sidebar is open
   useEffect(() => {
@@ -76,7 +66,7 @@ export function Navbar() {
         <div className={styles.capsule}>
 
           {/* Logo / Brand */}
-          <a href="#hero-section" className={styles.brand} onClick={() => setIsOpen(false)}>
+          <Link href="/" className={styles.brand} onClick={() => setIsOpen(false)}>
             {!logoError ? (
               <img
                 src="assets/hero/logo.png"
@@ -89,28 +79,28 @@ export function Navbar() {
                 22nd<span className={styles.logoAccent}>Avenue</span>
               </div>
             )}
-          </a>
+          </Link>
 
           <div className={styles.divider} />
 
           {/* Desktop Links */}
           <div className={styles.desktopNav}>
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className={`${styles.navLinkDesktop} ${activeTab === link.href ? styles.active : ""}`}
-                onClick={(e) => handleNavClick(e, link.href)}
+                onClick={() => setActiveTab(link.href)}
               >
                 {link.short}
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className={styles.divider} />
 
           {/* CTA */}
-          <a href="#site-footer" className={styles.contactBtn} onClick={(e) => handleNavClick(e, "#site-footer")}>Let&apos;s Connect</a>
+          <Link href="/connect" className={styles.contactBtn}>Let&apos;s Connect</Link>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -163,23 +153,26 @@ export function Navbar() {
 
         <nav className={styles.mobileNav}>
           {navLinks.map((link, i) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className={`${styles.mobileLink} ${activeTab === link.href ? styles.active : ""}`}
               style={{ transitionDelay: isOpen ? `${i * 60 + 100}ms` : "0ms" }}
-              onClick={(e) => handleNavClick(e, link.href)}
+              onClick={() => {
+                setActiveTab(link.href);
+                setIsOpen(false);
+              }}
             >
               <span className={styles.mobileLinkLabel}>{link.label}</span>
               <span className={styles.mobileLinkSub}>{link.short}</span>
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className={styles.mobileFooter} style={{ transitionDelay: isOpen ? "450ms" : "0ms" }}>
-          <a href="#site-footer" className={styles.mobileCtaBtn} onClick={(e) => handleNavClick(e, "#site-footer")}>
+          <Link href="/connect" className={styles.mobileCtaBtn} onClick={() => setIsOpen(false)}>
             Let&apos;s Connect
-          </a>
+          </Link>
           <p className={styles.mobileEmail}>hello@22ndavenue.com</p>
         </div>
       </div>
