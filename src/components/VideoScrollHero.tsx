@@ -22,7 +22,7 @@ interface Panel {
 
 const PANELS: Panel[] = [
   {
-    enterAt: 0,    holdAt: 0.01, exitAt: 0.06, goneAt: 0.13,
+    enterAt: 0, holdAt: 0.01, exitAt: 0.06, goneAt: 0.13,
     headline: ["Creative", "Talent"],
     sub: "22nd Avenue Management",
     accent: "Scroll to Discover",
@@ -54,42 +54,41 @@ const PANELS: Panel[] = [
 /* ── Panel opacity / Y helpers ─────────────────────────────── */
 function panelOpacity(p: Panel, progress: number): number {
   if (progress < p.enterAt) return 0;
-  if (progress < p.holdAt)  return remap(progress, p.enterAt, p.holdAt);
-  if (progress < p.exitAt)  return 1;
-  if (progress < p.goneAt)  return 1 - remap(progress, p.exitAt, p.goneAt);
+  if (progress < p.holdAt) return remap(progress, p.enterAt, p.holdAt);
+  if (progress < p.exitAt) return 1;
+  if (progress < p.goneAt) return 1 - remap(progress, p.exitAt, p.goneAt);
   return 0;
 }
 function panelY(p: Panel, progress: number): number {
   if (progress < p.enterAt) return 32;
-  if (progress < p.holdAt)  return (1 - remap(progress, p.enterAt, p.holdAt)) * 32;
-  if (progress < p.exitAt)  return 0;
-  if (progress < p.goneAt)  return -remap(progress, p.exitAt, p.goneAt) * 20;
+  if (progress < p.holdAt) return (1 - remap(progress, p.enterAt, p.holdAt)) * 32;
+  if (progress < p.exitAt) return 0;
+  if (progress < p.goneAt) return -remap(progress, p.exitAt, p.goneAt) * 20;
   return -20;
 }
 
 /* ── Component ─────────────────────────────────────────────── */
 const VideoScrollHero = () => {
-  const sectionRef     = useRef<HTMLDivElement>(null);
-  const videoRef       = useRef<HTMLVideoElement>(null);
-  const videoWrapRef   = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoWrapRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const scrollGuideRef = useRef<HTMLDivElement>(null);
-  const panelRefs      = useRef<(HTMLDivElement | null)[]>([]);
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   /* Scroll state (all refs → no re-renders during RAF) */
-  const smoothProg  = useRef(0);
-  const targetProg  = useRef(0);
-  const scrubMode   = useRef(false);
-  const hasScrolled = useRef(false);
-  const rafRef      = useRef<number>(0);
+  const smoothProg = useRef(0);
+  const targetProg = useRef(0);
+  const scrubMode = useRef(true);
+  const rafRef = useRef<number>(0);
 
   /* Stable helpers */
   const getPanelOpacity = useCallback(panelOpacity, []);
-  const getPanelY       = useCallback(panelY, []);
+  const getPanelY = useCallback(panelY, []);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const video   = videoRef.current;
+    const video = videoRef.current;
     if (!section || !video) return;
 
     /* ── RAF loop ─────────────────────────────────────────── */
@@ -122,7 +121,7 @@ const VideoScrollHero = () => {
       PANELS.forEach((panel, i) => {
         const el = panelRefs.current[i];
         if (!el) return;
-        el.style.opacity   = String(getPanelOpacity(panel, p));
+        el.style.opacity = String(getPanelOpacity(panel, p));
         el.style.transform = `translateY(${getPanelY(panel, p)}px)`;
       });
 
@@ -131,16 +130,10 @@ const VideoScrollHero = () => {
 
     /* ── Scroll listener ──────────────────────────────────── */
     const onScroll = () => {
-      const rect          = section.getBoundingClientRect();
+      const rect = section.getBoundingClientRect();
       const sectionHeight = section.offsetHeight - window.innerHeight;
-      const scrolled      = -rect.top;
-      targetProg.current  = clamp(scrolled / sectionHeight, 0, 1);
-
-      if (!hasScrolled.current && targetProg.current > 0.004) {
-        hasScrolled.current = true;
-        scrubMode.current   = true;
-        video.pause();
-      }
+      const scrolled = -rect.top;
+      targetProg.current = clamp(scrolled / sectionHeight, 0, 1);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -162,9 +155,7 @@ const VideoScrollHero = () => {
             ref={videoRef}
             className={styles.video}
             src="/assets/hero/Short_D_Graphical_Story_Video.mp4"
-            autoPlay
             muted
-            loop
             playsInline
             preload="auto"
           />
