@@ -1,4 +1,4 @@
-import TransformationHero from "@/components/TransformationHero";
+import VideoScrollHero from "@/components/VideoScrollHero";
 import { AboutHome } from "@/components/Spotlight/AboutHome";
 import { Values } from "@/components/Spotlight/Values";
 import { Services } from "@/components/Spotlight/Services";
@@ -8,7 +8,7 @@ import { Highlights } from "@/components/Spotlight/Highlights";
 export default function HomePage() {
   return (
     <main>
-      <TransformationHero />
+      <VideoScrollHero />
       <AboutHome />
       <Highlights />
       <Values />
