@@ -49,7 +49,6 @@
 .goldText {
   color: #C9A84C;
   font-style: italic;
-  text-transform: uppercase;
 }
 
 .textContentWrapper {
@@ -126,9 +125,7 @@
 
 .carouselContainer {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  position: relative; /* Needed for absolute arrow positioning */
 }
 
 .carouselViewport {
@@ -201,33 +198,52 @@
   margin-top: 0.5rem;
 }
 
-/* Controls */
+/* Controls — Arrows overlay the image sides, vertically centered */
 .controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%; /* Full height of carouselViewport */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 0 1rem;
+  padding: 0;
+  z-index: 20;
+  pointer-events: none; /* Let clicks pass through the gap */
 }
 
 .arrowBtn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: auto; /* Buttons are clickable */
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin: 0 0.75rem;
 }
 
 .arrowBtn:hover {
-  background: rgba(201, 168, 76, 0.2);
+  background: rgba(201, 168, 76, 0.4);
   border-color: #C9A84C;
   color: #C9A84C;
+  transform: scale(1.1);
+}
+
+.indicatorRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
 }
 
 .indicators {
@@ -322,8 +338,8 @@
   .spotlight {
     width: 800px;
     height: 1000px;
-    top: -50px;
-    clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%); /* Wider top so it spills around the image */
+    top: -80px;
+    clip-path: polygon(49% 0, 51% 0, 100% 100%, 0 100%); /* Pointy narrow start */
   }
 }
 

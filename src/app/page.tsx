@@ -11,9 +11,9 @@ export default function HomePage() {
       <TransformationHero />
       <AboutHome />
       <StatsBand />
+      <FeaturedArtists />
       <Values />
       <Services />
-      <FeaturedArtists />
     </main>
   );
 }

@@ -91,25 +91,28 @@ export function AboutHome() {
                 </div>
               </div>
 
-              {/* Controls */}
+              {/* Arrow overlays on the sides of the image */}
               <div className={styles.controls}>
                 <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous Founder">
-                  <ArrowLeft size={24} />
+                  <ArrowLeft size={20} />
                 </button>
-                <div className={styles.indicators}>
-                  {FOUNDERS.map((_, idx) => (
-                    <span 
-                      key={idx} 
-                      className={`${styles.indicator} ${currentSlide === idx ? styles.activeIndicator : ""}`}
-                    />
-                  ))}
-                </div>
                 <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next Founder">
-                  <ArrowRight size={24} />
+                  <ArrowRight size={20} />
                 </button>
               </div>
 
             </div>
+
+            {/* Indicators below the image */}
+            <div className={styles.indicatorRow}>
+              {FOUNDERS.map((_, idx) => (
+                <span 
+                  key={idx} 
+                  className={`${styles.indicator} ${currentSlide === idx ? styles.activeIndicator : ""}`}
+                />
+              ))}
+            </div>
+
           </ScrollReveal>
         </div>
 

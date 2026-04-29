@@ -11,13 +11,21 @@
   padding: 0 5%;
 }
 
-.logoRow {
-  margin-bottom: 6rem;
+.headerRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
   text-align: center;
 }
 
 @media (min-width: 768px) {
-  .logoRow {
+  .headerRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 6rem;
     text-align: left;
   }
 }
@@ -26,14 +34,101 @@
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   color: #fff;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.1em;
+  line-height: 1.1;
   margin: 0;
 }
 
 .goldText {
   color: #C9A84C;
   font-style: italic;
+}
+
+/* Controls */
+.controlsDesktop {
+  display: none;
+}
+
+.controlsMobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+@media (min-width: 768px) {
+  .controlsDesktop {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .controlsMobile {
+    display: none;
+  }
+}
+
+.arrowBtn {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.arrowBtn:hover {
+  background: rgba(201, 168, 76, 0.4);
+  border-color: #C9A84C;
+  color: #C9A84C;
+  transform: scale(1.1);
+}
+
+.indicators {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.indicator {
+  width: 30px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.activeIndicator {
+  background: #C9A84C;
+  width: 40px;
+}
+
+/* Carousel Mechanics */
+.carouselReveal {
+  width: 100%;
+}
+
+.carouselViewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carouselTrack {
+  display: flex;
+  width: 100%;
+  transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.carouselSlide {
+  min-width: 100%;
+  padding-bottom: 1rem;
 }
 
 /* PREMIUM GRID */
