@@ -158,7 +158,6 @@
   transition: all 0.3s ease;
   cursor: pointer;
   text-decoration: none;
-  text-transform: uppercase;
 }
 
 .navLinkDark {
@@ -239,7 +238,6 @@
   font-size: 0.875rem;
   font-family: var(--font-display);
   letter-spacing: 0.05em;
-  text-transform: uppercase;
   font-weight: 500;
   color: #475569;
   text-decoration: none;
@@ -326,7 +324,7 @@
 .mobileBackdrop {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 200; /* Extremely high to cover everything else */
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -335,8 +333,8 @@
 .mobileDrawer {
   position: fixed;
   inset: 0 0 0 auto;
-  z-index: 61;
-  width: 90%;
+  z-index: 201; /* Above backdrop */
+  width: 80%; /* Shrink to 80% as requested */
   max-width: 400px;
   background: var(--cream, #FAF9F6);
   box-shadow: -20px 0 50px rgba(0,0,0,0.4);
@@ -366,28 +364,40 @@
 }
 
 .mobileDrawerHeader {
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(228, 192, 7, 0.1);
 }
 
-.mobileDrawerLogo { height: 2.5rem; max-width: 60%; object-fit: contain; filter: brightness(0) invert(0); }
+.mobileDrawerLogo { 
+  height: auto;
+  width: auto;
+  max-height: 2.2rem; 
+  max-width: 65%; 
+  object-fit: contain; 
+  filter: brightness(0) invert(0); 
+}
 
 .mobileCloseBtn {
+  position: static;
   padding: 0.5rem;
   margin-right: -0.5rem;
   color: #1e293b;
-  background: transparent;
-  border: none;
+  background: #fff; /* Solid background prevents seeing hamburger underneath */
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.3s ease;
+  flex-shrink: 0;
+  z-index: 100;
 }
 
 .mobileCloseBtn:hover {
-  background: rgba(0,0,0,0.05);
+  background: rgba(228, 192, 7, 0.1);
+  border-color: rgba(228, 192, 7, 0.3);
 }
 
 .mobileDrawerLinks {
@@ -412,7 +422,6 @@
   font-weight: 500;
   color: var(--text-dark, #1A1A1A);
   text-decoration: none;
-  text-transform: uppercase;
   transition: color 0.2s ease;
 }
 
@@ -452,7 +461,6 @@
   display: block;
   font-size: 1.25rem;
   font-family: var(--font-display);
-  text-transform: uppercase;
   font-weight: 500;
   color: #1e293b;
   text-decoration: none;

@@ -54,11 +54,12 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: "Home", path: "/" },
-  { name: "Our Story", path: "/#about-home" },
-  { name: "Expertise", path: "/#services-section" },
+  { name: "Backstage", path: "/#about-home" },
+  { name: "Our Collabs", path: "/#featured-artists" },
   { name: "Showcase", path: "/#hero-section" },
-  { name: "Testimonies", path: "/#testimonials" },
-  { name: "Let’s Talk", path: "/#contact" }
+  { name: "Testimonies", path: "/#values-section" },
+  { name: "Services", path: "/#services-section" },
+  { name: "Let’s Talk", path: "/#site-footer" }
 ];
 
 export function Navbar() {
@@ -68,16 +69,56 @@ export function Navbar() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [mobileExpandedIndex, setMobileExpandedIndex] = useState<number | null>(null);
   const [isForceOpenAtTop, setIsForceOpenAtTop] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("/");
   const pathname = usePathname() || "/";
 
   const { scrollY } = useScroll();
   const lastYRef = useRef(0);
+
+  // Scrollspy logic to highlight active section in Navbar
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const sectionIds = navItems
+      .filter(item => item.path.startsWith("/#"))
+      .map(item => item.path.replace("/#", ""));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(`/#${entry.target.id}`);
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -50% 0px" } // Triggers when element crosses top-ish of viewport
+    );
+
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    const handleScroll = () => {
+      if (window.scrollY < 100) {
+        setActiveSection("/");
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastYRef.current;
 
     if (latest > 30) setIsScrolled(true);
     else setIsScrolled(false);
+
+    if (latest > 100) setIsForceOpenAtTop(false);
 
     // Only hide if scrolling down more than 100px and menu isn't open
     if (latest > 100 && diff > 4 && !isMobileMenuOpen) {
@@ -211,8 +252,8 @@ export function Navbar() {
           {/* LINKS */}
           <nav className={styles.desktopLinks}>
             {navItems.map((item, index) => {
-              // Ensure hash links don't all highlight simultaneously on homepage
-              const isActive = item.path === '/' ? pathname === '/' : pathname === item.path;
+              // Ensure hash links highlight simultaneously on scroll
+              const isActive = pathname === '/' ? activeSection === item.path : pathname === item.path;
               return (
                 <div
                   key={item.name}
@@ -220,7 +261,7 @@ export function Navbar() {
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  <Link href={item.path} className={`${styles.navLink} ${styles.navLinkDark} ${isActive ? styles.navLinkActive : ""}`}>
+                  <Link href={item.path} onClick={() => setIsForceOpenAtTop(false)} className={`${styles.navLink} ${styles.navLinkDark} ${isActive ? styles.navLinkActive : ""}`}>
                     {isActive && (
                       <motion.div
                         layoutId="activeNavPill"
@@ -244,7 +285,7 @@ export function Navbar() {
                       >
                         <div className={styles.dropdownInner}>
                           {item.children.map((child) => (
-                            <Link key={child.path} href={child.path} className={styles.dropdownItem}>
+                            <Link key={child.path} href={child.path} onClick={() => setIsForceOpenAtTop(false)} className={styles.dropdownItem}>
                               {child.name}
                             </Link>
                           ))}
@@ -327,8 +368,14 @@ export function Navbar() {
                       <div className={styles.mobileDrawerLinkRow}>
                         <Link
                           href={item.path}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className={`${styles.mobileDrawerLink} ${pathname === item.path ? styles.mobileDrawerLinkActive : ""}`}
+                          onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setActiveSection(item.path);
+                          }}
+                          className={`${styles.mobileDrawerLink} ${
+                            (pathname === '/' ? activeSection === item.path : pathname === item.path)
+                              ? styles.mobileDrawerLinkActive : ""
+                          }`}
                         >
                           {item.name}
                         </Link>
