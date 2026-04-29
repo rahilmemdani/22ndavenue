@@ -1,5 +1,6 @@
 .section {
   position: relative;
+  min-height: 100vh; /* Fallback for old devices */
   min-height: 100dvh;
   background-color: var(--pitch-black, #050505);
   display: flex;
@@ -251,40 +252,120 @@
 @media (max-width: 1024px) {
   .section {
     height: auto;
+    min-height: 100vh; /* vh for old device compatibility */
     min-height: 100dvh;
-    padding: 8rem 0 6rem 0;
-    display: block;
-    /* Fixes flex centering clipping bug on mobile */
+    padding: 7rem 0 4rem 0;
+    display: flex;
+    align-items: flex-start; /* Prevents vertical centering clipping */
+    justify-content: center;
   }
 
   .container {
-    gap: 3rem;
+    gap: 2.5rem;
+    padding: 0 6%;
+  }
+
+  .title {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+  }
+
+  .textContentWrapper {
+    margin-top: 1.5rem;
   }
 
   .textContent {
-    padding: 1.5rem;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .bodyCopy {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .bodyCopy:first-child {
+    font-size: 1rem;
   }
 
   .carouselViewport {
-    height: 400px;
-    border-radius: 1.5rem;
+    height: 380px;
+    border-radius: 1.25rem;
   }
 
   .founderSlide {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
 
   .founderName {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 
   .founderOverlay {
-    padding: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .founderTitle {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+
+  .arrowBtn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .controls {
+    padding: 0;
   }
 
   .spotlight {
     width: 150%;
     height: 100%;
     top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 6rem 0 3rem 0;
+  }
+
+  .container {
+    gap: 2rem;
+    padding: 0 5%;
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .textContent {
+    padding: 1rem;
+  }
+
+  .bodyCopy {
+    font-size: 0.85rem;
+  }
+
+  .carouselViewport {
+    height: 320px;
+    border-radius: 1rem;
+  }
+
+  .founderSlide {
+    padding: 1rem;
+  }
+
+  .founderName {
+    font-size: 1rem;
+  }
+
+  .indicator {
+    width: 20px;
+  }
+
+  .activeIndicator {
+    width: 30px;
   }
 }

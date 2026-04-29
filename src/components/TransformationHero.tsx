@@ -94,21 +94,32 @@ const TransformationHero = () => {
     if (!video) return;
 
     try {
+      // Try container-level fullscreen first (works on Android/Desktop)
+      const container = video.parentElement;
+      if (container?.requestFullscreen) {
+        container.requestFullscreen();
+        return;
+      }
+      if (container?.webkitRequestFullscreen) {
+        container.webkitRequestFullscreen();
+        return;
+      }
+
+      // iOS Safari: must use video element's native fullscreen
       if (video.webkitEnterFullscreen) {
-        // iPhone native player fullscreen
         video.webkitEnterFullscreen();
-      } else if (video.requestFullscreen) {
-        // Standard fullscreen
-        video.requestFullscreen();
       } else if (video.webkitRequestFullscreen) {
-        // Desktop Safari / iPad
         video.webkitRequestFullscreen();
-      } else if (video.msRequestFullscreen) {
-        // IE11
-        video.msRequestFullscreen();
       }
     } catch (err) {
-      console.error("Error attempting to enable fullscreen:", err);
+      // Last resort: try video element directly
+      try {
+        if (video.webkitEnterFullscreen) {
+          video.webkitEnterFullscreen();
+        }
+      } catch (e2) {
+        console.error("Fullscreen not supported:", e2);
+      }
     }
   };
 
