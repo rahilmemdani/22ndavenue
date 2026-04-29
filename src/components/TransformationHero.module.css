@@ -172,24 +172,16 @@
   .heroContainer.split .leftPanel {
     width: 100vw;
     height: 100dvh;
-    background-color: transparent;
+    opacity: 0;
+    transform: scale(1.2);
+    filter: blur(10px);
     pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.7, 0, 0.3, 1), transform 0.6s cubic-bezier(0.7, 0, 0.3, 1), filter 0.6s cubic-bezier(0.7, 0, 0.3, 1), background-color 0.6s cubic-bezier(0.7, 0, 0.3, 1);
   }
   
   .rightPanel {
     width: 100vw;
     height: 100dvh;
     top: 0;
-  }
-
-  .heroContainer.split .splashText {
-    font-size: clamp(2rem, 10vw, 3.5rem);
-    color: #fff;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    transform: translateY(-5vh); /* Lift slightly above center */
-  }
-  
-  .heroContainer.split .splashOutline {
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.9);
   }
 }
