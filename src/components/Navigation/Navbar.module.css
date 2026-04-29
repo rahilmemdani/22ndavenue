@@ -53,21 +53,21 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(10, 10, 10, 0.85); /* Dark Glass */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(228, 192, 7, 0.3); /* Gold border */
   border-radius: 9999px;
   padding: 0.75rem 1.5rem;
-  color: #1A1A1A;
+  color: #fff;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
 
 .minimalMenuBtn:hover {
-  background: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(10, 10, 10, 0.95);
+  box-shadow: 0 8px 30px rgba(228, 192, 7, 0.2);
 }
 
 .minimalMenuBtn:active {
@@ -76,10 +76,10 @@
 
 .minimalMenuText {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.875rem;
   letter-spacing: 0.2em;
-  color: #1A1A1A;
+  color: #E4C007; /* Gold text */
   margin-top: 2px;
 }
 
@@ -92,9 +92,9 @@
   height: 100%;
 }
 
-.burgerLine1 { width: 24px; height: 1.5px; background: #1A1A1A; transition: all 0.3s ease; }
-.burgerLine2 { width: 16px; height: 1.5px; background: #1A1A1A; transition: all 0.3s ease; }
-.burgerLine3 { width: 20px; height: 1.5px; background: #1A1A1A; transition: all 0.3s ease; }
+.burgerLine1 { width: 24px; height: 1.5px; background: #E4C007; transition: all 0.3s ease; }
+.burgerLine2 { width: 16px; height: 1.5px; background: #E4C007; transition: all 0.3s ease; }
+.burgerLine3 { width: 20px; height: 1.5px; background: #E4C007; transition: all 0.3s ease; }
 
 .minimalMenuBtn:hover .burgerLine1,
 .minimalMenuBtn:hover .burgerLine2,
@@ -153,8 +153,8 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  font-family: var(--font-body);
-  letter-spacing: 0.05em;
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
   transition: all 0.3s ease;
   cursor: pointer;
   text-decoration: none;
@@ -237,7 +237,9 @@
   padding: 0.75rem 1rem;
   border-radius: 0.75rem;
   font-size: 0.875rem;
-  font-family: var(--font-body);
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   font-weight: 500;
   color: #475569;
   text-decoration: none;
@@ -371,7 +373,7 @@
   border-bottom: 1px solid rgba(228, 192, 7, 0.1);
 }
 
-.mobileDrawerLogo { height: 2.5rem; object-fit: contain; filter: brightness(0) invert(0); }
+.mobileDrawerLogo { height: 2.5rem; max-width: 60%; object-fit: contain; filter: brightness(0) invert(0); }
 
 .mobileCloseBtn {
   padding: 0.5rem;
@@ -449,7 +451,8 @@
 .mobileDrawerSubLink {
   display: block;
   font-size: 1.25rem;
-  font-family: var(--font-body);
+  font-family: var(--font-display);
+  text-transform: uppercase;
   font-weight: 500;
   color: #1e293b;
   text-decoration: none;

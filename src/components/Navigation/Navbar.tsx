@@ -67,35 +67,25 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [mobileExpandedIndex, setMobileExpandedIndex] = useState<number | null>(null);
+  const [isForceOpenAtTop, setIsForceOpenAtTop] = useState(false);
   const pathname = usePathname() || "/";
 
   const { scrollY } = useScroll();
   const lastYRef = useRef(0);
-  const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isNavHoveredRef = useRef(false);
-  const [isForceOpenAtTop, setIsForceOpenAtTop] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastYRef.current;
+
     if (latest > 30) setIsScrolled(true);
     else setIsScrolled(false);
 
-    if (latest > 50 && isForceOpenAtTop) setIsForceOpenAtTop(false);
-
+    // Only hide if scrolling down more than 100px and menu isn't open
     if (latest > 100 && diff > 4 && !isMobileMenuOpen) {
       setIsHidden(true);
-      if (hideTimeoutRef.current) {
-        clearTimeout(hideTimeoutRef.current);
-        hideTimeoutRef.current = null;
-      }
     } else if (diff < -4 || latest < 100) {
       setIsHidden(false);
-      // Remove the auto-hide timer when scrolled up so it stays visible!
-      if (hideTimeoutRef.current) {
-        clearTimeout(hideTimeoutRef.current);
-        hideTimeoutRef.current = null;
-      }
     }
+    
     lastYRef.current = latest;
   });
 
@@ -110,24 +100,10 @@ export function Navbar() {
     setIsForceOpenAtTop(false);
   }, [pathname]);
 
-  useEffect(() => {
-    return () => {
-      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
-    };
-  }, []);
-
-  const handleNavMouseEnter = () => {
-    isNavHoveredRef.current = true;
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
-      hideTimeoutRef.current = null;
-    }
-  };
-
-  const handleNavMouseLeave = () => {
-    isNavHoveredRef.current = false;
-    // Disabled auto-hide on mouse leave so the menu doesn't disappear annoyingly
-  };
+  const isTransparentPage = ["/"].includes(pathname);
+  const isHeroVideoPage = ["/"].includes(pathname);
+  const isDarkNavbar = false; 
+  const shouldHideDesktopNavAtTop = isHeroVideoPage && !isScrolled && !isForceOpenAtTop;
 
   const navbarVariants = {
     top: {
@@ -135,10 +111,10 @@ export function Navbar() {
       minWidth: "760px",
       y: 16,
       borderRadius: "99px",
-      backgroundColor: "rgba(0, 0, 0, 0.25)",
-      backdropFilter: "blur(12px)",
-      borderBottom: "1px solid rgba(255,255,255,0.1)",
-      boxShadow: "0 10px 30px -10px rgba(0,0,0,0.2)",
+      backgroundColor: "rgba(10, 10, 10, 0.95)",
+      backdropFilter: "blur(24px)",
+      borderBottom: "1px solid rgba(228, 192, 7, 0.3)",
+      boxShadow: "0 10px 30px -10px rgba(0,0,0,0.5)",
       paddingTop: "10px",
       paddingBottom: "10px",
       paddingLeft: "36px",
@@ -160,7 +136,7 @@ export function Navbar() {
     },
     hiddenTop: {
       width: "fit-content",
-      minWidth: "760px",
+      minWidth: "800px",
       y: -100,
       opacity: 0,
       scale: 0.95,
@@ -168,19 +144,7 @@ export function Navbar() {
     }
   };
 
-  const isTransparentPage = ["/"].includes(pathname);
-  // 22ndAvenue Home hero is a cream background, so we need dark text/logo initially!
-  const isDarkNavbar = false; 
-  const isHeroVideoPage = ["/"].includes(pathname);
-  const shouldHideDesktopNavAtTop = isHeroVideoPage && !isScrolled && !isForceOpenAtTop;
-
   const mobileNavbarVariants = {
-    top: {
-      y: 0,
-      backgroundColor: "rgba(0, 0, 0, 0.25)",
-      backdropFilter: "blur(12px)",
-      borderBottom: "1px solid rgba(255,255,255,0.1)"
-    },
     scrolled: {
       y: 0,
       backgroundColor: "rgba(10, 10, 10, 0.98)", // Dark Mobile Bar
@@ -197,8 +161,6 @@ export function Navbar() {
         className={styles.smartScrollWrapper}
         animate={{ y: isHidden ? "-200px" : "0px" }}
         transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-        onMouseEnter={handleNavMouseEnter}
-        onMouseLeave={handleNavMouseLeave}
       >
         {/* DESKTOP MINIMAL NAV (HERO ONLY) */}
         <AnimatePresence>
@@ -241,7 +203,7 @@ export function Navbar() {
               <img
                 src="assets/hero/logo.png"
                 alt="22nd Avenue Logo"
-                className={`${styles.logoImage} ${isScrolled ? styles.logoSmall : styles.logoLarge} ${(isDarkNavbar || isScrolled) ? styles.logoInvert : ""}`}
+                className={`${styles.logoImage} ${styles.logoSmall}`}
               />
             </motion.div>
           </Link>
@@ -249,7 +211,8 @@ export function Navbar() {
           {/* LINKS */}
           <nav className={styles.desktopLinks}>
             {navItems.map((item, index) => {
-              const isActive = pathname === item.path || (item.path.startsWith('/#') && pathname === '/');
+              // Ensure hash links don't all highlight simultaneously on homepage
+              const isActive = item.path === '/' ? pathname === '/' : pathname === item.path;
               return (
                 <div
                   key={item.name}
@@ -257,7 +220,7 @@ export function Navbar() {
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  <Link href={item.path} className={`${styles.navLink} ${(isDarkNavbar || isScrolled) ? styles.navLinkDark : styles.navLinkLight} ${isActive ? styles.navLinkActive : ""}`}>
+                  <Link href={item.path} className={`${styles.navLink} ${styles.navLinkDark} ${isActive ? styles.navLinkActive : ""}`}>
                     {isActive && (
                       <motion.div
                         layoutId="activeNavPill"
@@ -267,7 +230,7 @@ export function Navbar() {
                     )}
                     <span className={styles.navLinkText}>{item.name}</span>
                     {item.children && (
-                      <ChevronDown className={`${styles.chevron} ${hoveredIndex === index ? styles.chevronOpen : ""} ${(isDarkNavbar || isScrolled) ? styles.chevronDark : styles.chevronLight}`} />
+                      <ChevronDown className={`${styles.chevron} ${hoveredIndex === index ? styles.chevronOpen : ""} ${styles.chevronDark}`} />
                     )}
                   </Link>
 
@@ -312,13 +275,12 @@ export function Navbar() {
             <img
               src="assets/hero/logo.png"
               alt="Logo"
-              className={`${styles.mobileLogoImage} ${isScrolled ? styles.mobileLogoSmall : styles.mobileLogoLarge}`}
-              style={{ filter: (isDarkNavbar || isScrolled) ? "brightness(0) invert(1)" : "none" }}
+              className={`${styles.mobileLogoImage} ${styles.mobileLogoSmall}`}
             />
           </Link>
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className={`${styles.mobileMenuBtn} ${(isDarkNavbar || isScrolled) ? styles.mobileMenuBtnDark : styles.mobileMenuBtnLight}`}
+            className={`${styles.mobileMenuBtn} ${styles.mobileMenuBtnDark}`}
           >
             <Menu size={32} />
           </button>
