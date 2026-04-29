@@ -41,7 +41,8 @@
   letter-spacing: 0.1em;
   margin: 0;
   line-height: 1.1;
-  text-transform: none; /* Normal case as requested */
+  text-transform: none;
+  /* Normal case as requested */
 }
 
 .goldText {
@@ -85,10 +86,41 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+}
+
+/* Spotlight Animation */
+.spotlight {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  width: 800px;
+  height: 1200px; /* Extends down through the section */
+  background: linear-gradient(180deg, rgba(201, 168, 76, 0.4) 0%, rgba(201, 168, 76, 0.05) 70%, transparent 100%);
+  clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%); /* Triangle shape */
+  z-index: 0;
+  /* Shines behind the carousel */
+  pointer-events: none;
+  transform-origin: top center;
+  animation: spotlightSway 8s infinite alternate ease-in-out;
+}
+
+@keyframes spotlightSway {
+  0% {
+    transform: translateX(-50%) rotate(-6deg);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateX(-50%) rotate(6deg);
+    opacity: 1;
+  }
 }
 
 .carouselReveal {
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 .carouselContainer {
@@ -162,7 +194,7 @@
 .founderTitle {
   font-family: var(--font-accent);
   font-size: 0.9rem;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   letter-spacing: 0.1em;
   color: #C9A84C;
   margin-top: 0.5rem;
@@ -218,10 +250,41 @@
 /* Mobile Responsiveness */
 @media (max-width: 1024px) {
   .section {
+    height: auto;
     min-height: 100dvh;
-    padding: 6rem 0;
+    padding: 8rem 0 6rem 0;
+    display: block;
+    /* Fixes flex centering clipping bug on mobile */
   }
+
+  .container {
+    gap: 3rem;
+  }
+
+  .textContent {
+    padding: 1.5rem;
+  }
+
   .carouselViewport {
-    height: 450px;
+    height: 400px;
+    border-radius: 1.5rem;
+  }
+
+  .founderSlide {
+    padding: 1.5rem;
+  }
+
+  .founderName {
+    font-size: 1.25rem;
+  }
+
+  .founderOverlay {
+    padding: 1rem;
+  }
+
+  .spotlight {
+    width: 150%;
+    height: 100%;
+    top: 0;
   }
 }

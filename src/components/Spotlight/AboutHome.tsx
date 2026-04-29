@@ -66,6 +66,7 @@ export function AboutHome() {
 
         {/* Right Column: Founder Carousel */}
         <div className={styles.rightCol}>
+          <div className={styles.spotlight}></div>
           <ScrollReveal delay={400} direction="up" className={styles.carouselReveal}>
             <div className={styles.carouselContainer}>
               

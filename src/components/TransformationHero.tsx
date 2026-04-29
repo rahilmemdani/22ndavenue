@@ -18,21 +18,35 @@ const TransformationHero = () => {
       return;
     }
 
+    // Function to immediately skip animation if user scrolls
+    const handleScrollAttempt = () => {
+      setIsSplit(true);
+    };
+
+    window.addEventListener("scroll", handleScrollAttempt, { passive: true });
+    window.addEventListener("wheel", handleScrollAttempt, { passive: true });
+    window.addEventListener("touchmove", handleScrollAttempt, { passive: true });
+
     // Otherwise, wait for the full fall-in sequence to complete
     const splitTimer = setTimeout(() => {
       setIsSplit(true);
     }, 3800);
 
-    return () => clearTimeout(splitTimer);
+    return () => {
+      clearTimeout(splitTimer);
+      window.removeEventListener("scroll", handleScrollAttempt);
+      window.removeEventListener("wheel", handleScrollAttempt);
+      window.removeEventListener("touchmove", handleScrollAttempt);
+    };
   }, []);
 
   useEffect(() => {
-    // While intro is playing, lock scroll
-    if (!isSplit) {
+    // While intro is playing, lock scroll ONLY if at the absolute top
+    if (!isSplit && window.scrollY <= 50) {
       document.body.style.overflow = "hidden";
       document.body.classList.add("hero-animating");
     } else {
-      document.body.style.overflow = ""; // Fixed iOS Safari bug: changed "unset" to ""
+      document.body.style.overflow = "";
       document.body.classList.remove("hero-animating");
     }
 
