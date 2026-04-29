@@ -56,11 +56,14 @@ const TransformationHero = () => {
       
       {/* Left Panel: Cream background, holds the typography */}
       <div className={styles.leftPanel}>
+        <div className={styles.ambientOrb2}></div>
         <h2 className={styles.splashText}>
-          <span className={`${styles.splashWord} ${styles.wordWe}`}>WE</span>{" "}
-          <span className={`${styles.splashWord} ${styles.wordAre}`}>ARE</span>
+          <div>
+            <span className={`${styles.splashWord} ${styles.wordWe}`}>WE</span>{" "}
+            <span className={`${styles.splashWord} ${styles.wordAre}`}>ARE</span>
+          </div>
           <span className={`${styles.splashWord} ${styles.splashOutline}`}>22ND</span>
-          <div style={{ marginTop: "-0.5rem" }}>
+          <div>
             <span className={`${styles.splashWord} ${styles.splashGold}`}>AVENUE</span>
             <span className={styles.splashDot}>.</span>
           </div>
