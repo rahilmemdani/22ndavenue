@@ -45,7 +45,9 @@ export function Values() {
         <div className={styles.leftCol}>
           <ScrollReveal direction="up">
             <h2 className={styles.title}>
-              CORE <span className={styles.goldText}>VALUES</span>
+              <span className={styles.goldText}>Core</span>
+              <br />
+              Values
             </h2>
           </ScrollReveal>
         </div>
