@@ -1,6 +1,9 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Values.module.css";
 
 const valuesData = [
@@ -19,11 +22,27 @@ const valuesData = [
 ];
 
 export function Values() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % valuesData.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + valuesData.length) % valuesData.length);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
+
   return (
     <section className={styles.section} id="values-section">
       <div className={styles.container}>
         
-        <div className={styles.header}>
+        {/* Left Side: Header */}
+        <div className={styles.leftCol}>
           <ScrollReveal direction="up">
             <h2 className={styles.title}>
               CORE <span className={styles.goldText}>VALUES</span>
@@ -31,29 +50,33 @@ export function Values() {
           </ScrollReveal>
         </div>
 
-        {/* Gliding Monoliths Carousel */}
-        <div className={styles.carousel}>
-          {valuesData.map((val, i) => (
-            <ScrollReveal 
-              key={i} 
-              delay={i * 150} 
-              direction="up"
-            >
-              <div className={styles.card}>
+        {/* Right Side: Carousel with Arrows */}
+        <div className={styles.rightCol}>
+          <button className={`${styles.arrowButton} ${styles.prevButton}`} onClick={prevSlide} aria-label="Previous value">
+            <ChevronLeft size={32} />
+          </button>
+          
+          <div className={styles.carouselViewport}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className={styles.card}
+              >
                 <div className={styles.glare} />
-                <div className={styles.cardNumber}>CORE PRINCIPLE 0{i + 1} — VII</div>
-                <h3 className={styles.cardTitle}>{val.title}</h3>
-                <p className={styles.cardText}>{val.text}</p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
+                <div className={styles.cardNumber}>CORE PRINCIPLE 0{currentIndex + 1} — VII</div>
+                <h3 className={styles.cardTitle}>{valuesData[currentIndex].title}</h3>
+                <p className={styles.cardText}>{valuesData[currentIndex].text}</p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-        {/* Scroll Guide */}
-        <div className={styles.guide}>
-          <div className={styles.line} />
-          <span className={styles.guideText}>Swipe to Navigate</span>
-          <div className={styles.line} />
+          <button className={`${styles.arrowButton} ${styles.nextButton}`} onClick={nextSlide} aria-label="Next value">
+            <ChevronRight size={32} />
+          </button>
         </div>
 
       </div>

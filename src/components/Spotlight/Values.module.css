@@ -12,13 +12,24 @@
 .container {
   width: 100%;
   max-width: 1400px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 4rem;
+  padding: 0 5%;
 }
 
-.header {
-  padding: 0 5%;
+@media (min-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr 1.5fr;
+    align-items: center;
+    gap: 6rem;
+  }
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .title {
@@ -35,47 +46,82 @@
   font-style: italic;
 }
 
-/* CAROUSEL CARDS */
-.carousel {
+.rightCol {
+  position: relative;
   display: flex;
-  gap: 2rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 0 5% 4rem 5%;
-  scrollbar-width: none;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
 }
 
-.carousel::-webkit-scrollbar {
-  display: none;
+.carouselViewport {
+  position: relative;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  border-radius: 2rem;
 }
 
 .card {
-  flex: 0 0 calc(85vw);
-  scroll-snap-align: center;
+  width: 100%;
   position: relative;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 4rem 3rem;
   border-radius: 2rem;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.5s ease, background 0.5s ease;
   display: flex;
   flex-direction: column;
   min-height: 450px;
   overflow: hidden;
-}
-
-@media (min-width: 768px) {
-  .card {
-    flex: 0 0 450px;
-    scroll-snap-align: start;
-  }
+  flex-shrink: 0;
 }
 
 .card:hover {
-  transform: translateY(-20px) scale(1.02);
   border-color: #C9A84C;
   background: rgba(40, 40, 40, 0.4);
+}
+
+.arrowButton {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.arrowButton:hover {
+  background: rgba(201, 168, 76, 0.2);
+  border-color: #C9A84C;
+  color: #C9A84C;
+}
+
+@media (max-width: 1024px) {
+  .rightCol {
+    padding-bottom: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .rightCol {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .carouselViewport {
+    order: -1;
+    min-width: 100%;
+  }
+  .arrowButton {
+    margin-top: 1rem;
+  }
 }
 
 .cardNumber {
@@ -122,25 +168,3 @@
   opacity: 1;
 }
 
-/* Guide */
-.guide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-}
-
-.line {
-  width: 60px;
-  height: 1px;
-  background: #C9A84C;
-  opacity: 0.4;
-}
-
-.guideText {
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.4em;
-  color: rgba(255,255,255,0.2);
-  text-transform: uppercase;
-}
