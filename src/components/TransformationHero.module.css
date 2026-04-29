@@ -314,7 +314,7 @@
   }
 
   .supportingCopy {
-    font-size: 1rem; /* Reduced size for phone */
+    font-size: 0.85rem; /* Reduced further */
     margin-top: 1.5rem;
     line-height: 1.4;
   }
