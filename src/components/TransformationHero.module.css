@@ -78,6 +78,16 @@
 }
 
 /* Typography */
+.splashTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
 .splashText {
   font-family: var(--font-display);
   font-size: clamp(4rem, 16vw, 13rem);
@@ -143,6 +153,36 @@
 }
 
 @keyframes fallIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.supportingCopy {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #8C7844; /* Refined muted gold for the cream background */
+  text-align: center;
+  margin-top: 2rem;
+  max-width: 80%;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInCopy 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: 2.6s;
+}
+
+.heroContainer.split .supportingCopy {
+  font-size: 0.75rem;
+  margin-top: 1.5rem;
+  max-width: 85%;
+  transition: all 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+@keyframes fadeInCopy {
   to {
     opacity: 1;
     transform: translateY(0);

@@ -86,17 +86,22 @@ const TransformationHero = () => {
       {/* Left Panel: Cream background, holds the typography */}
       <div className={styles.leftPanel}>
         <div className={styles.ambientOrb2}></div>
-        <h2 className={styles.splashText}>
-          <div>
-            <span className={`${styles.splashWord} ${styles.wordWe}`}>WE</span>{" "}
-            <span className={`${styles.splashWord} ${styles.wordAre}`}>ARE</span>
-          </div>
-          <span className={`${styles.splashWord} ${styles.splashOutline}`}>22ND</span>
-          <div>
-            <span className={`${styles.splashWord} ${styles.splashGold}`}>AVENUE</span>
-            <span className={styles.splashDot}>.</span>
-          </div>
-        </h2>
+        <div className={styles.splashTextContainer}>
+          <h2 className={styles.splashText}>
+            <div>
+              <span className={`${styles.splashWord} ${styles.wordWe}`}>WE</span>{" "}
+              <span className={`${styles.splashWord} ${styles.wordAre}`}>ARE</span>
+            </div>
+            <span className={`${styles.splashWord} ${styles.splashOutline}`}>22ND</span>
+            <div>
+              <span className={`${styles.splashWord} ${styles.splashGold}`}>AVENUE</span>
+              <span className={styles.splashDot}>.</span>
+            </div>
+          </h2>
+          <p className={styles.supportingCopy}>
+            Leading Entertainment Curators, Crafting Impact Through Artist-Led Experiences
+          </p>
+        </div>
       </div>
 
       {/* Right Panel: Showcase Reel */}
