@@ -12,8 +12,13 @@ const TransformationHero = () => {
   const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Wait for the full fall-in sequence to complete before splitting the screen
-    // WE(0.2) + ARE(0.6) + 22ND(1.1) + AVENUE(1.6) + DOT(2.1) + anim(0.8) = ~3s
+    // If user loads the page and is already scrolled down, SKIP the animation instantly
+    if (window.scrollY > 50) {
+      setIsSplit(true);
+      return;
+    }
+
+    // Otherwise, wait for the full fall-in sequence to complete
     const splitTimer = setTimeout(() => {
       setIsSplit(true);
     }, 3800);
@@ -71,11 +76,15 @@ const TransformationHero = () => {
 
   const toggleFullscreen = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (videoRef.current) {
-      if (videoRef.current.requestFullscreen) {
-        videoRef.current.requestFullscreen();
-      } else if ((videoRef.current as any).webkitRequestFullscreen) {
-        (videoRef.current as any).webkitRequestFullscreen();
+    const video = videoRef.current as any;
+    if (video) {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitEnterFullscreen) {
+        // iOS Safari specific fullscreen
+        video.webkitEnterFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
       }
     }
   };
