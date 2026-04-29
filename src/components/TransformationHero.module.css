@@ -160,15 +160,18 @@
 }
 
 .supportingCopy {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  letter-spacing: 0.2em;
+  font-family: var(--font-body); 
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
   font-weight: 500;
-  text-transform: uppercase;
-  color: #8C7844; /* Refined muted gold for the cream background */
+  color: #665426; /* Slightly darker for lowercase visibility */
   text-align: center;
-  margin-top: 2rem;
-  max-width: 80%;
+  margin-top: 2.5rem;
+  padding: 0.6rem 2rem;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  border-radius: 9999px;
+  background: rgba(201, 168, 76, 0.05);
+  max-width: 90%;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInCopy 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
@@ -176,9 +179,10 @@
 }
 
 .heroContainer.split .supportingCopy {
-  font-size: 0.75rem;
-  margin-top: 1.5rem;
-  max-width: 85%;
+  font-size: 0.85rem; /* Increased by 2 sizes */
+  margin-top: 2rem;
+  padding: 0.6rem 1.5rem;
+  max-width: 95%;
   transition: all 1.5s cubic-bezier(0.7, 0, 0.3, 1);
 }
 
@@ -323,8 +327,9 @@
   }
 
   .heroContainer.split .supportingCopy {
-    font-size: 0.75rem;
-    margin-top: 1rem;
+    font-size: 0.8rem; /* Increased for mobile split */
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
     max-width: 95%;
   }
 
