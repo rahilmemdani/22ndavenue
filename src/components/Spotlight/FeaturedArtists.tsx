@@ -60,7 +60,7 @@ export function FeaturedArtists() {
             <h2 className={styles.sectionTitle}>
               <span className={styles.goldText}>Our</span>
               <br />
-              Roster
+              Collabs
             </h2>
           </ScrollReveal>
 
