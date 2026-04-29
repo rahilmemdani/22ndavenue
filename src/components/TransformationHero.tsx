@@ -1,18 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Volume2, VolumeX, Maximize } from "lucide-react";
 import styles from "./TransformationHero.module.css";
-
-const frames = [
-  "/assets/hero/model-frame1.jpg",
-  "/assets/hero/model-frame2.jpg",
-  "/assets/hero/model-frame3.jpg",
-  "/assets/hero/model-frame4.jpg"
-];
 
 const TransformationHero = () => {
   const [isSplit, setIsSplit] = useState(false);
-  const [currentFrame, setCurrentFrame] = useState(0);
+  const [isMuted, setIsMuted] = useState(true); // Auto-play requires mute initially
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     // Wait for the full fall-in sequence to complete before splitting the screen
@@ -25,34 +22,66 @@ const TransformationHero = () => {
   }, []);
 
   useEffect(() => {
-    // While intro is playing, lock scroll and hide navbar
+    // While intro is playing, lock scroll
     if (!isSplit) {
       document.body.style.overflow = "hidden";
       document.body.classList.add("hero-animating");
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = ""; // Fixed iOS Safari bug: changed "unset" to ""
       document.body.classList.remove("hero-animating");
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
       document.body.classList.remove("hero-animating");
     };
   }, [isSplit]);
 
+  // Intersection Observer to auto-mute video when scrolling out of view
   useEffect(() => {
-    // Start slider once split has begun
-    if (!isSplit) return;
+    if (!containerRef.current || !videoRef.current) return;
 
-    const interval = setInterval(() => {
-      setCurrentFrame((prev) => (prev + 1) % frames.length);
-    }, 4000);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            // Mute video if user scrolls past the hero section
+            if (videoRef.current) {
+              videoRef.current.muted = true;
+              setIsMuted(true);
+            }
+          }
+        });
+      },
+      { threshold: 0.1 } // Trigger when 90% out of view
+    );
 
-    return () => clearInterval(interval);
-  }, [isSplit]);
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const toggleFullscreen = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      } else if ((videoRef.current as any).webkitRequestFullscreen) {
+        (videoRef.current as any).webkitRequestFullscreen();
+      }
+    }
+  };
 
   return (
-    <section className={`${styles.heroContainer} ${isSplit ? styles.split : ""}`}>
+    <section ref={containerRef} className={`${styles.heroContainer} ${isSplit ? styles.split : ""}`}>
       
       {/* Left Panel: Cream background, holds the typography */}
       <div className={styles.leftPanel}>
@@ -72,17 +101,30 @@ const TransformationHero = () => {
 
       {/* Right Panel: Showcase Reel */}
       <div className={styles.rightPanel}>
-        <div className={styles.backgroundSlider}>
-          {frames.map((src, index) => (
-            <div 
-              key={src} 
-              className={`${styles.slide} ${index === currentFrame ? styles.active : ""}`}
-            >
-              <img src={src} alt={`Showcase Reel ${index + 1}`} className={styles.slideImage} />
-            </div>
-          ))}
+        <div className={styles.videoContainer}>
+          <video
+            ref={videoRef}
+            src="/assets/hero/showcase.mp4"
+            className={styles.showcaseVideo}
+            autoPlay
+            loop
+            muted={isMuted}
+            playsInline
+          />
         </div>
+        
         <div className={styles.overlay} />
+        
+        {/* Video Controls Overlay */}
+        <div className={styles.videoControls}>
+          <button onClick={toggleMute} className={styles.controlBtn} aria-label="Toggle Mute">
+            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+          </button>
+          <button onClick={toggleFullscreen} className={styles.controlBtn} aria-label="Fullscreen">
+            <Maximize size={20} />
+          </button>
+        </div>
+
         <span className={styles.reelLabel}>Showcase Reel</span>
       </div>
 

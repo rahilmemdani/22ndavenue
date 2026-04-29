@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -89,12 +90,10 @@ export function Navbar() {
       }
     } else if (diff < -4 || latest < 100) {
       setIsHidden(false);
-      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
-      
-      if (latest > 100 && !isNavHoveredRef.current) {
-        hideTimeoutRef.current = setTimeout(() => {
-          if (!isNavHoveredRef.current) setIsHidden(true);
-        }, 1500);
+      // Remove the auto-hide timer when scrolled up so it stays visible!
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+        hideTimeoutRef.current = null;
       }
     }
     lastYRef.current = latest;
@@ -127,12 +126,7 @@ export function Navbar() {
 
   const handleNavMouseLeave = () => {
     isNavHoveredRef.current = false;
-    if (scrollY.get() > 100 && !isHidden) {
-      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
-      hideTimeoutRef.current = setTimeout(() => {
-        if (!isNavHoveredRef.current) setIsHidden(true);
-      }, 1500);
-    }
+    // Disabled auto-hide on mouse leave so the menu doesn't disappear annoyingly
   };
 
   const navbarVariants = {
@@ -155,10 +149,10 @@ export function Navbar() {
       minWidth: "800px",
       y: 20,
       borderRadius: "99px",
-      backgroundColor: "rgba(255, 255, 255, 0.95)",
+      backgroundColor: "rgba(10, 10, 10, 0.95)", // Premium Dark Glass
       backdropFilter: "blur(24px)",
-      borderBottom: "1px solid rgba(255,255,255,0.8)",
-      boxShadow: "0 20px 50px -12px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.5)",
+      borderBottom: "1px solid rgba(228, 192, 7, 0.3)", // Gold border
+      boxShadow: "0 20px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)",
       paddingTop: "14px",
       paddingBottom: "14px",
       paddingLeft: "48px",
@@ -189,10 +183,10 @@ export function Navbar() {
     },
     scrolled: {
       y: 0,
-      backgroundColor: "rgba(255, 255, 255, 0.98)",
+      backgroundColor: "rgba(10, 10, 10, 0.98)", // Dark Mobile Bar
       backdropFilter: "blur(16px)",
-      borderBottom: "1px solid rgba(0,0,0,0.05)",
-      boxShadow: "0 4px 20px -5px rgba(0,0,0,0.05)"
+      borderBottom: "1px solid rgba(228, 192, 7, 0.2)",
+      boxShadow: "0 4px 20px -5px rgba(0,0,0,0.3)"
     }
   };
 
@@ -247,7 +241,7 @@ export function Navbar() {
               <img
                 src="assets/hero/logo.png"
                 alt="22nd Avenue Logo"
-                className={`${styles.logoImage} ${isScrolled ? styles.logoSmall : styles.logoLarge} ${isDarkNavbar ? styles.logoInvert : ""}`}
+                className={`${styles.logoImage} ${isScrolled ? styles.logoSmall : styles.logoLarge} ${(isDarkNavbar || isScrolled) ? styles.logoInvert : ""}`}
               />
             </motion.div>
           </Link>
@@ -263,7 +257,7 @@ export function Navbar() {
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  <Link href={item.path} className={`${styles.navLink} ${isDarkNavbar ? styles.navLinkDark : styles.navLinkLight} ${isActive ? styles.navLinkActive : ""}`}>
+                  <Link href={item.path} className={`${styles.navLink} ${(isDarkNavbar || isScrolled) ? styles.navLinkDark : styles.navLinkLight} ${isActive ? styles.navLinkActive : ""}`}>
                     {isActive && (
                       <motion.div
                         layoutId="activeNavPill"
@@ -273,7 +267,7 @@ export function Navbar() {
                     )}
                     <span className={styles.navLinkText}>{item.name}</span>
                     {item.children && (
-                      <ChevronDown className={`${styles.chevron} ${hoveredIndex === index ? styles.chevronOpen : ""} ${isDarkNavbar ? styles.chevronDark : styles.chevronLight}`} />
+                      <ChevronDown className={`${styles.chevron} ${hoveredIndex === index ? styles.chevronOpen : ""} ${(isDarkNavbar || isScrolled) ? styles.chevronDark : styles.chevronLight}`} />
                     )}
                   </Link>
 
@@ -319,12 +313,12 @@ export function Navbar() {
               src="assets/hero/logo.png"
               alt="Logo"
               className={`${styles.mobileLogoImage} ${isScrolled ? styles.mobileLogoSmall : styles.mobileLogoLarge}`}
-              style={{ filter: isDarkNavbar ? "brightness(0) invert(1)" : "none" }}
+              style={{ filter: (isDarkNavbar || isScrolled) ? "brightness(0) invert(1)" : "none" }}
             />
           </Link>
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className={`${styles.mobileMenuBtn} ${isDarkNavbar ? styles.mobileMenuBtnDark : styles.mobileMenuBtnLight}`}
+            className={`${styles.mobileMenuBtn} ${(isDarkNavbar || isScrolled) ? styles.mobileMenuBtnDark : styles.mobileMenuBtnLight}`}
           >
             <Menu size={32} />
           </button>
@@ -417,7 +411,7 @@ export function Navbar() {
                 <div className={styles.mobileDrawerFooter}>
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
                     <Link href="/#contact" onClick={() => setIsMobileMenuOpen(false)} className={styles.mobileSayHelloBtn}>
-                      Let's Talk <Rocket className={styles.rocketIcon} />
+                      Let&apos;s Talk <Rocket className={styles.rocketIcon} />
                     </Link>
 
                     <div className={styles.socialsRow}>
