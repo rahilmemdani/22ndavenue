@@ -48,8 +48,11 @@ export function Footer() {
           {/* Brand Column */}
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
-              <span className={styles.logoText}>22nd</span>
-              <span className={styles.logoAccent}>Avenue</span>
+              <img
+                src="/assets/hero/logo.png"
+                alt="22nd Avenue Logo"
+                className={styles.footerLogo}
+              />
             </Link>
             <p className={styles.tagline}>
               Where Talent Meets The Spotlight. We are a creative talent

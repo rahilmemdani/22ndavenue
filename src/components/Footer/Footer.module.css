@@ -95,6 +95,18 @@
   text-decoration: none;
 }
 
+.footerLogo {
+  max-height: 3rem;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .footerLogo {
+    max-height: 3.5rem;
+  }
+}
+
 .logoText {
   font-family: var(--font-display);
   font-size: var(--text-2xl);

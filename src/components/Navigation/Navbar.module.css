@@ -377,7 +377,6 @@
   max-height: 2.2rem; 
   max-width: 65%; 
   object-fit: contain; 
-  filter: brightness(0) invert(0); 
 }
 
 .mobileCloseBtn {
