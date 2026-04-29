@@ -5,113 +5,63 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8rem 2rem;
+  padding: 6rem 0;
   overflow: hidden;
 }
 
 .container {
   width: 100%;
   max-width: 1400px;
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 4rem;
+  padding: 0 5%;
+  z-index: 10;
 }
 
-/* Headers */
-.headerReveal {
-  width: 100%;
+@media (min-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 6rem;
+  }
 }
 
-.sectionHeader {
+/* Left Column: Typography & Text */
+.leftCol {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  text-align: center;
-}
-
-.eyebrow {
-  font-family: var(--font-accent);
-  font-size: 1rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #C9A84C;
-  margin: 0;
+  justify-content: center;
 }
 
 .title {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 700;
-  color: #FFFFFF;
+  color: #fff;
+  letter-spacing: 0.1em;
   margin: 0;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-transform: none; /* Normal case as requested */
 }
 
-/* Bento Grid System */
-.bentoGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto auto;
-  gap: 1.5rem;
-  width: 100%;
+.goldText {
+  color: #C9A84C;
+  font-style: italic;
+  text-transform: uppercase;
 }
 
-.bentoItemTextWrapper {
-  grid-column: 1 / 3;
-  grid-row: 1 / 3;
-  height: 100%;
+.textContentWrapper {
+  margin-top: 3rem;
 }
 
-.bentoItemAditya {
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
-  height: 350px;
-}
-
-.bentoItemDaryl {
-  grid-column: 4 / 5;
-  grid-row: 1 / 2;
-  height: 350px;
-}
-
-.bentoItemManoj {
-  grid-column: 3 / 5;
-  grid-row: 2 / 3;
-  height: 450px;
-}
-
-/* Base Card Style */
-.bentoCard {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  transition: transform 0.4s ease, border-color 0.4s ease;
-}
-
-.bentoCard:hover {
-  border-color: rgba(201, 168, 76, 0.3); /* Gold tint on hover */
-  transform: translateY(-4px);
-}
-
-/* Text Card */
-.textCard {
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
-  display: flex;
-  align-items: center;
-  padding: 4rem;
-}
-
-.textCardInner {
+.textContent {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .bodyCopy {
@@ -123,17 +73,55 @@
 }
 
 .bodyCopy:first-child {
-  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
   color: #FFFFFF;
   font-weight: 500;
   line-height: 1.4;
 }
 
-/* Founder Cards */
-.founderCard {
+/* Right Column: Founder Carousel */
+.rightCol {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carouselReveal {
+  width: 100%;
+}
+
+.carouselContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.carouselViewport {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 2rem;
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.carouselTrack {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.founderSlide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
   display: flex;
   align-items: flex-end;
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .founderImg {
@@ -143,12 +131,12 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  filter: grayscale(100%) contrast(1.1) brightness(0.8); /* Cinematic B&W */
+  filter: grayscale(100%) contrast(1.1) brightness(0.8);
 }
 
-.founderCard:hover .founderImg {
+.carouselViewport:hover .founderImg {
   transform: scale(1.05);
-  filter: grayscale(0%) contrast(1.1) brightness(1); /* Reveal true color */
+  filter: grayscale(0%) contrast(1.1) brightness(1);
 }
 
 .founderOverlay {
@@ -157,24 +145,15 @@
   background: rgba(10, 10, 10, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  padding: 1rem 1.5rem;
-  border-radius: 16px;
+  padding: 1.5rem;
+  border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transform: translateY(10px);
-  opacity: 0.9;
-  transition: all 0.4s ease;
   width: 100%;
-}
-
-.founderCard:hover .founderOverlay {
-  transform: translateY(0);
-  opacity: 1;
-  border-color: rgba(201, 168, 76, 0.4);
 }
 
 .founderName {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #FFFFFF;
   margin: 0;
@@ -182,39 +161,67 @@
 
 .founderTitle {
   font-family: var(--font-accent);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #C9A84C;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 
-/* Responsive */
+/* Controls */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.arrowBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.arrowBtn:hover {
+  background: rgba(201, 168, 76, 0.2);
+  border-color: #C9A84C;
+  color: #C9A84C;
+}
+
+.indicators {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.indicator {
+  width: 30px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.activeIndicator {
+  background: #C9A84C;
+  width: 40px;
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 1024px) {
-  .bentoGrid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: 1rem;
+  .section {
+    min-height: 100dvh;
+    padding: 6rem 0;
   }
-
-  .bentoItemTextWrapper,
-  .bentoItemAditya,
-  .bentoItemDaryl,
-  .bentoItemManoj {
-    grid-column: 1 / -1;
-    grid-row: auto;
-  }
-
-  .bentoItemAditya, .bentoItemDaryl, .bentoItemManoj {
-    height: 350px;
-  }
-
-  .textCard {
-    padding: 2.5rem;
-  }
-
-  .sectionHeader {
-    align-items: flex-start;
-    text-align: left;
+  .carouselViewport {
+    height: 450px;
   }
 }

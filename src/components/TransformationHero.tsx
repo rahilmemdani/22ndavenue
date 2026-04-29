@@ -77,15 +77,24 @@ const TransformationHero = () => {
   const toggleFullscreen = (e: React.MouseEvent) => {
     e.stopPropagation();
     const video = videoRef.current as any;
-    if (video) {
-      if (video.requestFullscreen) {
-        video.requestFullscreen();
-      } else if (video.webkitEnterFullscreen) {
-        // iOS Safari specific fullscreen
+    if (!video) return;
+
+    try {
+      if (video.webkitEnterFullscreen) {
+        // iPhone native player fullscreen
         video.webkitEnterFullscreen();
+      } else if (video.requestFullscreen) {
+        // Standard fullscreen
+        video.requestFullscreen();
       } else if (video.webkitRequestFullscreen) {
+        // Desktop Safari / iPad
         video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        // IE11
+        video.msRequestFullscreen();
       }
+    } catch (err) {
+      console.error("Error attempting to enable fullscreen:", err);
     }
   };
 

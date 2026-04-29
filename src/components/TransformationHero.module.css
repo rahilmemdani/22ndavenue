@@ -160,18 +160,21 @@
 }
 
 .supportingCopy {
-  font-family: var(--font-body); 
-  font-size: 1.25rem;
-  letter-spacing: 0.05em;
-  font-weight: 500;
-  color: #665426; /* Slightly darker for lowercase visibility */
+  font-family: var(--font-display); 
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
+  font-weight: 600;
   text-align: center;
-  margin-top: 2.5rem;
-  padding: 0.6rem 2rem;
-  border: 1px solid rgba(201, 168, 76, 0.4);
-  border-radius: 9999px;
-  background: rgba(201, 168, 76, 0.05);
+  margin-top: 2rem;
   max-width: 90%;
+  
+  /* Magical Gradient Text */
+  background: linear-gradient(135deg, #8C7844 0%, #C9A84C 50%, #665426 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 10px 30px rgba(201, 168, 76, 0.15); /* Subtle magical glow */
+
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInCopy 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
@@ -179,9 +182,8 @@
 }
 
 .heroContainer.split .supportingCopy {
-  font-size: 0.85rem; /* Increased by 2 sizes */
-  margin-top: 2rem;
-  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem; 
+  margin-top: 1rem;
   max-width: 95%;
   transition: all 1.5s cubic-bezier(0.7, 0, 0.3, 1);
 }
@@ -309,6 +311,12 @@
   .splashText {
     gap: 0.25rem;
     font-size: clamp(3.75rem, 15vw, 5.8rem);
+  }
+
+  .supportingCopy {
+    font-size: 1rem; /* Reduced size for phone */
+    margin-top: 1.5rem;
+    line-height: 1.4;
   }
 
   .heroContainer.split .leftPanel {
