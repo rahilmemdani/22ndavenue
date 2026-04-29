@@ -5,6 +5,13 @@
   transform: translateX(-50%);
   z-index: 1000;
   display: flex;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+:global(body.hero-animating) .dock {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(20px);
 }
 
 .capsule {

@@ -11,66 +11,78 @@ const frames = [
 ];
 
 const TransformationHero = () => {
-  const [showSplash, setShowSplash] = useState(true);
+  const [isSplit, setIsSplit] = useState(false);
   const [currentFrame, setCurrentFrame] = useState(0);
 
   useEffect(() => {
-    // Hide splash screen after a longer delay to let the sequence finish
-    const splashTimer = setTimeout(() => {
-      setShowSplash(false);
+    // Wait for the full fall-in sequence to complete before splitting the screen
+    // WE(0.2) + ARE(0.6) + 22ND(1.1) + AVENUE(1.6) + DOT(2.1) + anim(0.8) = ~3s
+    const splitTimer = setTimeout(() => {
+      setIsSplit(true);
     }, 3800);
 
-    return () => clearTimeout(splashTimer);
+    return () => clearTimeout(splitTimer);
   }, []);
 
   useEffect(() => {
-    // Start slider once splash is gone
-    if (showSplash) return;
+    // While intro is playing, lock scroll and hide navbar
+    if (!isSplit) {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("hero-animating");
+    } else {
+      document.body.style.overflow = "unset";
+      document.body.classList.remove("hero-animating");
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+      document.body.classList.remove("hero-animating");
+    };
+  }, [isSplit]);
+
+  useEffect(() => {
+    // Start slider once split has begun
+    if (!isSplit) return;
 
     const interval = setInterval(() => {
       setCurrentFrame((prev) => (prev + 1) % frames.length);
-    }, 5000);
+    }, 4000);
 
     return () => clearInterval(interval);
-  }, [showSplash]);
+  }, [isSplit]);
 
   return (
-    <section className={styles.heroContainer}>
-      {/* Splash Screen */}
-      <div className={`${styles.splashScreen} ${!showSplash ? styles.hide : ""}`}>
+    <section className={`${styles.heroContainer} ${isSplit ? styles.split : ""}`}>
+      
+      {/* Left Panel: Cream background, holds the typography */}
+      <div className={styles.leftPanel}>
         <h2 className={styles.splashText}>
           <span className={`${styles.splashWord} ${styles.wordWe}`}>WE</span>{" "}
           <span className={`${styles.splashWord} ${styles.wordAre}`}>ARE</span>
           <span className={`${styles.splashWord} ${styles.splashOutline}`}>22ND</span>
-          <span className={`${styles.splashWord} ${styles.splashGold}`}>AVENUE.</span>
+          <div style={{ marginTop: "-0.5rem" }}>
+            <span className={`${styles.splashWord} ${styles.splashGold}`}>AVENUE</span>
+            <span className={styles.splashDot}>.</span>
+          </div>
         </h2>
       </div>
 
-      {/* Background Slider */}
-      <div className={styles.backgroundSlider}>
-        {frames.map((src, index) => (
-          <div 
-            key={src} 
-            className={`${styles.slide} ${index === currentFrame ? styles.active : ""}`}
-          >
-            <img src={src} alt={`Hero background ${index + 1}`} className={styles.slideImage} />
-          </div>
-        ))}
+      {/* Right Panel: Showcase Reel */}
+      <div className={styles.rightPanel}>
+        <div className={styles.backgroundSlider}>
+          {frames.map((src, index) => (
+            <div 
+              key={src} 
+              className={`${styles.slide} ${index === currentFrame ? styles.active : ""}`}
+            >
+              <img src={src} alt={`Showcase Reel ${index + 1}`} className={styles.slideImage} />
+            </div>
+          ))}
+        </div>
+        <div className={styles.overlay} />
+        <span className={styles.reelLabel}>Showcase Reel</span>
       </div>
 
-      {/* Overlay */}
-      <div className={styles.overlay} />
-
-      {/* Content */}
-      <div className={styles.content}>
-        <span className={styles.brandLabel}>22nd Avenue</span>
-        <h1 className={styles.headline}>
-          CREATIVE <span className={styles.italicGold}>TALENT</span>
-        </h1>
-        <p className={styles.description}>
-          Where raw beauty meets editorial vision. Talent management reimagined for the modern era.
-        </p>
-      </div>
     </section>
   );
 };

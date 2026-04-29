@@ -3,28 +3,30 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background-color: #050505;
-  color: #fff;
+  background-color: var(--pitch-black, #050505);
+  display: flex;
 }
 
-/* Splash Screen Overlay */
-.splashScreen {
+/* Left Panel (Cream Background + Text) */
+.leftPanel {
   position: absolute;
-  inset: 0;
-  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: var(--cream, #FAF9F6);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--cream, #FAF9F6);
-  transition: opacity 1.2s cubic-bezier(0.7, 0, 0.3, 1), transform 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+  z-index: 20;
+  transition: width 1.5s cubic-bezier(0.7, 0, 0.3, 1), height 1.5s cubic-bezier(0.7, 0, 0.3, 1), background-color 1.5s cubic-bezier(0.7, 0, 0.3, 1);
 }
 
-.splashScreen.hide {
-  opacity: 0;
-  transform: scale(1.05);
-  pointer-events: none;
+.heroContainer.split .leftPanel {
+  width: 50vw;
 }
 
+/* Typography */
 .splashText {
   font-family: var(--font-display);
   font-size: clamp(3rem, 12vw, 10rem);
@@ -35,6 +37,11 @@
   margin: 0;
   letter-spacing: -0.05em;
   text-align: center;
+  transition: font-size 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.heroContainer.split .splashText {
+  font-size: clamp(2rem, 5vw, 6rem);
 }
 
 .splashWord {
@@ -63,9 +70,19 @@
 .splashGold {
   color: #C9A84C;
   font-style: italic;
-  display: block;
+  display: inline-block; /* Changed to inline-block to place dot next to it */
   margin-top: -0.5rem;
   animation-delay: 1.6s;
+}
+
+.splashDot {
+  color: #C9A84C;
+  font-style: italic;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-60px);
+  animation: fallIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: 2.1s;
 }
 
 @keyframes fallIn {
@@ -75,11 +92,27 @@
   }
 }
 
-/* Background Image Slider */
+/* Right Panel (Showcase Reel) */
+.rightPanel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50vw;
+  height: 100dvh;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.heroContainer.split .rightPanel {
+  opacity: 1;
+  transition-delay: 0.5s; /* Fade in slightly after left panel starts moving */
+}
+
+/* Background Image Slider inside Right Panel */
 .backgroundSlider {
   position: absolute;
   inset: 0;
-  z-index: 10;
 }
 
 .slide {
@@ -105,76 +138,58 @@
   transform: scale(1);
 }
 
-/* Gradient Overlay for Text Readability */
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.1) 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0) 100%);
   z-index: 20;
 }
 
-/* Main Content Typography */
-.content {
+/* Optional Reel Label */
+.reelLabel {
   position: absolute;
-  bottom: 10%;
-  left: 5%;
-  z-index: 30;
-  width: 90%;
-  max-width: 1200px;
-}
-
-@media (min-width: 768px) {
-  .content {
-    left: 10%;
-    bottom: 15%;
-  }
-}
-
-.brandLabel {
+  bottom: 2rem;
+  right: 2rem;
   font-family: var(--font-body);
   font-size: 0.75rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: #C9A84C;
-  margin-bottom: 1rem;
-  display: block;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 1s ease forwards 4.3s;
-}
-
-.headline {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 8rem);
-  line-height: 1;
-  font-weight: 500;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
   color: #fff;
+  z-index: 30;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeUp 1s ease forwards 4.5s;
+  transition: opacity 1s ease, transform 1s ease;
 }
 
-.headline .italicGold {
-  font-style: italic;
-  color: #C9A84C;
+.heroContainer.split .reelLabel {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1.5s;
 }
 
-.description {
-  font-family: var(--font-body);
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 500px;
-  line-height: 1.6;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 1s ease forwards 4.7s;
-}
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .heroContainer.split .leftPanel {
+    width: 100vw;
+    height: 100dvh;
+    background-color: transparent;
+    pointer-events: none;
+  }
+  
+  .rightPanel {
+    width: 100vw;
+    height: 100dvh;
+    top: 0;
+  }
 
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .heroContainer.split .splashText {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    transform: translateY(-5vh); /* Lift slightly above center */
+  }
+  
+  .heroContainer.split .splashOutline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.9);
   }
 }
