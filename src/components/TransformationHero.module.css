@@ -311,32 +311,20 @@
     font-size: clamp(3.75rem, 15vw, 5.8rem);
   }
 
-  /* Vertical Split for Mobile */
   .heroContainer.split .leftPanel {
     width: 100vw;
-    height: 45dvh;
-    opacity: 1;
-    transform: none;
-    filter: none;
-    transition: height 1.5s cubic-bezier(0.7, 0, 0.3, 1), background-color 1.5s cubic-bezier(0.7, 0, 0.3, 1);
-  }
-
-  .heroContainer.split .splashText {
-    font-size: clamp(2.5rem, 11.6vw, 4.1rem);
-    margin-top: -2rem; /* Shift up slightly to fit */
-  }
-
-  .heroContainer.split .supportingCopy {
-    font-size: 0.8rem; /* Increased for mobile split */
-    margin-top: 1.5rem;
-    padding: 0.5rem 1rem;
-    max-width: 95%;
+    height: 100dvh;
+    opacity: 0;
+    transform: scale(1.2);
+    filter: blur(10px);
+    pointer-events: none;
+    will-change: transform, opacity, filter, background-color;
+    transition: opacity 0.6s cubic-bezier(0.7, 0, 0.3, 1), transform 0.6s cubic-bezier(0.7, 0, 0.3, 1), filter 0.6s cubic-bezier(0.7, 0, 0.3, 1), background-color 0.6s cubic-bezier(0.7, 0, 0.3, 1);
   }
 
   .rightPanel {
     width: 100vw;
-    height: 55dvh;
-    top: auto;
-    bottom: 0;
+    height: 100dvh;
+    top: 0;
   }
 }
