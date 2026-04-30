@@ -338,10 +338,6 @@
     margin-bottom: 2rem;
   }
 
-  .title {
-    font-size: clamp(1.8rem, 5vw, 2.5rem);
-  }
-
   .carouselViewport {
     max-height: 400px;
   }
@@ -371,10 +367,6 @@
 
   .titleBlock {
     margin-bottom: 1.5rem;
-  }
-
-  .title {
-    font-size: clamp(1.4rem, 6vw, 1.8rem);
   }
 
   .titleUnderline {

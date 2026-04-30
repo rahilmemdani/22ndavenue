@@ -4,6 +4,7 @@ import { StatsBand } from "@/components/Spotlight/StatsBand";
 import { Values } from "@/components/Spotlight/Values";
 import { Services } from "@/components/Spotlight/Services";
 import { FeaturedArtists } from "@/components/Spotlight/FeaturedArtists";
+import { MicDropMoments } from "@/components/Spotlight/MicDropMoments";
 
 export default function HomePage() {
   return (
@@ -11,6 +12,7 @@ export default function HomePage() {
       <TransformationHero />
       <AboutHome />
       <StatsBand />
+      <MicDropMoments />
       <FeaturedArtists />
       <Values />
       <Services />

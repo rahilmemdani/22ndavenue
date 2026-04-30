@@ -1,0 +1,294 @@
+.section {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  z-index: 10;
+}
+
+.header {
+  text-align: left;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.goldText {
+  color: #E4C057;
+  font-style: italic;
+}
+
+.accordionContainer {
+  display: flex;
+  width: 100%;
+  height: 60vh; /* Responsive height to ensure 1vh fit on Windows */
+  min-height: 400px;
+  max-height: 650px;
+  gap: 1.5rem;
+}
+
+.card {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: flex 0.7s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease;
+  background-color: #111;
+  /* Thin subtle border */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.activeCard {
+  flex: 4;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.inactiveCard {
+  flex: 0 0 100px;
+}
+
+.bgImageContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bgImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 1.5s ease, filter 0.7s ease;
+}
+
+.inactiveCard .bgImage {
+  filter: grayscale(80%) brightness(0.4);
+}
+
+.activeCard .bgImage {
+  filter: grayscale(0%) brightness(0.9);
+  transform: scale(1.05);
+}
+
+.bgVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1; /* Below overlay */
+  opacity: 0;
+  animation: fadeInVideo 0.5s ease forwards;
+}
+
+@keyframes fadeInVideo {
+  to { opacity: 1; }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0.3) 40%, transparent 100%);
+  transition: background 0.7s ease;
+}
+
+.inactiveCard .overlay {
+  background: rgba(5, 5, 5, 0.7);
+}
+
+.cardContent {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+}
+
+.inactiveCard .cardContent {
+  padding: 2rem 0;
+  align-items: center;
+}
+
+.topArea {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.inactiveCard .topArea {
+  justify-content: center;
+  width: 100%;
+}
+
+.number {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #E4C057;
+  line-height: 1;
+}
+
+.activeBottomArea {
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUpIn 0.5s ease forwards 0.3s;
+}
+
+@keyframes fadeUpIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 900;
+  color: #E4C057;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cardSubtitle {
+  font-family: var(--font-accent);
+  font-size: clamp(0.7rem, 1vw, 0.9rem);
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0.5rem 0 0 0;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.inactiveBottomArea {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  align-items: flex-end;
+  padding-bottom: 1rem;
+}
+
+.verticalText {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .section {
+    padding: 3.5rem 0;
+  }
+  
+  .accordionContainer {
+    height: 55vh;
+    min-height: 400px;
+    gap: 1rem;
+  }
+
+  .inactiveCard {
+    flex: 0 0 80px;
+  }
+
+  .cardContent {
+    padding: 1.5rem;
+  }
+
+  .inactiveCard .cardContent {
+    padding: 1.5rem 0;
+  }
+
+  .number {
+    font-size: 1.4rem;
+  }
+
+  .verticalText {
+    font-size: 0.7rem;
+  }
+}
+
+/* Mobile Vertical Accordion */
+@media (max-width: 768px) {
+  .section {
+    padding: 3rem 0;
+    min-height: auto; /* Don't force 100vh on mobile if content is long */
+  }
+
+  .accordionContainer {
+    flex-direction: column;
+    height: 70vh;
+    min-height: 500px;
+    max-height: none;
+    gap: 0.75rem;
+  }
+
+  .activeCard {
+    flex: 3;
+  }
+
+  .inactiveCard {
+    flex: 0 0 60px; /* Short horizontal strips */
+  }
+
+  .inactiveCard .cardContent {
+    flex-direction: row;
+    padding: 0 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .inactiveCard .topArea {
+    width: auto;
+  }
+
+  .inactiveBottomArea {
+    padding-bottom: 0;
+    flex-grow: 0;
+    justify-content: flex-end;
+  }
+
+  .verticalText {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+  }
+
+  .number {
+    font-size: 1.2rem;
+  }
+}

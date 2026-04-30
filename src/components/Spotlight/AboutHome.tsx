@@ -48,7 +48,7 @@ export function AboutHome() {
           <h2 className={styles.title}>
             BEHIND THE <span className={styles.goldText}>SPOTLIGHT</span>
           </h2>
-          <div className={styles.titleUnderline}></div>
+          {/* <div className={styles.titleUnderline}></div> */}
         </ScrollReveal>
 
         {/* Content area: Image + Story */}
