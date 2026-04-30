@@ -22,7 +22,7 @@ function CountUp({ end, suffix }: { end: number; suffix: string }) {
         setHasStarted(true);
       }
     }, { threshold: 0.1 });
-    
+
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, [hasStarted]);
@@ -31,14 +31,14 @@ function CountUp({ end, suffix }: { end: number; suffix: string }) {
     if (!hasStarted) return;
     let startTimestamp: number | null = null;
     const duration = 2500; // 2.5s counting animation
-    
+
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       // easeOutExpo
       const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       setCount(Math.floor(easeOut * end));
-      
+
       if (progress < 1) {
         window.requestAnimationFrame(step);
       }
@@ -59,7 +59,7 @@ export function StatsBand() {
               <CountUp end={stat.value} suffix={stat.suffix} />
             </h2>
             <div className={styles.statFooter}>
-              <span className={styles.statDot}></span>
+              {/* <span className={styles.statDot}></span> */}
               <p className={styles.statLabel}>{stat.label}</p>
             </div>
           </ScrollReveal>
