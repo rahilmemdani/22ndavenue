@@ -73,7 +73,7 @@ export function Services() {
         <div className={styles.header}>
           <ScrollReveal direction="up">
             <h2 className={styles.sectionTitle}>
-              Live Events | <span className={styles.goldText}>Brand Collabs</span>
+              Where excellence <span className={styles.goldText}>Runs The Show</span>
             </h2>
           </ScrollReveal>
         </div>
@@ -129,24 +129,24 @@ export function Services() {
 
             <div className={styles.modalBody}>
               <div className={styles.mediaGrid}>
-              {currentGalleryItems.map((item, index) => (
-                <div key={index} className={styles.mediaItem}>
-                  {item.type === "image" ? (
-                    <img src={item.url} alt={`${selectedService.title} ${index}`} className={styles.galleryImage} />
-                  ) : (
-                    <div className={styles.videoContainer}>
-                      <video
-                        src={item.url}
-                        className={styles.galleryVideo}
-                        controls
-                        playsInline
-                        poster={item.thumbnail}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+                {currentGalleryItems.map((item, index) => (
+                  <div key={index} className={styles.mediaItem}>
+                    {item.type === "image" ? (
+                      <img src={item.url} alt={`${selectedService.title} ${index}`} className={styles.galleryImage} />
+                    ) : (
+                      <div className={styles.videoContainer}>
+                        <video
+                          src={item.url}
+                          className={styles.galleryVideo}
+                          controls
+                          playsInline
+                          poster={item.thumbnail}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {totalGalleryPages > 1 && (
