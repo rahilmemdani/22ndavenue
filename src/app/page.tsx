@@ -16,7 +16,7 @@ export default function HomePage() {
       <FeaturedArtists />
       <MicDropMoments />
       <Testimonials />
-      <Values />
+      {/* <Values /> */}
       <Services />
     </main>
   );

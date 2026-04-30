@@ -10,7 +10,8 @@
   justify-content: center;
   padding: 4rem 0;
   overflow: hidden;
-  touch-action: pan-y; /* Ensure vertical scroll is prioritized */
+  touch-action: pan-y;
+  /* Ensure vertical scroll is prioritized */
 }
 
 .container {
@@ -106,7 +107,19 @@
   gap: 1.5rem;
   width: 100%;
   padding: 2rem 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
+
+.fadeIn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fadeOut {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
 
 .pillWrapper {
   flex: 0 0 calc(25% - 1.5rem);
@@ -220,7 +233,8 @@
 
 .quoteText {
   font-family: var(--font-body);
-  font-size: 0.95rem; /* Increased size */
+  font-size: 0.95rem;
+  /* Increased size */
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.95);
   margin: 0;
@@ -286,8 +300,13 @@
 }
 
 @keyframes fadeInModal {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modalContent {
@@ -308,29 +327,29 @@
   background: #000;
 }
 
-  .modalClose {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 100;
-  }
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
 
-  .modalClose:hover {
-    background: #E4C057;
-    border-color: #E4C057;
-    color: #000;
-  }
+.modalClose:hover {
+  background: #E4C057;
+  border-color: #E4C057;
+  color: #000;
+}
 
 /* ===== NEW TEXT MODAL STYLES ===== */
 
@@ -355,6 +374,7 @@
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -439,7 +459,8 @@
   .section {
     padding: 5rem 0 3rem;
     min-height: auto;
-    overflow: visible; /* Allow vertical scroll overflow */
+    overflow: visible;
+    /* Allow vertical scroll overflow */
   }
 
   .container {
@@ -495,7 +516,8 @@
   }
 
   .quoteText {
-    font-size: 0.8rem; /* Increased for mobile */
+    font-size: 0.8rem;
+    /* Increased for mobile */
   }
 
   .readMore {
