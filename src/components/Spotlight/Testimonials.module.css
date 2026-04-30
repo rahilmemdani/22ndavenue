@@ -10,6 +10,7 @@
   justify-content: center;
   padding: 4rem 0;
   overflow: hidden;
+  touch-action: pan-y; /* Ensure vertical scroll is prioritized */
 }
 
 .container {
@@ -20,6 +21,7 @@
   flex-direction: column;
   gap: 3rem;
   z-index: 10;
+  touch-action: pan-y;
 }
 
 /* ===== HEADER ===== */
@@ -437,6 +439,7 @@
   .section {
     padding: 5rem 0 3rem;
     min-height: auto;
+    overflow: visible; /* Allow vertical scroll overflow */
   }
 
   .container {

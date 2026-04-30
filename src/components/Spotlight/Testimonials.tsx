@@ -73,11 +73,7 @@ export function Testimonials() {
     setStartIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   }, []);
 
-  useEffect(() => {
-    if (videoModal) return; // Pause auto-advance when modal is open
-    const timer = setInterval(next, 6000);
-    return () => clearInterval(timer);
-  }, [next, videoModal]);
+  // Auto-advance removed per request
 
   return (
     <section className={styles.section} id="testimonials-section">
