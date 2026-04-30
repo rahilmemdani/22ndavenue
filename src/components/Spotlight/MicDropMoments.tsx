@@ -42,6 +42,7 @@ const momentsData = [
 
 export function MicDropMoments() {
   const [activeIndex, setActiveIndex] = useState(2); // Default to 3rd item like image
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <section className={styles.section} id="showcase-section">
@@ -62,7 +63,11 @@ export function MicDropMoments() {
                 key={moment.id}
                 className={`${styles.card} ${isActive ? styles.activeCard : styles.inactiveCard}`}
                 onClick={() => setActiveIndex(index)}
-                onMouseEnter={() => setActiveIndex(index)}
+                onMouseEnter={() => {
+                  setActiveIndex(index);
+                  setHoveredIndex(index);
+                }}
+                onMouseLeave={() => setHoveredIndex(null)}
               >
                 {/* Background Image & Video */}
                 <div className={styles.bgImageContainer}>
@@ -71,7 +76,7 @@ export function MicDropMoments() {
                     alt={moment.title} 
                     className={styles.bgImage} 
                   />
-                  {isActive && moment.video && (
+                  {hoveredIndex === index && moment.video && (
                     <video
                       src={moment.video}
                       className={styles.bgVideo}
