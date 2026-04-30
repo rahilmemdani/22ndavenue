@@ -125,21 +125,10 @@ export function Services() {
                 <h3 className={styles.modalTitle}>{selectedService.title}</h3>
                 <p className={styles.modalSubtitle}>PROJECT SHOWCASE</p>
               </div>
-
-              {totalGalleryPages > 1 && (
-                <div className={styles.galleryNav}>
-                  <button onClick={prevGallery} className={styles.navBtn} aria-label="Previous Page">
-                    <ArrowLeft size={18} />
-                  </button>
-                  <span className={styles.galleryCounter}>{galleryPage + 1} / {totalGalleryPages}</span>
-                  <button onClick={nextGallery} className={styles.navBtn} aria-label="Next Page">
-                    <ArrowRight size={18} />
-                  </button>
-                </div>
-              )}
             </div>
 
-            <div className={styles.mediaGrid}>
+            <div className={styles.modalBody}>
+              <div className={styles.mediaGrid}>
               {currentGalleryItems.map((item, index) => (
                 <div key={index} className={styles.mediaItem}>
                   {item.type === "image" ? (
@@ -158,6 +147,21 @@ export function Services() {
                 </div>
               ))}
             </div>
+            </div>
+
+            {totalGalleryPages > 1 && (
+              <div className={styles.modalFooter}>
+                <div className={styles.galleryNav}>
+                  <button onClick={prevGallery} className={styles.navBtn} aria-label="Previous Page">
+                    <ArrowLeft size={18} />
+                  </button>
+                  <span className={styles.galleryCounter}>{galleryPage + 1} / {totalGalleryPages}</span>
+                  <button onClick={nextGallery} className={styles.navBtn} aria-label="Next Page">
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
