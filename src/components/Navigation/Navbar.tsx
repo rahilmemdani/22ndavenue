@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, X, ChevronDown, Rocket, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
@@ -70,6 +70,9 @@ export function Navbar() {
   const [isForceOpenAtTop, setIsForceOpenAtTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("/");
   const pathname = usePathname() || "/";
+  const isTransparentPage = ["/"].includes(pathname);
+  const isHeroVideoPage = ["/"].includes(pathname);
+  const shouldHideDesktopNavAtTop = isHeroVideoPage && !isScrolled && !isForceOpenAtTop;
 
   const { scrollY } = useScroll();
   const lastYRef = useRef(0);
@@ -114,15 +117,15 @@ export function Navbar() {
   const [isHovered, setIsHovered] = useState(false);
   const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const startHideTimer = () => {
-    if (window.innerWidth < 1024) return;
+  const startHideTimer = useCallback(() => {
+    if (window.innerWidth < 1024 || !isTransparentPage) return; // Never hide on non-hero pages
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     hideTimerRef.current = setTimeout(() => {
       if (!isHovered) {
         setIsHidden(true);
       }
     }, 3000);
-  };
+  }, [isHovered, isTransparentPage]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastYRef.current;
@@ -160,7 +163,7 @@ export function Navbar() {
     } else if (!isHovered && !isHidden && window.innerWidth >= 1024) {
       startHideTimer();
     }
-  }, [isHovered]);
+  }, [isHovered, isHidden, startHideTimer]);
 
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
@@ -174,9 +177,7 @@ export function Navbar() {
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
   }, [pathname]);
 
-  const isTransparentPage = ["/"].includes(pathname);
-  const isHeroVideoPage = ["/"].includes(pathname);
-  const shouldHideDesktopNavAtTop = isHeroVideoPage && !isScrolled && !isForceOpenAtTop;
+
   
   const navbarVariants = {
     top: {

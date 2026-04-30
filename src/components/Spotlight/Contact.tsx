@@ -20,10 +20,10 @@ export function Contact() {
         <div className={styles.infoSide}>
           <ScrollReveal direction="left">
             <h2 className={styles.title}>
-              Let's <span className={styles.gold}>Talk</span>
+              Let&apos;s <span className={styles.gold}>Talk</span>
             </h2>
             <p className={styles.description}>
-              Whether you're an artist looking for management, a brand seeking collaboration, or a talent looking to join our team.
+              Whether you&apos;re an artist looking for management, a brand seeking collaboration, or a talent looking to join our team.
             </p>
 
             <div className={styles.contactDetails}>
