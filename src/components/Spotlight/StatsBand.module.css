@@ -121,35 +121,27 @@
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
   .section {
-    padding: 3rem 0;
-  }
-
-  .container {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 0 10%;
-  }
-
-  .statBox {
     padding: 1.5rem 0;
   }
 
-  .statBox:not(:last-child)::after {
-    right: 25%;
-    left: 25%;
-    bottom: 0;
-    top: auto;
-    width: auto;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.08);
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: 0 3%;
+  }
+
+  .statBox {
+    padding: 0.75rem 0.25rem;
   }
 
   .statValue {
-    font-size: 3rem;
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    letter-spacing: 0;
   }
 
   .statLabel {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
+    font-size: 0.45rem;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
   }
 }

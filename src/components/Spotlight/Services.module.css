@@ -1,14 +1,13 @@
 .section {
   position: relative;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
   background-color: #050505;
   padding: 4rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .wrapper {
@@ -20,7 +19,7 @@
 
 .header {
   padding: 0 5%;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
@@ -43,7 +42,7 @@
 
 /* Marquee - Light Mode */
 .marqueeWrapper {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding: 1rem 0;
@@ -72,28 +71,33 @@
 /* CAROUSEL GRID - Light Mode */
 .servicesCarousel {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 0 5% 4rem 5%;
+  padding: 1rem 5% 3rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
   justify-content: flex-start;
+  flex-wrap: nowrap;
 }
 
 @media (min-width: 768px) {
   .servicesCarousel {
+    flex-wrap: nowrap;
     justify-content: center;
-  gap: 2rem;
+    gap: 2rem;
   }
 }
+
+
 
 .servicesCarousel::-webkit-scrollbar {
   display: none;
 }
 
 .serviceCard {
-  flex: 0 0 calc(85vw);
+  flex: 0 0 85vw;
+  max-width: 90vw;
   scroll-snap-align: center;
   position: relative;
   background: rgba(255, 255, 255, 0.03);
@@ -106,7 +110,7 @@
 
 @media (min-width: 768px) {
   .serviceCard {
-    flex: 0 0 280px;
+    flex: 0 0 320px;
     scroll-snap-align: start;
   }
 }
