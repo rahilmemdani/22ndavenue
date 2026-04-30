@@ -26,12 +26,12 @@
 }
 
 .statBox:hover {
-  border-color: #C9A84C;
+  border-color: #E4C007;
   transform: translateY(-5px);
 }
 
 .statBox:hover .statDot {
-  box-shadow: 0 0 10px rgba(201, 168, 76, 0.8);
+  box-shadow: 0 0 10px rgba(228, 192, 7, 0.8);
 }
 
 .statValue {
@@ -56,7 +56,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #C9A84C;
+  background-color: #E4C007;
   flex-shrink: 0;
   transition: box-shadow 0.4s ease;
 }

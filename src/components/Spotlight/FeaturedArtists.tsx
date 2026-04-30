@@ -64,53 +64,58 @@ export function FeaturedArtists() {
             </h2>
           </ScrollReveal>
 
-          {/* Controls mapped to header row to save space, or bottom */}
-          <div className={styles.controlsDesktop}>
-            <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous Slide">
-              <ArrowLeft size={24} />
-            </button>
-            <div className={styles.indicators}>
-              {Array.from({ length: totalSlides }).map((_, idx) => (
-                <span 
-                  key={idx} 
-                  className={`${styles.indicator} ${currentSlide === idx ? styles.activeIndicator : ""}`}
-                />
-              ))}
-            </div>
-            <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next Slide">
-              <ArrowRight size={24} />
-            </button>
-          </div>
         </div>
 
         <ScrollReveal delay={200} direction="up" className={styles.carouselReveal}>
-          <div className={styles.carouselViewport}>
-            <div 
-              className={styles.carouselTrack}
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {slideChunks.map((chunk, slideIdx) => (
-                <div key={slideIdx} className={styles.carouselSlide}>
-                  <div className={styles.grid}>
-                    {chunk.map((artist) => (
-                      <div key={artist.uniqueKey} className={styles.artistCard}>
-                        <div className={styles.imageWrapper}>
-                          <img
-                            src={artist.image}
-                            alt={artist.name}
-                            className={styles.artistImage}
-                            loading="lazy"
-                          />
+          <div className={styles.carouselContainer}>
+            <div className={styles.carouselViewport}>
+              <div 
+                className={styles.carouselTrack}
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {slideChunks.map((chunk, slideIdx) => (
+                  <div key={slideIdx} className={styles.carouselSlide}>
+                    <div className={styles.grid}>
+                      {chunk.map((artist) => (
+                        <div key={artist.uniqueKey} className={styles.artistCard}>
+                          <div className={styles.imageWrapper}>
+                            <img
+                              src={artist.image}
+                              alt={artist.name}
+                              className={styles.artistImage}
+                              loading="lazy"
+                            />
+                          </div>
+                          <div className={styles.nameStrip}>
+                            <span className={styles.artistName}>{artist.name}</span>
+                          </div>
                         </div>
-                        <div className={styles.nameStrip}>
-                          <span className={styles.artistName}>{artist.name}</span>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+
+            {/* Desktop Controls: Overlaying the sides, vertically centered */}
+            <div className={styles.controlsDesktop}>
+              <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous Slide">
+                <ArrowLeft size={24} />
+              </button>
+              <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next Slide">
+                <ArrowRight size={24} />
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Indicators */}
+          <div className={styles.indicatorsDesktop}>
+            {Array.from({ length: totalSlides }).map((_, idx) => (
+              <span 
+                key={idx} 
+                className={`${styles.indicator} ${currentSlide === idx ? styles.activeIndicator : ""}`}
+              />
+            ))}
           </div>
         </ScrollReveal>
 

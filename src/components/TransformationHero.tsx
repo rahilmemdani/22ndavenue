@@ -12,13 +12,22 @@ const TransformationHero = () => {
   const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // If user loads the page and is already scrolled down, SKIP the animation instantly
-    if (window.scrollY > 50) {
-      setIsSplit(true);
-      return;
-    }
+    const checkScrollAndSkip = () => {
+      if (window.scrollY > 50) {
+        setIsSplit(true);
+        return true;
+      }
+      return false;
+    };
 
-    // Function to immediately skip animation if user scrolls
+    // Check immediately
+    if (checkScrollAndSkip()) return;
+
+    // Also check after a small delay to catch browser scroll restoration
+    const scrollRestorationTimer = setTimeout(() => {
+      checkScrollAndSkip();
+    }, 100);
+
     const handleScrollAttempt = () => {
       setIsSplit(true);
     };
@@ -27,12 +36,12 @@ const TransformationHero = () => {
     window.addEventListener("wheel", handleScrollAttempt, { passive: true });
     window.addEventListener("touchmove", handleScrollAttempt, { passive: true });
 
-    // Otherwise, wait for the full fall-in sequence to complete
     const splitTimer = setTimeout(() => {
       setIsSplit(true);
     }, 3800);
 
     return () => {
+      clearTimeout(scrollRestorationTimer);
       clearTimeout(splitTimer);
       window.removeEventListener("scroll", handleScrollAttempt);
       window.removeEventListener("wheel", handleScrollAttempt);
@@ -41,8 +50,10 @@ const TransformationHero = () => {
   }, []);
 
   useEffect(() => {
-    // While intro is playing, lock scroll ONLY if at the absolute top
-    if (!isSplit && window.scrollY <= 50) {
+    // Strictly lock scroll ONLY if we are at the top AND the animation is active
+    const shouldLock = !isSplit && window.scrollY < 20;
+
+    if (shouldLock) {
       document.body.style.overflow = "hidden";
       document.body.classList.add("hero-animating");
     } else {

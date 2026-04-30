@@ -137,7 +137,8 @@
 .desktopLinks {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0;
+  padding: 0 1.5rem;
 }
 
 .navItemWrapper {
@@ -147,14 +148,14 @@
 
 .navLink {
   position: relative;
-  padding: 0.625rem 1.25rem;
+  padding: 0.5rem 1.25rem;
   border-radius: 9999px;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
-  font-family: var(--font-display);
-  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  letter-spacing: 0.05em;
   transition: all 0.3s ease;
   cursor: pointer;
   text-decoration: none;
@@ -170,9 +171,8 @@
 }
 
 .navLinkDark.navLinkActive {
-  font-size: 1rem;
-  font-weight: 800;
-  color: #fff;
+  font-weight: 600;
+  color: #000;
 }
 
 .navLinkLight {
@@ -191,8 +191,8 @@
 
 .activePill {
   position: absolute;
-  inset: 0;
-  background: rgba(228, 192, 7, 0.15); /* #E4C007 pill */
+  inset: 0.25rem;
+  background: #E4C007; 
   border-radius: 9999px;
   z-index: 0;
 }
@@ -244,41 +244,38 @@
   transition: all 0.2s ease;
 }
 
-.dropdownItem:hover {
-  color: #E4C007;
-  background: rgba(228, 192, 7, 0.05);
+.verticalDivider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 1rem;
 }
 
 .ctaWrapper {
-  margin-left: 1.5rem;
-  padding-left: 1.5rem;
-  border-left: 1px solid rgba(0,0,0,0.1);
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .sayHelloBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 3rem;
-  padding: 0 2rem;
+  height: 2.5rem;
+  padding: 0 1.5rem;
   border-radius: 9999px;
   font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 600;
   letter-spacing: 0.05em;
-  text-transform: uppercase;
   background: #fff;
-  color: #E4C007;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  color: #000;
   transition: all 0.3s ease;
   text-decoration: none;
 }
 
 .sayHelloBtn:hover {
-  background: #E4C007;
-  color: #fff;
-  box-shadow: 0 10px 15px -3px rgba(228, 192, 7, 0.3);
+  background: #f0f0f0;
+  transform: scale(1.05);
 }
 
 /* Mobile Bar */
@@ -333,13 +330,12 @@
 .mobileDrawer {
   position: fixed;
   inset: 0 0 0 auto;
-  z-index: 201; /* Above backdrop */
-  width: 80%; /* Shrink to 80% as requested */
-  max-width: 400px;
-  background: var(--cream, #FAF9F6);
-  box-shadow: -20px 0 50px rgba(0,0,0,0.4);
-  border-top-left-radius: 2.5rem;
-  border-bottom-left-radius: 2.5rem;
+  z-index: 201; 
+  width: 85%;
+  max-width: 450px;
+  background: #0A0A0A; /* Dark theme for mobile menu */
+  box-shadow: -20px 0 60px rgba(0,0,0,0.8);
+  border-left: 1px solid rgba(228, 192, 7, 0.2);
   overflow: hidden;
   will-change: transform, clip-path;
 }
@@ -411,20 +407,26 @@
 .mobileDrawerLinkRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .mobileDrawerLink {
-  font-size: 1.65rem;
-  line-height: 1.2;
+  font-size: 1.5rem;
+  line-height: 1.1;
   font-family: var(--font-display);
-  font-weight: 500;
-  color: var(--text-dark, #1A1A1A);
+  font-weight: 700;
+  color: #FFFFFF;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+  text-align: left;
+  width: auto;
 }
 
-.mobileDrawerLinkActive { color: #E4C007; }
+.mobileDrawerLinkActive { 
+  color: #E4C007; 
+  text-shadow: 0 0 20px rgba(228, 192, 7, 0.3);
+}
 
 .mobileDrawerChevronBtn {
   padding: 0.5rem;
@@ -469,9 +471,8 @@
 .mobileDrawerSubLink:hover { color: #E4C007; }
 
 .mobileDrawerFooter {
-  padding: 2rem;
-  padding-bottom: 3rem;
-  background: rgba(255, 255, 255, 0.5);
+  padding: 3rem 2rem;
+  background: rgba(255, 255, 255, 0.02);
   border-top: 1px solid rgba(228, 192, 7, 0.1);
 }
 

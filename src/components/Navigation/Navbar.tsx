@@ -58,8 +58,7 @@ const navItems: NavItem[] = [
   { name: "Our Collabs", path: "/#featured-artists" },
   { name: "Showcase", path: "/#hero-section" },
   { name: "Testimonies", path: "/#values-section" },
-  { name: "Services", path: "/#services-section" },
-  { name: "Let’s Talk", path: "/#site-footer" }
+  { name: "Services", path: "/#services-section" }
 ];
 
 export function Navbar() {
@@ -91,7 +90,7 @@ export function Navbar() {
           }
         });
       },
-      { rootMargin: "-30% 0px -50% 0px" } // Triggers when element crosses top-ish of viewport
+      { rootMargin: "-30% 0px -50% 0px" } 
     );
 
     sectionIds.forEach(id => {
@@ -120,7 +119,6 @@ export function Navbar() {
 
     if (latest > 100) setIsForceOpenAtTop(false);
 
-    // Only hide if scrolling down more than 100px and menu isn't open
     if (latest > 100 && diff > 4 && !isMobileMenuOpen) {
       setIsHidden(true);
     } else if (diff < -4 || latest < 100) {
@@ -143,41 +141,39 @@ export function Navbar() {
 
   const isTransparentPage = ["/"].includes(pathname);
   const isHeroVideoPage = ["/"].includes(pathname);
-  const isDarkNavbar = false; 
   const shouldHideDesktopNavAtTop = isHeroVideoPage && !isScrolled && !isForceOpenAtTop;
-
+  
   const navbarVariants = {
     top: {
       width: "fit-content",
-      minWidth: "760px",
-      y: 16,
+      minWidth: "auto",
+      y: 20,
       borderRadius: "99px",
-      backgroundColor: "rgba(10, 10, 10, 0.95)",
-      backdropFilter: "blur(24px)",
-      borderBottom: "1px solid rgba(228, 192, 7, 0.3)",
-      boxShadow: "0 10px 30px -10px rgba(0,0,0,0.5)",
-      paddingTop: "10px",
-      paddingBottom: "10px",
-      paddingLeft: "36px",
-      paddingRight: "14px",
+      backgroundColor: "#000000",
+      backdropFilter: "blur(0px)",
+      border: "1px solid rgba(255, 255, 255, 0.1)",
+      boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
+      paddingTop: "6px",
+      paddingBottom: "6px",
+      paddingLeft: "12px",
+      paddingRight: "12px",
     },
     scrolled: {
       width: "fit-content",
-      minWidth: "800px",
+      minWidth: "auto",
       y: 20,
       borderRadius: "99px",
-      backgroundColor: "rgba(10, 10, 10, 0.95)", // Premium Dark Glass
-      backdropFilter: "blur(24px)",
-      borderBottom: "1px solid rgba(228, 192, 7, 0.3)", // Gold border
-      boxShadow: "0 20px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05)",
-      paddingTop: "14px",
-      paddingBottom: "14px",
-      paddingLeft: "48px",
-      paddingRight: "16px",
+      backgroundColor: "#000000", 
+      backdropFilter: "blur(0px)",
+      border: "1px solid rgba(255, 255, 255, 0.15)", 
+      boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
+      paddingTop: "8px",
+      paddingBottom: "8px",
+      paddingLeft: "12px",
+      paddingRight: "12px",
     },
     hiddenTop: {
       width: "fit-content",
-      minWidth: "800px",
       y: -100,
       opacity: 0,
       scale: 0.95,
@@ -188,16 +184,15 @@ export function Navbar() {
   const mobileNavbarVariants = {
     scrolled: {
       y: 0,
-      backgroundColor: "rgba(10, 10, 10, 0.98)", // Dark Mobile Bar
+      backgroundColor: "rgba(0, 0, 0, 0.95)", 
       backdropFilter: "blur(16px)",
-      borderBottom: "1px solid rgba(228, 192, 7, 0.2)",
-      boxShadow: "0 4px 20px -5px rgba(0,0,0,0.3)"
+      borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.3)"
     }
   };
 
   return (
     <div className={styles.navSystemWrapper}>
-      {/* SMART SCROLL WRAPPER */}
       <motion.div
         className={styles.smartScrollWrapper}
         animate={{ y: isHidden ? "-200px" : "0px" }}
@@ -229,7 +224,6 @@ export function Navbar() {
           )}
         </AnimatePresence>
 
-        {/* DESKTOP NAV */}
         <motion.div
           variants={navbarVariants}
           initial="top"
@@ -249,10 +243,12 @@ export function Navbar() {
             </motion.div>
           </Link>
 
+          {/* DIVIDER */}
+          <div className={styles.verticalDivider}></div>
+
           {/* LINKS */}
           <nav className={styles.desktopLinks}>
             {navItems.map((item, index) => {
-              // Ensure hash links highlight simultaneously on scroll
               const isActive = pathname === '/' ? activeSection === item.path : pathname === item.path;
               return (
                 <div
@@ -261,7 +257,7 @@ export function Navbar() {
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  <Link href={item.path} onClick={() => setIsForceOpenAtTop(false)} className={`${styles.navLink} ${styles.navLinkDark} ${isActive ? styles.navLinkActive : ""}`}>
+                  <Link href={item.path} className={`${styles.navLink} ${styles.navLinkDark} ${isActive ? styles.navLinkActive : ""}`}>
                     {isActive && (
                       <motion.div
                         layoutId="activeNavPill"
@@ -270,29 +266,7 @@ export function Navbar() {
                       />
                     )}
                     <span className={styles.navLinkText}>{item.name}</span>
-                    {item.children && (
-                      <ChevronDown className={`${styles.chevron} ${hoveredIndex === index ? styles.chevronOpen : ""} ${styles.chevronDark}`} />
-                    )}
                   </Link>
-
-                  <AnimatePresence>
-                    {item.children && hoveredIndex === index && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                        className={styles.dropdown}
-                      >
-                        <div className={styles.dropdownInner}>
-                          {item.children.map((child) => (
-                            <Link key={child.path} href={child.path} onClick={() => setIsForceOpenAtTop(false)} className={styles.dropdownItem}>
-                              {child.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
               );
             })}
@@ -301,7 +275,7 @@ export function Navbar() {
           {/* CTA */}
           <div className={styles.ctaWrapper}>
             <Link href="/#contact" className={styles.sayHelloBtn}>
-              CONTACT
+              Let&apos;s Talk
             </Link>
           </div>
         </motion.div>

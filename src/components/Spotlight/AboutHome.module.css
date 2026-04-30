@@ -48,7 +48,7 @@
 }
 
 .goldText {
-  color: #C9A84C;
+  color: #E4C007;
   font-style: italic;
 }
 
@@ -97,7 +97,7 @@
   left: 50%;
   width: 800px;
   height: 1200px; /* Extends down through the section */
-  background: linear-gradient(180deg, rgba(201, 168, 76, 0.4) 0%, rgba(201, 168, 76, 0.05) 70%, transparent 100%);
+  background: linear-gradient(180deg, rgba(228, 192, 7, 0.4) 0%, rgba(228, 192, 7, 0.05) 70%, transparent 100%);
   clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%); /* Triangle shape */
   z-index: 0;
   /* Shines behind the carousel */
@@ -195,7 +195,7 @@
   font-size: 0.9rem;
   /* text-transform: uppercase; */
   letter-spacing: 0.1em;
-  color: #C9A84C;
+  color: #E4C007;
   margin-top: 0.5rem;
 }
 
@@ -233,9 +233,9 @@
 }
 
 .arrowBtn:hover {
-  background: rgba(201, 168, 76, 0.4);
-  border-color: #C9A84C;
-  color: #C9A84C;
+  background: rgba(228, 192, 7, 0.4);
+  border-color: #E4C007;
+  color: #E4C007;
   transform: scale(1.1);
 }
 
@@ -261,7 +261,7 @@
 }
 
 .activeIndicator {
-  background: #C9A84C;
+  background: #E4C007;
   width: 40px;
 }
 

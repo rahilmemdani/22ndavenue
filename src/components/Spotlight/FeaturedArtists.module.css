@@ -42,7 +42,7 @@
 }
 
 .goldText {
-  color: #C9A84C;
+  color: #E4C007;
   font-style: italic;
 }
 
@@ -61,36 +61,52 @@
 
 @media (min-width: 768px) {
   .controlsDesktop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 30;
   }
+  
+  .controlsDesktop .arrowBtn {
+    pointer-events: auto;
+    margin: 0;
+  }
+
   .controlsMobile {
     display: none;
   }
 }
 
 .arrowBtn {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%; /* Back to circle, but more refined */
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .arrowBtn:hover {
-  background: rgba(201, 168, 76, 0.4);
-  border-color: #C9A84C;
-  color: #C9A84C;
-  transform: scale(1.1);
+  border-color: #E4C007;
+  color: #E4C007;
+  background: rgba(228, 192, 7, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.arrowBtn:active {
+  transform: translateY(0);
 }
 
 .indicators {
@@ -107,13 +123,38 @@
 }
 
 .activeIndicator {
-  background: #C9A84C;
+  background: #E4C007;
   width: 40px;
+}
+
+.indicatorsDesktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .indicatorsDesktop {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+  }
 }
 
 /* Carousel Mechanics */
 .carouselReveal {
   width: 100%;
+  position: relative;
+}
+
+.carouselContainer {
+  position: relative;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .carouselContainer {
+    padding: 0 5rem; /* Creating dedicated space for arrows so they never overlap images */
+  }
 }
 
 .carouselViewport {
@@ -166,7 +207,7 @@
 
 .artistCard:hover {
   transform: translateY(-8px);
-  border-color: #C9A84C;
+  border-color: #E4C007;
   box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
@@ -210,5 +251,5 @@
 
 .artistCard:hover .artistName {
   opacity: 1;
-  color: #C9A84C;
+  color: #E4C007;
 }
