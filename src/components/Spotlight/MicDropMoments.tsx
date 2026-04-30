@@ -154,30 +154,13 @@ export function MicDropMoments() {
     <section className={styles.section} id="showcase-section">
       <div className={styles.container}>
 
-        {/* Header Row: Title + Category Nav */}
+        {/* Header Row: Title Only */}
         <div className={styles.headerRow}>
           <ScrollReveal direction="up" className={styles.headerLeft}>
             <h2 className={styles.title}>
               MIC DROP <span className={styles.goldText}>MOMENTS</span>
             </h2>
           </ScrollReveal>
-
-          <div className={styles.categoryNav}>
-            <button onClick={prevCategory} className={styles.catArrowBtn} aria-label="Previous Category">
-              <ArrowLeft size={16} />
-            </button>
-            
-            <div className={styles.categoryLabel}>
-              <span className={styles.categoryName}>{currentCategory.name}</span>
-              <span className={styles.categoryCounter}>
-                {String(activeCategoryIndex + 1).padStart(2, "0")} / {String(showcaseCategories.length).padStart(2, "0")}
-              </span>
-            </div>
-
-            <button onClick={nextCategory} className={styles.catArrowBtn} aria-label="Next Category">
-              <ArrowRight size={16} />
-            </button>
-          </div>
         </div>
 
         {/* Accordion — slides on category change */}
@@ -217,10 +200,10 @@ export function MicDropMoments() {
                     <div className={styles.overlay}></div>
                   </div>
 
-                  {/* Content */}
+                    {/* Content */}
                   <div className={styles.cardContent}>
                     <div className={styles.topArea}>
-                      <span className={styles.number}>{tile.id}</span>
+                      {/* Numbering removed */}
                     </div>
 
                     {isActive ? (
@@ -240,6 +223,25 @@ export function MicDropMoments() {
           </div>
         </div>
 
+        {/* Category Nav — MOVED TO BOTTOM */}
+        <div className={styles.footerNav}>
+          <div className={styles.categoryNav}>
+            <button onClick={prevCategory} className={styles.catArrowBtn} aria-label="Previous Category">
+              <ArrowLeft size={16} />
+            </button>
+            
+            <div className={styles.categoryLabel}>
+              <span className={styles.categoryName}>{currentCategory.name}</span>
+              <span className={styles.categoryCounter}>
+                {String(activeCategoryIndex + 1).padStart(2, "0")} / {String(showcaseCategories.length).padStart(2, "0")}
+              </span>
+            </div>
+
+            <button onClick={nextCategory} className={styles.catArrowBtn} aria-label="Next Category">
+              <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );
