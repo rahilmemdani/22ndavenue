@@ -141,9 +141,6 @@ const TransformationHero = () => {
               <span className={styles.splashDot}>.</span>
             </div>
           </h2>
-          <p className={styles.supportingCopy}>
-            Leading Entertainment Curators, Crafting Impact Through Artist-Led Experiences
-          </p>
         </div>
       </div>
 
