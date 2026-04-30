@@ -1,7 +1,7 @@
 .section {
   position: relative;
   background-color: var(--cream);
-  padding: 6rem 0;
+  padding: 4rem 0;
   overflow: hidden;
 }
 
