@@ -26,6 +26,7 @@
 }
 
 .section::before { top: 0; }
+.section::after { bottom: 0; }
 
 .container {
   width: 100%;
