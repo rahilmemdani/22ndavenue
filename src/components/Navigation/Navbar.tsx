@@ -56,8 +56,8 @@ const navItems: NavItem[] = [
   { name: "Home", path: "/" },
   { name: "Backstage", path: "/#about-home" },
   { name: "Our Collabs", path: "/#featured-artists" },
-  { name: "Showcase", path: "/#hero-section" },
-  { name: "Testimonies", path: "/#values-section" },
+  { name: "Showcase", path: "/#showcase-section" },
+  { name: "Testimonies", path: "/#testimonials-section" },
   { name: "Services", path: "/#services-section" }
 ];
 
@@ -90,7 +90,7 @@ export function Navbar() {
           }
         });
       },
-      { rootMargin: "-30% 0px -50% 0px" } 
+      { rootMargin: "-20% 0px -20% 0px", threshold: 0.2 } 
     );
 
     sectionIds.forEach(id => {
