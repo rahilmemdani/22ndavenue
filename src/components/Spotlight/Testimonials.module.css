@@ -486,7 +486,7 @@
   }
 
   .pillDown {
-    transform: translateY(2rem);
+    transform: none;
   }
 
   .pill {
