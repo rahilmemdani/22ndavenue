@@ -1,12 +1,12 @@
 .section {
   position: relative;
-  min-height: 100vh; /* Fallback for old devices */
+  min-height: 100vh;
   min-height: 100dvh;
   background-color: var(--pitch-black, #050505);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 0;
+  padding: 4rem 0; /* Reduced padding for 1vh fit */
   overflow: hidden;
 }
 
@@ -24,7 +24,7 @@
   .container {
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 6rem;
+    gap: 4rem; /* Reduced gap */
   }
 }
 
@@ -64,14 +64,14 @@
 
 .bodyCopy {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-size: clamp(0.9rem, 1.1vw, 1.05rem); /* Smaller a bit */
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgb(220, 220, 220); /* Standardized off-white */
   margin: 0;
 }
 
 .bodyCopy:first-child {
-  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem); /* Smaller a bit */
   color: #FFFFFF;
   font-weight: 500;
   line-height: 1.4;
