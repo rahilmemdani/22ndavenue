@@ -311,7 +311,7 @@ export function Navbar() {
 
           {/* CTA */}
           <div className={styles.ctaWrapper}>
-            <Link href="/#contact" className={styles.sayHelloBtn}>
+            <Link href="/connect" className={styles.sayHelloBtn}>
               Let&apos;s Talk
             </Link>
           </div>
@@ -430,7 +430,7 @@ export function Navbar() {
 
                 <div className={styles.mobileDrawerFooter}>
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-                    <Link href="/#contact" onClick={() => setIsMobileMenuOpen(false)} className={styles.mobileSayHelloBtn}>
+                    <Link href="/connect" onClick={() => setIsMobileMenuOpen(false)} className={styles.mobileSayHelloBtn}>
                       Let&apos;s Talk <Rocket className={styles.rocketIcon} />
                     </Link>
 

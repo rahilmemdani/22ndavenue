@@ -1,0 +1,12 @@
+.main {
+  background: #050505;
+  min-height: 100vh;
+}
+
+.spacer {
+  height: 100px;
+}
+
+.bottomSpacer {
+  height: 50px;
+}
