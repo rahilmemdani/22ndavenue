@@ -42,7 +42,7 @@
 }
 
 .goldText {
-  color: #E4C007;
+  color: #E4C057;
   font-style: italic;
 }
 
@@ -98,9 +98,9 @@
 }
 
 .arrowBtn:hover {
-  border-color: #E4C007;
-  color: #E4C007;
-  background: rgba(228, 192, 7, 0.05);
+  border-color: #E4C057;
+  color: #E4C057;
+  background: rgba(228, 192, 87, 0.05);
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
@@ -123,7 +123,7 @@
 }
 
 .activeIndicator {
-  background: #E4C007;
+  background: #E4C057;
   width: 40px;
 }
 
@@ -207,7 +207,7 @@
 
 .artistCard:hover {
   transform: translateY(-8px);
-  border-color: #E4C007;
+  border-color: #E4C057;
   box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
@@ -251,5 +251,5 @@
 
 .artistCard:hover .artistName {
   opacity: 1;
-  color: #E4C007;
+  color: #E4C057;
 }

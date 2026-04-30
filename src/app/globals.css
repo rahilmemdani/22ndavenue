@@ -16,9 +16,9 @@
   --text-muted: #555555;
 
   /* Accents */
-  --accent-gold: #E4C007;
+  --accent-gold: #E4C057;
   --accent-gold-light: #E8D48B;
-  --accent-gold-dim: rgba(228, 192, 7, 0.15);
+  --accent-gold-dim: rgba(228, 192, 87, 0.15);
   --accent-warm: #D4A574;
 
   /* Glass */
@@ -28,7 +28,7 @@
   --glass-border-hover: rgba(255, 255, 255, 0.14);
 
   /* Gradients */
-  --gradient-gold: linear-gradient(135deg, #E4C007 0%, #E8D48B 50%, #E4C007 100%);
+  --gradient-gold: linear-gradient(135deg, #E4C057 0%, #E8D48B 50%, #E4C057 100%);
   --gradient-dark: linear-gradient(180deg, #0A0A0A 0%, #111111 100%);
   --gradient-hero: linear-gradient(180deg, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.8) 60%, #0A0A0A 100%);
   --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
@@ -37,8 +37,8 @@
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-gold: 0 4px 20px rgba(228, 192, 7, 0.15);
-  --shadow-gold-lg: 0 8px 40px rgba(228, 192, 7, 0.25);
+  --shadow-gold: 0 4px 20px rgba(228, 192, 87, 0.15);
+  --shadow-gold-lg: 0 8px 40px rgba(228, 192, 87, 0.25);
 
   /* Typography Scale */
   --font-display: 'Playfair Display', Georgia, serif;
@@ -331,7 +331,7 @@ ol {
 
 /* ---------- Selection ---------- */
 ::selection {
-  background: rgba(228, 192, 7, 0.3);
+  background: rgba(228, 192, 87, 0.3);
   color: var(--text-primary);
 }
 
@@ -408,11 +408,11 @@ ol {
 
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(228, 192, 7, 0.4);
+    box-shadow: 0 0 0 0 rgba(228, 192, 87, 0.4);
   }
 
   50% {
-    box-shadow: 0 0 0 12px rgba(228, 192, 7, 0);
+    box-shadow: 0 0 0 12px rgba(228, 192, 87, 0);
   }
 }
 
@@ -452,11 +452,11 @@ ol {
 
   0%,
   100% {
-    border-color: rgba(228, 192, 7, 0.2);
+    border-color: rgba(228, 192, 87, 0.2);
   }
 
   50% {
-    border-color: rgba(228, 192, 7, 0.6);
+    border-color: rgba(228, 192, 87, 0.6);
   }
 }
 

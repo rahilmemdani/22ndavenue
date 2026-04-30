@@ -56,7 +56,7 @@
   background: rgba(10, 10, 10, 0.85); /* Dark Glass */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(228, 192, 7, 0.3); /* Gold border */
+  border: 1px solid rgba(228, 192, 87, 0.3); /* Gold border */
   border-radius: 9999px;
   padding: 0.75rem 1.5rem;
   color: #fff;
@@ -67,7 +67,7 @@
 
 .minimalMenuBtn:hover {
   background: rgba(10, 10, 10, 0.95);
-  box-shadow: 0 8px 30px rgba(228, 192, 7, 0.2);
+  box-shadow: 0 8px 30px rgba(228, 192, 87, 0.2);
 }
 
 .minimalMenuBtn:active {
@@ -79,7 +79,7 @@
   font-weight: 600;
   font-size: 0.875rem;
   letter-spacing: 0.2em;
-  color: #E4C007; /* Gold text */
+  color: #E4C057; /* Gold text */
   margin-top: 2px;
 }
 
@@ -92,9 +92,9 @@
   height: 100%;
 }
 
-.burgerLine1 { width: 24px; height: 1.5px; background: #E4C007; transition: all 0.3s ease; }
-.burgerLine2 { width: 16px; height: 1.5px; background: #E4C007; transition: all 0.3s ease; }
-.burgerLine3 { width: 20px; height: 1.5px; background: #E4C007; transition: all 0.3s ease; }
+.burgerLine1 { width: 24px; height: 1.5px; background: #E4C057; transition: all 0.3s ease; }
+.burgerLine2 { width: 16px; height: 1.5px; background: #E4C057; transition: all 0.3s ease; }
+.burgerLine3 { width: 20px; height: 1.5px; background: #E4C057; transition: all 0.3s ease; }
 
 .minimalMenuBtn:hover .burgerLine1,
 .minimalMenuBtn:hover .burgerLine2,
@@ -167,7 +167,7 @@
 }
 
 .navLinkDark:hover {
-  color: #E4C007;
+  color: #E4C057;
 }
 
 .navLinkDark.navLinkActive {
@@ -181,18 +181,18 @@
 }
 
 .navLinkLight:hover {
-  color: #E4C007;
+  color: #E4C057;
 }
 
 .navLinkLight.navLinkActive {
-  color: #E4C007;
+  color: #E4C057;
   font-weight: 700;
 }
 
 .activePill {
   position: absolute;
   inset: 0.25rem;
-  background: #E4C007; 
+  background: #E4C057; 
   border-radius: 9999px;
   z-index: 0;
 }
@@ -209,7 +209,7 @@
 .chevronLight { color: #64748b; }
 .chevronOpen {
   transform: rotate(180deg);
-  color: #E4C007;
+  color: #E4C057;
 }
 
 .dropdown {
@@ -226,7 +226,7 @@
   backdrop-filter: blur(24px);
   border-radius: 1rem;
   box-shadow: 0 20px 60px -15px rgba(0,0,0,0.25);
-  border: 1px solid rgba(228, 192, 7, 0.2);
+  border: 1px solid rgba(228, 192, 87, 0.2);
   overflow: hidden;
   padding: 0.5rem;
 }
@@ -335,7 +335,7 @@
   max-width: 450px;
   background: #0A0A0A; /* Dark theme for mobile menu */
   box-shadow: -20px 0 60px rgba(0,0,0,0.8);
-  border-left: 1px solid rgba(228, 192, 7, 0.2);
+  border-left: 1px solid rgba(228, 192, 87, 0.2);
   overflow: hidden;
   will-change: transform, clip-path;
 }
@@ -346,7 +346,7 @@
   right: -20%;
   width: 300px;
   height: 300px;
-  background: rgba(228, 192, 7, 0.1);
+  background: rgba(228, 192, 87, 0.1);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -364,7 +364,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(228, 192, 7, 0.1);
+  border-bottom: 1px solid rgba(228, 192, 87, 0.1);
 }
 
 .mobileDrawerLogo { 
@@ -391,8 +391,8 @@
 }
 
 .mobileCloseBtn:hover {
-  background: rgba(228, 192, 7, 0.1);
-  border-color: rgba(228, 192, 7, 0.3);
+  background: rgba(228, 192, 87, 0.1);
+  border-color: rgba(228, 192, 87, 0.3);
 }
 
 .mobileDrawerLinks {
@@ -424,15 +424,15 @@
 }
 
 .mobileDrawerLinkActive { 
-  color: #E4C007; 
-  text-shadow: 0 0 20px rgba(228, 192, 7, 0.3);
+  color: #E4C057; 
+  text-shadow: 0 0 20px rgba(228, 192, 87, 0.3);
 }
 
 .mobileDrawerChevronBtn {
   padding: 0.5rem;
   border-radius: 9999px;
-  background: rgba(228, 192, 7, 0.05);
-  border: 1px solid rgba(228, 192, 7, 0.1);
+  background: rgba(228, 192, 87, 0.05);
+  border: 1px solid rgba(228, 192, 87, 0.1);
   cursor: pointer;
   transition: transform 0.2s ease;
 }
@@ -441,7 +441,7 @@
 
 .mobileDrawerChevron {
   transition: transform 0.3s ease;
-  color: #E4C007;
+  color: #E4C057;
 }
 
 .mobileDrawerChevronOpen { transform: rotate(-180deg); }
@@ -452,7 +452,7 @@
   margin-top: 1.25rem;
   margin-left: 0.5rem;
   padding-left: 1rem;
-  border-left: 2px solid rgba(228, 192, 7, 0.4);
+  border-left: 2px solid rgba(228, 192, 87, 0.4);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -468,12 +468,12 @@
   transition: color 0.2s ease;
 }
 
-.mobileDrawerSubLink:hover { color: #E4C007; }
+.mobileDrawerSubLink:hover { color: #E4C057; }
 
 .mobileDrawerFooter {
   padding: 3rem 2rem;
   background: rgba(255, 255, 255, 0.02);
-  border-top: 1px solid rgba(228, 192, 7, 0.1);
+  border-top: 1px solid rgba(228, 192, 87, 0.1);
 }
 
 .mobileSayHelloBtn {
@@ -483,13 +483,13 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: #E4C007;
+  background: #E4C057;
   color: #fff;
   border-radius: 9999px;
   font-size: 1.125rem;
   font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 10px 20px -5px rgba(228, 192, 7, 0.3);
+  box-shadow: 0 10px 20px -5px rgba(228, 192, 87, 0.3);
   transition: all 0.2s ease;
 }
 

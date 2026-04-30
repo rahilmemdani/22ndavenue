@@ -25,7 +25,7 @@
 }
 
 .goldText {
-  color: #E4C007;
+  color: #E4C057;
   font-style: italic;
 }
 
@@ -53,7 +53,7 @@
   font-family: var(--font-accent);
   font-size: 0.875rem;
   letter-spacing: 0.5em;
-  color: #E4C007;
+  color: #E4C057;
   text-transform: uppercase;
 }
 
@@ -92,7 +92,7 @@
 }
 
 .serviceCard:hover {
-  border-color: #E4C007;
+  border-color: #E4C057;
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(0,0,0,0.05);
 }

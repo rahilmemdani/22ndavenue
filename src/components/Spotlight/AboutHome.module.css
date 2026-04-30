@@ -1,38 +1,66 @@
+/* ===== BEHIND THE SPOTLIGHT ===== */
+
 .section {
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--pitch-black, #050505);
+  background-color: #050505;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 0; /* Reduced padding for 1vh fit */
+  padding: 5rem 0 4rem;
   overflow: hidden;
 }
 
+/* Subtle warm ambient glow */
+.section::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  right: 0;
+  width: 55%;
+  height: 70%;
+  background: radial-gradient(
+    ellipse at 60% 50%,
+    rgba(228, 192, 87, 0.035) 0%,
+    transparent 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Thin decorative accent line — left edge */
+.accentLine {
+  position: absolute;
+  left: 5%;
+  top: 15%;
+  bottom: 15%;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(228, 192, 87, 0.15) 30%,
+    rgba(228, 192, 87, 0.15) 70%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+/* ===== CONTAINER ===== */
+
 .container {
   width: 100%;
-  max-width: 1400px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 4rem;
-  padding: 0 5%;
+  max-width: 1300px;
+  padding: 0 7%;
+  position: relative;
   z-index: 10;
 }
 
-@media (min-width: 1024px) {
-  .container {
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 4rem; /* Reduced gap */
-  }
-}
+/* ===== TITLE ===== */
 
-/* Left Column: Typography & Text */
-.leftCol {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.titleBlock {
+  margin-bottom: 3rem;
 }
 
 .title {
@@ -47,108 +75,98 @@
 }
 
 .goldText {
-  color: #E4C007;
+  color: #E4C057;
   font-style: italic;
 }
 
-.textContentWrapper {
-  margin-top: 3rem;
+.titleUnderline {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #E4C057, transparent);
+  margin-top: 1.5rem;
 }
 
-.textContent {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 0; /* Removing boxy background and border */
+/* ===== CONTENT GRID ===== */
+
+.contentArea {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: stretch;
 }
 
-.bodyCopy {
-  font-family: var(--font-body);
-  font-size: clamp(0.9rem, 1.1vw, 1.05rem); /* Smaller a bit */
-  line-height: 1.6;
-  color: rgb(220, 220, 220); /* Standardized off-white */
-  margin: 0;
+@media (min-width: 1024px) {
+  .contentArea {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
 }
 
-.bodyCopy:first-child {
-  font-size: clamp(1.1rem, 1.6vw, 1.3rem); /* Smaller a bit */
-  color: #FFFFFF;
-  font-weight: 500;
-  line-height: 1.4;
-}
+/* ===== IMAGE COLUMN ===== */
 
-/* Right Column: Founder Carousel */
-.rightCol {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.imageCol {
   position: relative;
 }
 
-/* Spotlight Animation */
-.spotlight {
+.imageReveal {
+  width: 100%;
+}
+
+.imageFrame {
+  position: relative;
+  width: 100%;
+}
+
+/* Decorative corner marks */
+.cornerTL,
+.cornerBR {
   position: absolute;
-  top: -100px;
-  left: 50%;
-  width: 800px;
-  height: 1200px; /* Extends down through the section */
-  background: linear-gradient(180deg, rgba(228, 192, 7, 0.4) 0%, rgba(228, 192, 7, 0.05) 70%, transparent 100%);
-  clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%); /* Triangle shape */
-  z-index: 0;
-  /* Shines behind the carousel */
+  width: 28px;
+  height: 28px;
+  z-index: 30;
   pointer-events: none;
-  transform-origin: top center;
-  animation: spotlightSway 8s infinite alternate ease-in-out;
 }
 
-@keyframes spotlightSway {
-  0% {
-    transform: translateX(-50%) rotate(-6deg);
-    opacity: 0.6;
-  }
-
-  100% {
-    transform: translateX(-50%) rotate(6deg);
-    opacity: 1;
-  }
+.cornerTL {
+  top: -8px;
+  left: -8px;
+  border-top: 2px solid #E4C057;
+  border-left: 2px solid #E4C057;
 }
 
-.carouselReveal {
-  width: 100%;
-  position: relative;
-  z-index: 10;
+.cornerBR {
+  bottom: -8px;
+  right: -8px;
+  border-bottom: 2px solid #E4C057;
+  border-right: 2px solid #E4C057;
 }
 
-.carouselContainer {
-  width: 100%;
-  position: relative; /* Needed for absolute arrow positioning */
-}
+/* ===== CAROUSEL ===== */
 
 .carouselViewport {
   width: 100%;
-  height: 500px;
+  aspect-ratio: 3 / 4;
+  max-height: 520px;
   overflow: hidden;
-  border-radius: 2rem;
+  border-radius: 0.75rem;
   position: relative;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
 .carouselTrack {
   display: flex;
   width: 100%;
   height: 100%;
-  transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+  transition: transform 0.7s cubic-bezier(0.7, 0, 0.3, 1);
 }
 
 .founderSlide {
   min-width: 100%;
   height: 100%;
   position: relative;
-  display: flex;
-  align-items: flex-end;
-  padding: 2rem;
 }
 
 .founderImg {
@@ -157,217 +175,235 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  filter: grayscale(100%) contrast(1.1) brightness(0.8);
+  object-position: top center;
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1s ease;
+  filter: grayscale(100%) contrast(1.15) brightness(0.8);
 }
 
 .carouselViewport:hover .founderImg {
-  transform: scale(1.05);
+  transform: scale(1.04);
   filter: grayscale(0%) contrast(1.1) brightness(1);
 }
 
-.founderOverlay {
-  position: relative;
-  z-index: 10;
-  background: rgba(10, 10, 10, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 1.5rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;
-}
+/* ===== FOUNDER INFO BAR ===== */
 
-.founderName {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #FFFFFF;
-  margin: 0;
-}
-
-.founderTitle {
-  font-family: var(--font-accent);
-  font-size: 0.9rem;
-  /* text-transform: uppercase; */
-  letter-spacing: 0.1em;
-  color: #E4C007;
-  margin-top: 0.5rem;
-}
-
-/* Controls — Arrows overlay the image sides, vertically centered */
-.controls {
+.founderInfoBar {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  height: 100%; /* Full height of carouselViewport */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(0deg, rgba(5, 5, 5, 0.9) 0%, rgba(5, 5, 5, 0.5) 60%, transparent 100%);
   z-index: 20;
-  pointer-events: none; /* Let clicks pass through the gap */
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+.founderMeta {}
+
+.founderName {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.founderRole {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #E4C057;
+  margin-top: 0.2rem;
+}
+
+/* ===== NAV CONTROLS ===== */
+
+.navControls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .arrowBtn {
-  pointer-events: auto; /* Buttons are clickable */
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition: all 0.3s ease;
-  margin: 0 0.75rem;
 }
 
 .arrowBtn:hover {
-  background: rgba(228, 192, 7, 0.4);
-  border-color: #E4C007;
-  color: #E4C007;
+  background: rgba(228, 192, 87, 0.15);
+  border-color: rgba(228, 192, 87, 0.5);
+  color: #E4C057;
   transform: scale(1.1);
 }
 
-.indicatorRow {
+.slideCounter {
   display: flex;
-  align-items: center;
+  align-items: baseline;
+  gap: 0.2rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.currentNum {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.dividerSlash {
+  margin: 0 0.1rem;
+}
+
+.totalNum {
+  font-size: 0.75rem;
+}
+
+/* ===== STORY COLUMN ===== */
+
+.storyCol {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
 }
 
-.indicators {
+.storyInner {
+  position: relative;
+  padding-left: 2rem;
   display: flex;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.indicator {
-  width: 30px;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.2);
+/* Vertical gold accent bar */
+.storyAccent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    #E4C057 0%,
+    rgba(228, 192, 87, 0.2) 100%
+  );
   border-radius: 2px;
-  transition: all 0.3s ease;
 }
 
-.activeIndicator {
-  background: #E4C007;
-  width: 40px;
+.leadCopy {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  line-height: 1.55;
+  color: #FFFFFF;
+  font-weight: 500;
+  margin: 0;
 }
 
-/* Mobile Responsiveness */
+.bodyCopy {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  line-height: 1.7;
+  color: rgb(190, 190, 190);
+  margin: 0;
+}
+
+/* ===== TABLET ===== */
+
 @media (max-width: 1024px) {
   .section {
-    height: auto;
-    min-height: 100vh; /* vh for old device compatibility */
-    min-height: 100dvh;
-    padding: 7rem 0 4rem 0;
-    display: flex;
-    align-items: flex-start; /* Prevents vertical centering clipping */
-    justify-content: center;
+    min-height: auto;
+    padding: 6rem 0 4rem;
+    align-items: flex-start;
   }
 
-  .container {
-    gap: 2.5rem;
-    padding: 0 6%;
+  .accentLine {
+    display: none;
+  }
+
+  .titleBlock {
+    margin-bottom: 2rem;
   }
 
   .title {
     font-size: clamp(1.8rem, 5vw, 2.5rem);
   }
 
-  .textContentWrapper {
-    margin-top: 1.5rem;
-  }
-
-  .textContent {
-    padding: 1.25rem;
-    gap: 1rem;
-  }
-
-  .bodyCopy {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .bodyCopy:first-child {
-    font-size: 1rem;
-  }
-
   .carouselViewport {
-    height: 380px;
-    border-radius: 1.25rem;
+    max-height: 400px;
   }
 
-  .founderSlide {
-    padding: 1.25rem;
+  .cornerTL,
+  .cornerBR {
+    width: 20px;
+    height: 20px;
   }
 
-  .founderName {
-    font-size: 1.15rem;
-  }
-
-  .founderOverlay {
-    padding: 0.85rem 1rem;
-    border-radius: 0.75rem;
-  }
-
-  .founderTitle {
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
-  }
-
-  .arrowBtn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .controls {
-    padding: 0;
-  }
-
-  .spotlight {
-    width: 800px;
-    height: 1000px;
-    top: -80px;
-    clip-path: polygon(49% 0, 51% 0, 100% 100%, 0 100%); /* Pointy narrow start */
+  .storyInner {
+    padding-left: 1.5rem;
+    gap: 1rem;
   }
 }
 
+/* ===== MOBILE ===== */
+
 @media (max-width: 480px) {
   .section {
-    padding: 6rem 0 3rem 0;
+    padding: 5rem 0 3rem;
   }
 
   .container {
-    gap: 2rem;
     padding: 0 5%;
   }
 
+  .titleBlock {
+    margin-bottom: 1.5rem;
+  }
+
   .title {
-    font-size: clamp(1.5rem, 6vw, 2rem);
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
   }
 
-  .textContent {
-    padding: 1rem;
-  }
-
-  .bodyCopy {
-    font-size: 0.85rem;
+  .titleUnderline {
+    width: 40px;
+    margin-top: 1rem;
   }
 
   .carouselViewport {
-    height: 320px;
-    border-radius: 1rem;
+    max-height: 360px;
+    border-radius: 0.5rem;
   }
 
-  .founderSlide {
+  .cornerTL,
+  .cornerBR {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cornerTL {
+    top: -6px;
+    left: -6px;
+  }
+
+  .cornerBR {
+    bottom: -6px;
+    right: -6px;
+  }
+
+  .founderInfoBar {
     padding: 1rem;
   }
 
@@ -375,11 +411,16 @@
     font-size: 1rem;
   }
 
-  .indicator {
-    width: 20px;
+  .arrowBtn {
+    width: 30px;
+    height: 30px;
   }
 
-  .activeIndicator {
-    width: 30px;
+  .storyInner {
+    padding-left: 1.25rem;
+  }
+
+  .bodyCopy {
+    font-size: 0.82rem;
   }
 }

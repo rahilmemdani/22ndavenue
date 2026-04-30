@@ -44,7 +44,7 @@
 .subtitle {
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  color: #E4C007;
+  color: #E4C057;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   font-weight: 500;
@@ -96,7 +96,7 @@
 .flashOverlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, rgba(228, 192, 7, 0.4) 0%, rgba(255,255,255,0.8) 100%);
+  background: radial-gradient(circle, rgba(228, 192, 87, 0.4) 0%, rgba(255,255,255,0.8) 100%);
   mix-blend-mode: color-dodge;
   z-index: 30;
   pointer-events: none;

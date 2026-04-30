@@ -29,7 +29,7 @@
   position: absolute;
   width: 70vw;
   height: 70vh;
-  background: radial-gradient(circle, rgba(228, 192, 7, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(228, 192, 87, 0.15) 0%, transparent 60%);
   top: -10%;
   left: -10%;
   filter: blur(80px);
@@ -156,7 +156,7 @@
 }
 
 .splashGold {
-  color: #E4C007;
+  color: #E4C057;
   font-style: italic;
   display: inline-block;
   /* Changed to inline-block to place dot next to it */
@@ -165,7 +165,7 @@
 }
 
 .splashDot {
-  color: #E4C007;
+  color: #E4C057;
   font-style: italic;
   display: inline-block;
   opacity: 0;
@@ -257,8 +257,8 @@
 }
 
 .controlBtn:hover {
-  background: rgba(228, 192, 7, 0.8);
-  border-color: #E4C007;
+  background: rgba(228, 192, 87, 0.8);
+  border-color: #E4C057;
   transform: scale(1.1);
 }
 

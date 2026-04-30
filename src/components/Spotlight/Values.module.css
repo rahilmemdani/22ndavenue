@@ -43,7 +43,7 @@
 }
 
 .goldText {
-  color: #E4C007;
+  color: #E4C057;
   font-style: italic;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .card:hover {
-  border-color: #E4C007;
+  border-color: #E4C057;
   background: rgba(40, 40, 40, 0.4);
 }
 
@@ -100,9 +100,9 @@
 }
 
 .arrowButton:hover {
-  background: rgba(228, 192, 7, 0.2);
-  border-color: #E4C007;
-  color: #E4C007;
+  background: rgba(228, 192, 87, 0.2);
+  border-color: #E4C057;
+  color: #E4C057;
 }
 
 @media (max-width: 1024px) {
@@ -128,7 +128,7 @@
 .cardNumber {
   font-family: var(--font-accent);
   font-size: 0.85rem;
-  color: #E4C007;
+  color: #E4C057;
   letter-spacing: 0.5em;
   margin-bottom: 3rem;
   opacity: 0.6;
@@ -159,7 +159,7 @@
   left: -100%;
   width: 300%;
   height: 300%;
-  background: radial-gradient(circle at center, rgba(228, 192, 7, 0.1) 0%, transparent 60%);
+  background: radial-gradient(circle at center, rgba(228, 192, 87, 0.1) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;

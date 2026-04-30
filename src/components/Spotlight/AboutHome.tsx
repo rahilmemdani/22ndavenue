@@ -37,83 +37,91 @@ export function AboutHome() {
 
   return (
     <section className={styles.section} id="about-home">
+
+      {/* Decorative accent line */}
+      <div className={styles.accentLine}></div>
+
       <div className={styles.container}>
-        
-        {/* Left Column: Text & Header */}
-        <div className={styles.leftCol}>
-          <ScrollReveal direction="up">
-            <h2 className={styles.title}>
-              BEHIND THE <span className={styles.goldText}>SPOTLIGHT</span>
-            </h2>
-          </ScrollReveal>
 
-          <ScrollReveal delay={200} direction="up" className={styles.textContentWrapper}>
-            <div className={styles.textContent}>
-              <p className={styles.bodyCopy}>
-                22nd Avenue was born from a vision to craft world-class experiences in entertainment, founded by Aditya Mehra, Daryl Sheldon and Manoj Gopalani.
-              </p>
-              <p className={styles.bodyCopy}>
-                Under <span className={styles.goldText}>Manoj’s leadership</span>, what started as an idea soon evolved into a <span className={styles.goldText}>trusted name</span> in an ever-evolving industry, one that understands both the <span className={styles.goldText}>art and the precision</span> behind great entertainment.
-              </p>
-              <p className={styles.bodyCopy}>
-                Our mission is simple: to <span className={styles.goldText}>redefine industry norms</span> and <span className={styles.goldText}>stay ahead of the curve</span>. Over the years we’ve built <span className={styles.goldText}>lasting relationships</span> with <span className={styles.goldText}>renowned talent</span> across the global stage.
-              </p>
-            </div>
-          </ScrollReveal>
-        </div>
+        {/* Large editorial title — spans full width */}
+        <ScrollReveal direction="up" className={styles.titleBlock}>
+          <h2 className={styles.title}>
+            BEHIND THE <span className={styles.goldText}>SPOTLIGHT</span>
+          </h2>
+          <div className={styles.titleUnderline}></div>
+        </ScrollReveal>
 
-        {/* Right Column: Founder Carousel */}
-        <div className={styles.rightCol}>
-          <div className={styles.spotlight}></div>
-          <ScrollReveal delay={400} direction="up" className={styles.carouselReveal}>
-            <div className={styles.carouselContainer}>
-              
-              <div className={styles.carouselViewport}>
-                <div 
-                  className={styles.carouselTrack}
-                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-                >
-                  {FOUNDERS.map((founder, idx) => (
-                    <div key={idx} className={styles.founderSlide}>
-                      <img 
-                        src={founder.image} 
-                        alt={founder.name} 
-                        className={styles.founderImg}
-                      />
-                      <div className={styles.founderOverlay}>
-                        <h4 className={styles.founderName}>{founder.name}</h4>
-                        <p className={styles.founderTitle}>{founder.title}</p>
+        {/* Content area: Image + Story */}
+        <div className={styles.contentArea}>
+
+          {/* Image / Carousel — takes the dominant visual space */}
+          <div className={styles.imageCol}>
+            <ScrollReveal delay={150} direction="up" className={styles.imageReveal}>
+              <div className={styles.imageFrame}>
+                {/* Decorative corner marks */}
+                <span className={styles.cornerTL}></span>
+                <span className={styles.cornerBR}></span>
+
+                <div className={styles.carouselViewport}>
+                  <div
+                    className={styles.carouselTrack}
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  >
+                    {FOUNDERS.map((founder, idx) => (
+                      <div key={idx} className={styles.founderSlide}>
+                        <img
+                          src={founder.image}
+                          alt={founder.name}
+                          className={styles.founderImg}
+                        />
                       </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Founder info — overlaid at bottom */}
+                <div className={styles.founderInfoBar}>
+                  <div className={styles.founderMeta}>
+                    <h4 className={styles.founderName}>{FOUNDERS[currentSlide].name}</h4>
+                    <p className={styles.founderRole}>{FOUNDERS[currentSlide].title}</p>
+                  </div>
+                  <div className={styles.navControls}>
+                    <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous">
+                      <ArrowLeft size={16} />
+                    </button>
+                    <div className={styles.slideCounter}>
+                      <span className={styles.currentNum}>0{currentSlide + 1}</span>
+                      <span className={styles.dividerSlash}>/</span>
+                      <span className={styles.totalNum}>0{FOUNDERS.length}</span>
                     </div>
-                  ))}
+                    <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next">
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
                 </div>
               </div>
+            </ScrollReveal>
+          </div>
 
-              {/* Arrow overlays on the sides of the image */}
-              <div className={styles.controls}>
-                <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous Founder">
-                  <ArrowLeft size={20} />
-                </button>
-                <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next Founder">
-                  <ArrowRight size={20} />
-                </button>
+          {/* Story text — sits alongside with editorial spacing */}
+          <div className={styles.storyCol}>
+            <ScrollReveal delay={300} direction="up">
+              <div className={styles.storyInner}>
+                <div className={styles.storyAccent}></div>
+                <p className={styles.leadCopy}>
+                  22nd Avenue was born from a vision to craft world-class experiences in entertainment, founded by Aditya Mehra, Daryl Sheldon and Manoj Gopalani.
+                </p>
+                <p className={styles.bodyCopy}>
+                  Under <span className={styles.goldText}>Manoj&apos;s leadership</span>, what started as an idea soon evolved into a <span className={styles.goldText}>trusted name</span> in an ever-evolving industry, one that understands both the <span className={styles.goldText}>art and the precision</span> behind great entertainment.
+                </p>
+                <p className={styles.bodyCopy}>
+                  Our mission is simple: to <span className={styles.goldText}>redefine industry norms</span> and <span className={styles.goldText}>stay ahead of the curve</span>. Over the years we&apos;ve built <span className={styles.goldText}>lasting relationships</span> with <span className={styles.goldText}>renowned talent</span> across the global stage.
+                </p>
               </div>
+            </ScrollReveal>
+          </div>
 
-            </div>
-
-            {/* Indicators below the image */}
-            <div className={styles.indicatorRow}>
-              {FOUNDERS.map((_, idx) => (
-                <span 
-                  key={idx} 
-                  className={`${styles.indicator} ${currentSlide === idx ? styles.activeIndicator : ""}`}
-                />
-              ))}
-            </div>
-
-          </ScrollReveal>
         </div>
-
       </div>
     </section>
   );
