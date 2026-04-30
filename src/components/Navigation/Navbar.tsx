@@ -111,6 +111,19 @@ export function Navbar() {
     };
   }, []);
 
+  const [isHovered, setIsHovered] = useState(false);
+  const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startHideTimer = () => {
+    if (window.innerWidth < 1024) return;
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    hideTimerRef.current = setTimeout(() => {
+      if (!isHovered) {
+        setIsHidden(true);
+      }
+    }, 3000);
+  };
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastYRef.current;
 
@@ -119,14 +132,35 @@ export function Navbar() {
 
     if (latest > 100) setIsForceOpenAtTop(false);
 
-    if (latest > 100 && diff > 4 && !isMobileMenuOpen) {
-      setIsHidden(true);
-    } else if (diff < -4 || latest < 100) {
-      setIsHidden(false);
+    // Desktop logic: Show on scroll up, hide after 3s inactivity
+    if (window.innerWidth >= 1024) {
+      if (diff < -4 || latest < 100) {
+        setIsHidden(false);
+        startHideTimer();
+      } else if (diff > 4 && latest > 100) {
+        setIsHidden(true);
+      }
+    } else {
+      // Mobile logic: Regular show/hide
+      if (latest > 100 && diff > 4 && !isMobileMenuOpen) {
+        setIsHidden(true);
+      } else if (diff < -4 || latest < 100) {
+        setIsHidden(false);
+      }
     }
     
     lastYRef.current = latest;
   });
+
+  // If hovered, clear timer and show
+  useEffect(() => {
+    if (isHovered && window.innerWidth >= 1024) {
+      setIsHidden(false);
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    } else if (!isHovered && !isHidden && window.innerWidth >= 1024) {
+      startHideTimer();
+    }
+  }, [isHovered]);
 
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
@@ -137,6 +171,7 @@ export function Navbar() {
     setIsMobileMenuOpen(false);
     setMobileExpandedIndex(null);
     setIsForceOpenAtTop(false);
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
   }, [pathname]);
 
   const isTransparentPage = ["/"].includes(pathname);
@@ -231,6 +266,8 @@ export function Navbar() {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className={`${styles.desktopNav} ${shouldHideDesktopNavAtTop ? styles.pointerNone : styles.pointerAuto}`}
           style={{ transformOrigin: "top center" }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           {/* LOGO */}
           <Link href="/" className={styles.logoLink}>
