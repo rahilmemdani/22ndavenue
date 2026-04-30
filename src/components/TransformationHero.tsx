@@ -28,14 +28,6 @@ const TransformationHero = () => {
       checkScrollAndSkip();
     }, 100);
 
-    const handleScrollAttempt = () => {
-      setIsSplit(true);
-    };
-
-    window.addEventListener("scroll", handleScrollAttempt, { passive: true });
-    window.addEventListener("wheel", handleScrollAttempt, { passive: true });
-    window.addEventListener("touchmove", handleScrollAttempt, { passive: true });
-
     const splitTimer = setTimeout(() => {
       setIsSplit(true);
     }, 3800);
@@ -43,9 +35,6 @@ const TransformationHero = () => {
     return () => {
       clearTimeout(scrollRestorationTimer);
       clearTimeout(splitTimer);
-      window.removeEventListener("scroll", handleScrollAttempt);
-      window.removeEventListener("wheel", handleScrollAttempt);
-      window.removeEventListener("touchmove", handleScrollAttempt);
     };
   }, []);
 

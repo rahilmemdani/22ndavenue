@@ -130,8 +130,8 @@
   object-fit: contain;
 }
 
-.logoSmall { height: 2.5rem; }
-.logoLarge { height: 3rem; }
+.logoSmall { height: 3rem; }
+.logoLarge { height: 3.5rem; }
 .logoInvert { filter: brightness(0) invert(1); }
 
 .desktopLinks {
@@ -301,8 +301,8 @@
   transition: all 0.3s ease;
   object-fit: contain;
 }
-.mobileLogoSmall { height: 2.5rem; }
-.mobileLogoLarge { height: 3rem; }
+.mobileLogoSmall { height: 3rem; }
+.mobileLogoLarge { height: 3.5rem; }
 
 .mobileMenuBtn {
   padding: 0.5rem;
