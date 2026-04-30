@@ -58,9 +58,7 @@ export function FeaturedArtists() {
         <div className={styles.headerRow}>
           <ScrollReveal direction="up">
             <h2 className={styles.sectionTitle}>
-              <span className={styles.goldText}>Our</span>
-              <br />
-              Collabs
+              OUR <span className={styles.goldText}>COLLABS</span>
             </h2>
           </ScrollReveal>
 

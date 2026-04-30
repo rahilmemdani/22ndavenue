@@ -43,9 +43,7 @@ export function AboutHome() {
         <div className={styles.leftCol}>
           <ScrollReveal direction="up">
             <h2 className={styles.title}>
-              <span className={styles.goldText}>Backstage</span>
-              <br />
-              Behind the Spotlight
+              BEHIND THE <span className={styles.goldText}>SPOTLIGHT</span>
             </h2>
           </ScrollReveal>
 
