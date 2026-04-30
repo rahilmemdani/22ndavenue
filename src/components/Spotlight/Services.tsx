@@ -2,46 +2,69 @@
 "use client";
 
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { X, Play, ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./Services.module.css";
+
+interface GalleryMedia {
+  type: "image" | "video";
+  url: string;
+  thumbnail?: string;
+}
 
 const services = [
   {
-    title: "TALENT MANAGEMENT",
-    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop",
-    shape: "shape1"
+    title: "LIVE EVENTS",
+    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
+    shape: "shapeArch",
+    gallery: [
+      { type: "image", url: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=800" },
+      { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800" },
+      { type: "image", url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800" },
+      { type: "image", url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=800" },
+      { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1540039155732-68ee23e15b51?q=80&w=800" },
+      { type: "image", url: "https://images.unsplash.com/photo-1470229722913-7c090be5c560?q=80&w=800" },
+    ]
   },
   {
     title: "BRAND COLLABS",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=600&auto=format&fit=crop",
-    shape: "shape2"
-  },
-  {
-    title: "LIVE EVENTS",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=600&auto=format&fit=crop",
-    shape: "shape3"
+    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop",
+    shape: "shapeArch",
+    gallery: [
+      { type: "image", url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800" },
+      { type: "image", url: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800" },
+      { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=800" },
+      { type: "image", url: "https://images.unsplash.com/photo-1520333789090-1afc82db536a?q=80&w=800" },
+      { type: "image", url: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800" },
+      { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800" },
+    ]
   }
 ];
 
 export function Services() {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
+  const [galleryPage, setGalleryPage] = useState(0);
+  const ITEMS_PER_PAGE = 4;
 
+  // Disable scroll when modal is open
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (carouselRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-        const maxScroll = scrollWidth - clientWidth;
-        
-        if (scrollLeft >= maxScroll - 5) {
-          carouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          carouselRef.current.scrollBy({ left: clientWidth * 0.8, behavior: "smooth" });
-        }
-      }
-    }, 4000); // Auto-scroll every 4 seconds
+    if (selectedService) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+      setGalleryPage(0); // Reset page on close
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedService]);
 
-    return () => clearInterval(interval);
-  }, []);
+  const totalGalleryPages = selectedService ? Math.ceil(selectedService.gallery.length / ITEMS_PER_PAGE) : 0;
+  const currentGalleryItems = selectedService ? selectedService.gallery.slice(galleryPage * ITEMS_PER_PAGE, (galleryPage + 1) * ITEMS_PER_PAGE) : [];
+
+  const nextGallery = () => setGalleryPage(prev => (prev + 1) % totalGalleryPages);
+  const prevGallery = () => setGalleryPage(prev => (prev - 1 + totalGalleryPages) % totalGalleryPages);
 
   return (
     <section className={styles.section} id="services-section">
@@ -50,7 +73,7 @@ export function Services() {
         <div className={styles.header}>
           <ScrollReveal direction="up">
             <h2 className={styles.sectionTitle}>
-              OUR <span className={styles.goldText}>SERVICES</span>
+              Live Events | <span className={styles.goldText}>Brand Collabs</span>
             </h2>
           </ScrollReveal>
         </div>
@@ -67,9 +90,13 @@ export function Services() {
         <div className={styles.servicesCarousel} ref={carouselRef}>
           {services.map((service, i) => (
             <ScrollReveal key={service.title} delay={100 * i}>
-              <div className={styles.serviceCard}>
+              <div
+                className={styles.serviceCard}
+                onClick={() => setSelectedService(service)}
+              >
                 <div className={`${styles.imageWrapper} ${styles[service.shape]}`}>
                   <img src={service.image} alt={service.title} className={styles.image} />
+                  <div className={styles.viewBadge}>View Gallery</div>
                 </div>
                 <h3 className={styles.serviceTitle}>{service.title}</h3>
               </div>
@@ -84,6 +111,57 @@ export function Services() {
           <div className={styles.guideLine} />
         </div>
       </div>
+
+      {/* Gallery Modal */}
+      {selectedService && (
+        <div className={styles.modalBackdrop} onClick={() => setSelectedService(null)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.modalClose} onClick={() => setSelectedService(null)}>
+              <X size={24} />
+            </button>
+
+            <div className={styles.modalHeader}>
+              <div>
+                <h3 className={styles.modalTitle}>{selectedService.title}</h3>
+                <p className={styles.modalSubtitle}>PROJECT SHOWCASE</p>
+              </div>
+
+              {totalGalleryPages > 1 && (
+                <div className={styles.galleryNav}>
+                  <button onClick={prevGallery} className={styles.navBtn} aria-label="Previous Page">
+                    <ArrowLeft size={18} />
+                  </button>
+                  <span className={styles.galleryCounter}>{galleryPage + 1} / {totalGalleryPages}</span>
+                  <button onClick={nextGallery} className={styles.navBtn} aria-label="Next Page">
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.mediaGrid}>
+              {currentGalleryItems.map((item, index) => (
+                <div key={index} className={styles.mediaItem}>
+                  {item.type === "image" ? (
+                    <img src={item.url} alt={`${selectedService.title} ${index}`} className={styles.galleryImage} />
+                  ) : (
+                    <div className={styles.videoContainer}>
+                      <video
+                        src={item.url}
+                        className={styles.galleryVideo}
+                        controls
+                        playsInline
+                        poster={item.thumbnail}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
+
