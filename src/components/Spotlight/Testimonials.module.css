@@ -544,6 +544,9 @@
   }
 
   .modalClose {
-    top: -2.5rem;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
   }
 }
