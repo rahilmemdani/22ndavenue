@@ -77,18 +77,28 @@ const testimonials: Testimonial[] = [
   }
 ];
 
-const VISIBLE_COUNT = 4;
+
 
 export function Testimonials() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [videoModal, setVideoModal] = useState<string | null>(null);
   const [textModal, setTextModal] = useState<{ name: string, role: string, quote: string } | null>(null);
+  const [visibleCount, setVisibleCount] = useState(4);
 
-  const totalPages = Math.ceil(testimonials.length / VISIBLE_COUNT);
+  useEffect(() => {
+    const handleResize = () => {
+      setVisibleCount(window.innerWidth < 768 ? 2 : 4);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const totalPages = Math.ceil(testimonials.length / visibleCount);
   
-  const startIndex = currentPage * VISIBLE_COUNT;
-  const visibleTestimonials = testimonials.slice(startIndex, startIndex + VISIBLE_COUNT);
+  const startIndex = currentPage * visibleCount;
+  const visibleTestimonials = testimonials.slice(startIndex, startIndex + visibleCount);
 
   const next = useCallback(() => {
     if (isAnimating) return;
