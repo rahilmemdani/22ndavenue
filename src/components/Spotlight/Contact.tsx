@@ -12,6 +12,9 @@ export function Contact() {
 
   return (
     <section className={styles.section} id="contact-section">
+      <div className={styles.backgroundGlow} />
+      <div className={styles.backgroundGlow2} />
+      
       <div className={styles.container}>
         {/* INFO SIDE */}
         <div className={styles.infoSide}>
@@ -75,10 +78,18 @@ export function Contact() {
               )}
 
               {activeType === "Careers" && (
-                <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                  <label className={styles.label}>Position Interested In</label>
-                  <input type="text" className={styles.input} placeholder="e.g. Talent Manager" />
-                </div>
+                <>
+                  <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                    <label className={styles.label}>Position Interested In</label>
+                    <input type="text" className={styles.input} placeholder="e.g. Talent Manager" />
+                  </div>
+                  <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                    <label className={styles.label}>Upload Resume / CV</label>
+                    <div className={styles.fileInputWrapper}>
+                      <input type="file" className={styles.fileInput} accept=".pdf,.doc,.docx" />
+                    </div>
+                  </div>
+                </>
               )}
 
               {activeType === "Business" && (
