@@ -108,7 +108,17 @@ export function Testimonials() {
     }, 400);
   }, [isAnimating, totalPages]);
 
-  // Auto-advance removed per request
+  // Disable scroll when modal is open
+  useEffect(() => {
+    if (videoModal || textModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [videoModal, textModal]);
 
   return (
     <section className={styles.section} id="testimonials-section">
