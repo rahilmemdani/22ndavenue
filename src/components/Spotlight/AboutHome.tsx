@@ -53,10 +53,10 @@ export function AboutHome() {
                 22nd Avenue was born from a vision to craft world-class experiences in entertainment, founded by Aditya Mehra, Daryl Sheldon and Manoj Gopalani.
               </p>
               <p className={styles.bodyCopy}>
-                Under Manoj’s leadership, what started as an idea soon evolved into a trusted name in an ever-evolving industry, one that understands both the art and the precision behind great entertainment.
+                Under <span className={styles.goldText}>Manoj’s leadership</span>, what started as an idea soon evolved into a <span className={styles.goldText}>trusted name</span> in an ever-evolving industry, one that understands both the <span className={styles.goldText}>art and the precision</span> behind great entertainment.
               </p>
               <p className={styles.bodyCopy}>
-                Our mission is simple: to redefine industry norms and stay ahead of the curve. Over the years we’ve built lasting relationships with renowned talent across the global stage.
+                Our mission is simple: to <span className={styles.goldText}>redefine industry norms</span> and <span className={styles.goldText}>stay ahead of the curve</span>. Over the years we’ve built <span className={styles.goldText}>lasting relationships</span> with <span className={styles.goldText}>renowned talent</span> across the global stage.
               </p>
             </div>
           </ScrollReveal>
