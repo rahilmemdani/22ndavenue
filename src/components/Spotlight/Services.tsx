@@ -86,22 +86,44 @@ export function Services() {
           </div>
         </div>
 
-        {/* Horizontal Carousel */}
-        <div className={styles.servicesCarousel} ref={carouselRef}>
-          {services.map((service, i) => (
-            <ScrollReveal key={service.title} delay={100 * i}>
-              <div
-                className={styles.serviceCard}
-                onClick={() => setSelectedService(service)}
-              >
-                <div className={`${styles.imageWrapper} ${styles[service.shape]}`}>
-                  <img src={service.image} alt={service.title} className={styles.image} />
-                  <div className={styles.viewBadge}>View Gallery</div>
+        {/* Horizontal Carousel with Navigation */}
+        <div className={styles.carouselContainer}>
+          <button 
+            className={`${styles.navArrow} ${styles.leftArrow}`} 
+            onClick={() => {
+              if (carouselRef.current) carouselRef.current.scrollBy({ left: -350, behavior: 'smooth' });
+            }}
+            aria-label="Scroll Left"
+          >
+            <ArrowLeft size={24} />
+          </button>
+          
+          <div className={styles.servicesCarousel} ref={carouselRef}>
+            {services.map((service, i) => (
+              <ScrollReveal key={service.title} delay={100 * i}>
+                <div
+                  className={styles.serviceCard}
+                  onClick={() => setSelectedService(service)}
+                >
+                  <div className={`${styles.imageWrapper} ${styles[service.shape]}`}>
+                    <img src={service.image} alt={service.title} className={styles.image} />
+                    <div className={styles.viewBadge}>View Gallery</div>
+                  </div>
+                  <h3 className={styles.serviceTitle}>{service.title}</h3>
                 </div>
-                <h3 className={styles.serviceTitle}>{service.title}</h3>
-              </div>
-            </ScrollReveal>
-          ))}
+              </ScrollReveal>
+            ))}
+          </div>
+
+          <button 
+            className={`${styles.navArrow} ${styles.rightArrow}`} 
+            onClick={() => {
+              if (carouselRef.current) carouselRef.current.scrollBy({ left: 350, behavior: 'smooth' });
+            }}
+            aria-label="Scroll Right"
+          >
+            <ArrowRight size={24} />
+          </button>
         </div>
 
         {/* Swipe Guide */}
@@ -129,23 +151,30 @@ export function Services() {
 
             <div className={styles.modalBody}>
               <div className={styles.mediaGrid}>
-                {currentGalleryItems.map((item, index) => (
-                  <div key={index} className={styles.mediaItem}>
-                    {item.type === "image" ? (
-                      <img src={item.url} alt={`${selectedService.title} ${index}`} className={styles.galleryImage} />
-                    ) : (
-                      <div className={styles.videoContainer}>
-                        <video
-                          src={item.url}
-                          className={styles.galleryVideo}
-                          controls
-                          playsInline
-                          poster={item.thumbnail}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
+                {currentGalleryItems.map((item, index) => {
+                  let bentoClass = "";
+                  if (index === 0) bentoClass = styles.bentoLarge;
+                  else if (index === 3) bentoClass = styles.bentoWide;
+                  else bentoClass = styles.bentoStandard;
+
+                  return (
+                    <div key={index} className={`${styles.mediaItem} ${bentoClass}`}>
+                      {item.type === "image" ? (
+                        <img src={item.url} alt={`${selectedService.title} ${index}`} className={styles.galleryImage} />
+                      ) : (
+                        <div className={styles.videoContainer}>
+                          <video
+                            src={item.url}
+                            className={styles.galleryVideo}
+                            controls
+                            playsInline
+                            poster={item.thumbnail}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

@@ -1,7 +1,5 @@
 .section {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
   background-color: #050505;
   display: flex;
   align-items: center;
@@ -125,9 +123,9 @@
 .accordionContainer {
   display: flex;
   width: 100%;
-  height: 50vh;
-  min-height: 350px;
-  max-height: 550px;
+  height: 65vh;
+  min-height: 500px;
+  max-height: 700px;
   gap: 1.5rem;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
@@ -338,7 +336,6 @@
 @media (max-width: 768px) {
   .section {
     padding: 5rem 0 3rem;
-    min-height: auto;
   }
 
   .container {
@@ -376,8 +373,8 @@
 
   .accordionContainer {
     flex-direction: column;
-    height: 65vh;
-    min-height: 420px;
+    height: 75vh;
+    min-height: 550px;
     max-height: none;
     gap: 0.5rem;
   }
