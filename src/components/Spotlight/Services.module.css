@@ -175,109 +175,211 @@
     padding: 1.5rem 5% 1rem;
   }
 }
-
-/* ===== SERVICE CARD ===== */
+/* ===== SERVICE CARD — Premium Editorial ===== */
 
 .serviceCard {
   width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
   position: relative;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1.25rem;
-  border-radius: 2rem;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(10px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  overflow: hidden;
 }
 
 .serviceCard:hover {
-  border-color: #E4C057;
-  transform: translateY(-8px);
-  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-10px) scale(1.02);
   box-shadow:
-    0 20px 40px rgba(228, 192, 87, 0.08),
-    0 0 0 1px rgba(228, 192, 87, 0.15),
-    inset 0 1px 0 rgba(228, 192, 87, 0.1);
+    0 30px 60px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(228, 192, 87, 0.08);
 }
 
+/* Animated gradient border glow */
+.cardBorderGlow {
+  position: absolute;
+  inset: -2px;
+  z-index: 0;
+  opacity: 0.4;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(228, 192, 87, 0.2) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(228, 192, 87, 0.1) 70%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+}
+
+.serviceCard:hover .cardBorderGlow {
+  opacity: 1;
+  background: linear-gradient(
+    135deg,
+    rgba(228, 192, 87, 0.6) 0%,
+    rgba(228, 192, 87, 0.1) 35%,
+    rgba(228, 192, 87, 0.35) 65%,
+    rgba(228, 192, 87, 0.05) 100%
+  );
+}
+
+/* Image wrapper — compact landscape, capped height */
 .imageWrapper {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
+  max-height: 55vh;
   overflow: hidden;
-  margin-bottom: 1rem;
   position: relative;
   background: #111;
 }
 
-.shapeArch {
-  border-radius: 2.5rem 2.5rem 0.75rem 0.75rem;
+/* Universal Premium Shape */
+.shapeDiamond, .shapeWave {
+  border-radius: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.serviceCard:hover .shapeArch {
+.shapeDiamond ~ .cardBorderGlow,
+.shapeWave ~ .cardBorderGlow {
+  border-radius: 1.5rem;
+}
+
+.serviceCard:hover .shapeDiamond,
+.serviceCard:hover .shapeWave {
   border-color: rgba(228, 192, 87, 0.4);
-  box-shadow: inset 0 0 30px rgba(228, 192, 87, 0.06);
+  box-shadow: inset 0 0 40px rgba(228, 192, 87, 0.08);
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+  filter: brightness(0.85) saturate(1.1);
 }
 
-.imageWrapper:hover .image {
-  transform: scale(1.1);
+.serviceCard:hover .image {
+  transform: scale(1.08);
+  filter: brightness(0.75) saturate(1.2);
 }
 
-/* View Gallery overlay — full image hover on desktop, always-visible tap area on mobile */
-.viewOverlay {
+/* Cinematic gradient overlay */
+.cinemaOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, transparent 50%);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.4) 40%,
+    rgba(0, 0, 0, 0.1) 60%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.serviceCard:hover .cinemaOverlay {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.55) 45%,
+    rgba(0, 0, 0, 0.15) 65%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+}
+
+/* Content overlay — positioned at bottom */
+.cardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  padding: 1.5rem 1.75rem;
+}
+
+.contentInner {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 1rem;
-  opacity: 1;
-  transition: opacity 0.4s ease;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.viewLabel {
-  font-family: var(--font-accent);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #fff;
-  background: rgba(228, 192, 87, 0.85);
-  color: #000;
-  padding: 0.4rem 1rem;
-  border-radius: 99px;
-  transition: all 0.3s ease;
+/* Gold shimmer line */
+.shimmerLine {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #E4C057, rgba(228, 192, 87, 0.3));
+  border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@media (min-width: 768px) {
-  .viewOverlay {
-    opacity: 0;
-  }
-  .serviceCard:hover .viewOverlay {
-    opacity: 1;
-  }
+.serviceCard:hover .shimmerLine {
+  width: 70px;
+  background: linear-gradient(90deg, #E4C057, rgba(228, 192, 87, 0.6));
 }
 
+/* Title */
 .serviceTitle {
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
   color: #fff;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   margin: 0;
-  text-align: center;
   text-transform: uppercase;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+.serviceCard:hover .serviceTitle {
+  color: #E4C057;
+}
+
+/* Description */
+.serviceDesc {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+  max-width: 340px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.serviceCard:hover .serviceDesc {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Explore CTA */
+.exploreCta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-accent);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #E4C057;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+}
+
+.serviceCard:hover .exploreCta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.exploreCta svg {
+  transition: transform 0.3s ease;
+}
+
+.serviceCard:hover .exploreCta svg {
+  transform: translate(3px, -3px);
 }
 
 /* ===== MOBILE DOTS ===== */

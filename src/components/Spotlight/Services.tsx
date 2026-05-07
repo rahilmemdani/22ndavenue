@@ -15,8 +15,10 @@ interface GalleryMedia {
 const services = [
   {
     title: "LIVE EVENTS",
+    description: "Crafting unforgettable moments that captivate audiences and create lasting impressions across the global stage.",
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
     shape: "shapeArch",
+    num: "01",
     gallery: [
       { type: "image", url: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=800" },
       { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800" },
@@ -28,8 +30,10 @@ const services = [
   },
   {
     title: "BRAND COLLABS",
+    description: "Strategic partnerships that align talent with brands, creating authentic connections and measurable impact.",
     image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop",
     shape: "shapeArch",
+    num: "02",
     gallery: [
       { type: "image", url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800" },
       { type: "image", url: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800" },
@@ -125,7 +129,8 @@ export function Services() {
         <div className={styles.header}>
           <ScrollReveal direction="up">
             <h2 className={styles.sectionTitle}>
-              Where excellence <span className={styles.goldText}>Runs The Show</span>
+              Where Excellence<br />
+              <span className={styles.goldText}>Runs The Show</span>
             </h2>
           </ScrollReveal>
         </div>
@@ -163,13 +168,30 @@ export function Services() {
                     className={styles.serviceCard}
                     onClick={() => setSelectedService(service)}
                   >
+                    {/* Animated gradient border */}
+                    <div className={styles.cardBorderGlow}></div>
+
+                    {/* Image with cinematic overlay */}
                     <div className={`${styles.imageWrapper} ${styles[service.shape]}`}>
                       <img src={service.image} alt={service.title} className={styles.image} />
-                      <div className={styles.viewOverlay}>
-                        <span className={styles.viewLabel}>View Gallery</span>
+                      <div className={styles.cinemaOverlay}></div>
+                      
+                      {/* Content overlaid on image */}
+                      <div className={styles.cardContent}>
+                        <div className={styles.contentInner}>
+                          <div className={styles.shimmerLine}></div>
+                          <h3 className={styles.serviceTitle}>{service.title}</h3>
+                          <p className={styles.serviceDesc}>{service.description}</p>
+                          <div className={styles.exploreCta}>
+                            <span>Explore Gallery</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <line x1="7" y1="17" x2="17" y2="7"></line>
+                              <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <h3 className={styles.serviceTitle}>{service.title}</h3>
                   </div>
                 </ScrollReveal>
               </div>
