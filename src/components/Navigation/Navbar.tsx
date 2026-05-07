@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, X, ChevronDown, Rocket, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useMotionValue, useSpring } from "framer-motion";
+import { useContactModal } from "@/components/ui/ContactModalContext";
 import styles from "./Navbar.module.css";
 
 const SocialLink = ({ href, icon: Icon, label, colorClass }: { href: string; icon: any; label: string; colorClass: string }) => {
@@ -70,6 +71,7 @@ export function Navbar() {
   const [isForceOpenAtTop, setIsForceOpenAtTop] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("/");
   const pathname = usePathname() || "/";
+  const { openModal } = useContactModal();
   const isTransparentPage = ["/"].includes(pathname);
   const isHeroVideoPage = ["/"].includes(pathname);
   const shouldHideDesktopNavAtTop = isHeroVideoPage && !isScrolled && !isForceOpenAtTop;
@@ -312,9 +314,9 @@ export function Navbar() {
 
           {/* CTA */}
           <div className={styles.ctaWrapper}>
-            <Link href="/connect" className={styles.sayHelloBtn}>
+            <button onClick={openModal} className={styles.sayHelloBtn}>
               Let&apos;s Talk
-            </Link>
+            </button>
           </div>
         </motion.div>
 
@@ -431,9 +433,9 @@ export function Navbar() {
 
                 <div className={styles.mobileDrawerFooter}>
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-                    <Link href="/connect" onClick={() => setIsMobileMenuOpen(false)} className={styles.mobileSayHelloBtn}>
+                    <button onClick={() => { setIsMobileMenuOpen(false); openModal(); }} className={styles.mobileSayHelloBtn}>
                       Let&apos;s Talk <Rocket className={styles.rocketIcon} />
-                    </Link>
+                    </button>
 
                     <div className={styles.socialsRow}>
                       <SocialLink href="#" icon={Facebook} label="Facebook" colorClass={styles.fbColor} />

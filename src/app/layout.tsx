@@ -3,6 +3,8 @@ import { Playfair_Display, Inter, Space_Grotesk } from "next/font/google";
 import { Navbar } from "@/components/Navigation/Navbar";
 import { Footer } from "@/components/Footer/Footer";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { ContactModalProvider } from "@/components/ui/ContactModalContext";
+import { ContactModal } from "@/components/Spotlight/ContactModal";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -75,10 +77,13 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} ${spaceGrotesk.variable}`}
     >
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <ContactModalProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <ContactModal />
+          <WhatsAppButton />
+        </ContactModalProvider>
       </body>
     </html>
   );

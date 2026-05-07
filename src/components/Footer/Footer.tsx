@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useContactModal } from "@/components/ui/ContactModalContext";
 import styles from "./Footer.module.css";
 
 const quickLinks = [
@@ -7,7 +10,6 @@ const quickLinks = [
   { href: "/backstage", label: "The Backstage" },
   { href: "/magic", label: "The Magic We Make" },
   { href: "/hype", label: "The Hype Corner" },
-  { href: "/connect", label: "Let's Connect" },
 ];
 
 const services = [
@@ -25,6 +27,8 @@ const socials = [
 ];
 
 export function Footer() {
+  const { openModal } = useContactModal();
+
   return (
     <footer className={styles.footer} id="site-footer">
       {/* Top CTA Strip */}
@@ -36,9 +40,9 @@ export function Footer() {
           <p className={styles.ctaSub}>
             Let&apos;s turn your vision into an unforgettable moment.
           </p>
-          <Link href="/connect" className={styles.ctaButton} id="footer-cta">
+          <button onClick={openModal} className={styles.ctaButton} id="footer-cta">
             Start a Conversation
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -86,6 +90,11 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <button onClick={openModal} className={`${styles.link} ${styles.linkBtn}`}>
+                  Let&apos;s Connect
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -134,3 +143,4 @@ export function Footer() {
     </footer>
   );
 }
+
