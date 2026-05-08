@@ -55,11 +55,11 @@ export default async function HomePage() {
         <TransformationHero data={heroData} />
       </div>
       
-      {/* First Card Stack: Behind the Spotlight + Stats - Slides OVER the video */}
-      <StackedCard zIndex={2}>
+      {/* Normal Scrolling Section: Behind the Spotlight + Stats */}
+      <div style={{ position: 'relative', zIndex: 2, backgroundColor: '#050505' }}>
         <AboutHome data={aboutData} />
         <StatsBand />
-      </StackedCard>
+      </div>
 
       {/* Normal Scrolling Sections: Our Collabs & Mic Drop Moments */}
       <div style={{ position: 'relative', zIndex: 3, backgroundColor: '#050505' }}>

@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 0;
+  padding: 3rem 0;
 }
 
 /* Subtle warm ambient glow */
@@ -57,7 +57,7 @@
 /* ===== TITLE ===== */
 
 .titleBlock {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   text-align: center;
   width: 100%;
 }
@@ -67,9 +67,9 @@
   font-size: clamp(2rem, 5vw, 3.2rem);
   color: #fff;
   font-weight: 900;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   margin: 0;
-  line-height: 1.1;
+  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -286,7 +286,7 @@
   padding-left: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 /* Vertical gold accent bar */
@@ -351,7 +351,7 @@
 
 @media (max-width: 1024px) {
   .section {
-    padding: 6rem 0 4rem;
+    padding: 4rem 0 3rem;
     align-items: flex-start;
   }
 
@@ -383,7 +383,7 @@
 
 @media (max-width: 480px) {
   .section {
-    padding: 5rem 0 3rem;
+    padding: 4rem 0 2rem;
   }
 
   .container {

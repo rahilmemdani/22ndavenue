@@ -68,8 +68,7 @@ export function AboutHome({ data }: AboutHomeProps) {
         {/* Large editorial title — spans full width */}
         <ScrollReveal direction="up" className={styles.titleBlock}>
           <h2 className={styles.title}>
-            BEHIND THE<br />
-            <span className={styles.goldText}>SPOTLIGHT</span>
+            BEHIND THE <span className={styles.goldText}>SPOTLIGHT</span>
           </h2>
           {/* <div className={styles.titleUnderline}></div> */}
         </ScrollReveal>
