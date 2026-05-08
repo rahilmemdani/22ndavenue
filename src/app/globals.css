@@ -5,9 +5,9 @@
 /* ---------- CSS Custom Properties ---------- */
 :root {
   /* Backgrounds */
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #111111;
-  --bg-elevated: #1A1A1A;
+  --bg-primary: #000000;
+  --bg-secondary: #0A0A0A;
+  --bg-elevated: #111111;
   --bg-surface: #141414;
 
   /* Text */

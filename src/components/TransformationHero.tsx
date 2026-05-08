@@ -37,46 +37,41 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
 
 
   useEffect(() => {
-    const checkScrollAndSkip = () => {
-      if (window.scrollY > 50) {
-        setIsSplit(true);
-        return true;
-      }
-      return false;
-    };
-
-    // Check immediately
-    if (checkScrollAndSkip()) return;
-
-    // Also check after a small delay to catch browser scroll restoration
-    const scrollRestorationTimer = setTimeout(() => {
-      checkScrollAndSkip();
-    }, 100);
+    // Prevent browser from restoring previous scroll position on reload
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    
+    // Force scroll to top immediately on load
+    window.scrollTo(0, 0);
 
     const splitTimer = setTimeout(() => {
       setIsSplit(true);
+      // Restore auto scroll restoration after animation if desired, or leave manual
     }, 3800);
 
-    return () => {
-      clearTimeout(scrollRestorationTimer);
-      clearTimeout(splitTimer);
-    };
+    return () => clearTimeout(splitTimer);
   }, []);
 
   useEffect(() => {
-    // Strictly lock scroll ONLY if we are at the top AND the animation is active
-    const shouldLock = !isSplit && window.scrollY < 20;
-
-    if (shouldLock) {
+    // Strictly lock scroll while the animation is active
+    if (!isSplit) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      // Prevent mobile touch scrolling
+      document.body.style.touchAction = "none";
       document.body.classList.add("hero-animating");
     } else {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.touchAction = "";
       document.body.classList.remove("hero-animating");
     }
 
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.touchAction = "";
       document.body.classList.remove("hero-animating");
     };
   }, [isSplit]);
