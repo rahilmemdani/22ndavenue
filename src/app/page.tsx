@@ -7,6 +7,7 @@ import { FeaturedArtists } from "@/components/Spotlight/FeaturedArtists";
 import { MicDropMoments } from "@/components/Spotlight/MicDropMoments";
 import { Testimonials } from "@/components/Spotlight/Testimonials";
 import { GlobalFootprint } from "@/components/Spotlight/GlobalFootprint";
+import { StackedCard } from "@/components/ui/StackedCard";
 
 import { client } from "@/sanity/client";
 import {
@@ -48,16 +49,35 @@ export default async function HomePage() {
     console.log("Skipping Sanity fetch because NEXT_PUBLIC_SANITY_PROJECT_ID is not set or is 'your-project-id'. Using local fallback data.");
   }
   return (
-    <main>
+    <main style={{ position: 'relative' }}>
       <TransformationHero data={heroData} />
-      <AboutHome data={aboutData} />
-      <StatsBand />
-      <FeaturedArtists data={collabsData} />
-      <MicDropMoments data={momentsData} />
-      <Testimonials data={testimonialsData} />
+      
+      {/* First Card Stack */}
+      <StackedCard zIndex={10}>
+        <AboutHome data={aboutData} />
+        <StatsBand />
+      </StackedCard>
+
+      {/* Normal Scrolling Sections */}
+      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#050505' }}>
+        <FeaturedArtists data={collabsData} />
+        <MicDropMoments data={momentsData} />
+      </div>
+
+      {/* Second Card Stack Sequence */}
+      <StackedCard zIndex={30}>
+        <Testimonials data={testimonialsData} />
+      </StackedCard>
+      
       {/* <Values /> */}
-      <Services data={servicesData} />
-      <GlobalFootprint />
+
+      <StackedCard zIndex={40}>
+        <Services data={servicesData} />
+      </StackedCard>
+
+      <StackedCard zIndex={50}>
+        <GlobalFootprint />
+      </StackedCard>
     </main>
   );
 }
