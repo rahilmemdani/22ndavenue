@@ -2,14 +2,14 @@
 
 .section {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   background-color: #050505;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 0;
-  touch-action: pan-y;
+  padding: 0rem 0 3rem;
+  overflow: hidden;
 }
 
 .container {
@@ -18,7 +18,7 @@
   padding: 0 5%;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1.5rem;
   z-index: 10;
   touch-action: pan-y;
 }
@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   text-align: center;
 }
 
@@ -53,7 +53,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .navControls {
@@ -104,7 +104,7 @@
   align-items: flex-start;
   gap: 1rem;
   width: 100%;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
@@ -131,7 +131,7 @@
 }
 
 .pillDown {
-  transform: translateY(4rem);
+  transform: translateY(2.5rem);
 }
 
 /* ===== PILL CARD ===== */
@@ -155,7 +155,7 @@
 .mediaArea {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1.25;
   overflow: hidden;
 }
 

@@ -60,23 +60,21 @@ export default async function HomePage() {
         <AboutHome data={aboutData} />
         <StatsBand />
       </div>
-
       {/* Normal Scrolling Sections: Our Collabs & Mic Drop Moments */}
       <div style={{ position: 'relative', zIndex: 3, backgroundColor: '#050505' }}>
         <FeaturedArtists data={collabsData} />
         <MicDropMoments data={momentsData} />
       </div>
 
-      {/* Normal Scrolling Section: Testimonials */}
-      <div style={{ position: 'relative', zIndex: 4, backgroundColor: '#050505' }}>
+      {/* Card Stack: Testimonials (THE BUZZ IS REAL) */}
+      <StackedCard zIndex={4}>
         <Testimonials data={testimonialsData} />
-        {/* <Values /> */}
-      </div>
-
-      {/* Card Stack: Our Services */}
-      <StackedCard zIndex={5}>
-        <Services data={servicesData} />
       </StackedCard>
+
+      {/* Normal Scrolling Section: Our Services */}
+      <div style={{ position: 'relative', zIndex: 5, backgroundColor: '#050505' }}>
+        <Services data={servicesData} />
+      </div>
 
       {/* Final Card Stack: Global Footprint */}
       <StackedCard zIndex={6}>
