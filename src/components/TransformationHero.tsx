@@ -177,6 +177,7 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
             src={(isMobile && data?.mobileVideoUrl ? data.mobileVideoUrl : data?.desktopVideoUrl) || "/assets/hero/Intro AV.mp4"}
             poster={data?.fallbackImage}
             className={styles.showcaseVideo}
+            autoPlay
             loop
             muted={isMuted}
             playsInline
