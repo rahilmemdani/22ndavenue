@@ -14,7 +14,20 @@ interface Testimonial {
   video?: string;   // Video-only testimonials
 }
 
-const testimonials: Testimonial[] = [
+interface TestimonialsProps {
+  data?: {
+    buzzList: {
+      authorName: string;
+      authorTitle: string;
+      authorImage: string;
+      hasVideo: boolean;
+      videoUrl?: string;
+      text?: string;
+    }[];
+  };
+}
+
+const DEFAULT_TESTIMONIALS: Testimonial[] = [
   {
     name: "Rahul Sharma",
     role: "Event Director",
@@ -79,7 +92,17 @@ const testimonials: Testimonial[] = [
 
 
 
-export function Testimonials() {
+export function Testimonials({ data }: TestimonialsProps) {
+  const testimonials: Testimonial[] = data?.buzzList?.length 
+    ? data.buzzList.map(item => ({
+        name: item.authorName,
+        role: item.authorTitle,
+        image: item.authorImage,
+        quote: !item.hasVideo ? item.text : undefined,
+        video: item.hasVideo ? item.videoUrl : undefined,
+      }))
+    : DEFAULT_TESTIMONIALS;
+
   const [currentPage, setCurrentPage] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [videoModal, setVideoModal] = useState<string | null>(null);

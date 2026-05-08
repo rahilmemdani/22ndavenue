@@ -6,7 +6,23 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./MicDropMoments.module.css";
 
-const showcaseCategories = [
+interface MicDropMomentsProps {
+  data?: {
+    momentsList: {
+      title: string;
+      category: string;
+      placeholderImage: string;
+      gallery: {
+        type: string;
+        image?: string;
+        videoUrl?: string;
+        thumbnail?: string;
+      }[];
+    }[];
+  };
+}
+
+const DEFAULT_CATEGORIES = [
   {
     name: "Corporate Events",
     tiles: [
@@ -120,7 +136,35 @@ const showcaseCategories = [
   }
 ];
 
-export function MicDropMoments() {
+export function MicDropMoments({ data }: MicDropMomentsProps) {
+  let showcaseCategories = DEFAULT_CATEGORIES;
+
+  if (data?.momentsList && data.momentsList.length > 0) {
+    const grouped = data.momentsList.reduce((acc, curr) => {
+      const cat = curr.category || 'Other';
+      if (!acc[cat]) {
+        acc[cat] = { name: cat, tiles: [] };
+      }
+      
+      const parts = curr.title ? curr.title.split(' ') : ['Moment', ''];
+      const title = parts[0];
+      const subtitle = parts.slice(1).join(' ') || 'EXPERIENCE';
+      const firstVideo = curr.gallery?.find(g => g.type === 'video')?.videoUrl;
+
+      acc[cat].tiles.push({
+        id: curr.title,
+        title: title,
+        subtitle: subtitle,
+        verticalText: curr.title,
+        image: curr.placeholderImage,
+        video: firstVideo
+      });
+      return acc;
+    }, {} as Record<string, any>);
+    
+    showcaseCategories = Object.values(grouped);
+  }
+
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);

@@ -6,7 +6,17 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./FeaturedArtists.module.css";
 
-const baseArtists = [
+interface FeaturedArtistsProps {
+  data?: {
+    artists: {
+      name: string;
+      image: string;
+      link?: string;
+    }[];
+  };
+}
+
+const DEFAULT_ARTISTS = [
   { name: "Artful Dodger", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop" },
   { name: "Bryson Tiller", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop" },
   { name: "Chris Brown", image: "https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=600&auto=format&fit=crop" },
@@ -19,16 +29,19 @@ const baseArtists = [
   { name: "Future", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop" }
 ];
 
-// Duplicate 3 times to create 30 artists total
-const allArtists = [...baseArtists, ...baseArtists, ...baseArtists].map((artist, idx) => ({
-  ...artist,
-  uniqueKey: `${artist.name}-${idx}`
-}));
+export function FeaturedArtists({ data }: FeaturedArtistsProps) {
+  const baseArtists = data?.artists?.length ? data.artists : DEFAULT_ARTISTS;
+  
+  // Create enough artists to fill the grid if needed, or just use what we have
+  const allArtists = baseArtists.length > 0 ? [...baseArtists, ...baseArtists, ...baseArtists].map((artist, idx) => ({
+    ...artist,
+    uniqueKey: `${artist.name}-${idx}`
+  })) : [];
 
-const ITEMS_PER_SLIDE = 10;
-const totalSlides = Math.ceil(allArtists.length / ITEMS_PER_SLIDE);
 
-export function FeaturedArtists() {
+  const ITEMS_PER_SLIDE = 10;
+  const totalSlides = Math.max(1, Math.ceil(allArtists.length / ITEMS_PER_SLIDE));
+  
   const [currentSlide, setCurrentSlide] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 

@@ -321,6 +321,32 @@
   margin: 0;
 }
 
+.portableTextWrapper p:first-of-type {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  line-height: 1.55;
+  color: #FFFFFF;
+  font-weight: 500;
+  margin: 0 0 1.25rem 0;
+}
+
+.portableTextWrapper p {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  line-height: 1.7;
+  color: rgb(190, 190, 190);
+  margin: 0 0 1.25rem 0;
+}
+
+.portableTextWrapper p:last-child {
+  margin-bottom: 0;
+}
+
+.portableTextWrapper strong {
+  color: #E4C057;
+  font-weight: inherit;
+}
+
 /* ===== TABLET ===== */
 
 @media (max-width: 1024px) {

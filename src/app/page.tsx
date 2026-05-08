@@ -7,17 +7,49 @@ import { FeaturedArtists } from "@/components/Spotlight/FeaturedArtists";
 import { MicDropMoments } from "@/components/Spotlight/MicDropMoments";
 import { Testimonials } from "@/components/Spotlight/Testimonials";
 
-export default function HomePage() {
+import { client } from "@/sanity/client";
+import {
+  heroQuery,
+  aboutQuery,
+  collabsQuery,
+  momentsQuery,
+  testimonialsQuery,
+  servicesQuery
+} from "@/sanity/queries";
+
+export default async function HomePage() {
+  // Fetch all data concurrently
+  let heroData, aboutData, collabsData, momentsData, testimonialsData, servicesData;
+
+  try {
+    [
+      heroData,
+      aboutData,
+      collabsData,
+      momentsData,
+      testimonialsData,
+      servicesData
+    ] = await Promise.all([
+      client.fetch(heroQuery),
+      client.fetch(aboutQuery),
+      client.fetch(collabsQuery),
+      client.fetch(momentsQuery),
+      client.fetch(testimonialsQuery),
+      client.fetch(servicesQuery)
+    ]);
+  } catch (error) {
+    console.error("Failed to fetch from Sanity (make sure NEXT_PUBLIC_SANITY_PROJECT_ID is set):", error);
+  }
   return (
     <main>
-      <TransformationHero />
-      <AboutHome />
+      <TransformationHero data={heroData} />
+      <AboutHome data={aboutData} />
       <StatsBand />
-      <FeaturedArtists />
-      <MicDropMoments />
-      <Testimonials />
+      <FeaturedArtists data={collabsData} />
+      <MicDropMoments data={momentsData} />
+      <Testimonials data={testimonialsData} />
       {/* <Values /> */}
-      <Services />
+      <Services data={servicesData} />
     </main>
   );
 }

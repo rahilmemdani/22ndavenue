@@ -6,7 +6,20 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./AboutHome.module.css";
 
-const FOUNDERS = [
+import { PortableText } from '@portabletext/react';
+
+interface AboutHomeProps {
+  data?: {
+    directors: {
+      name: string;
+      title: string;
+      image: string;
+    }[];
+    story: any;
+  };
+}
+
+const DEFAULT_FOUNDERS = [
   {
     name: "Aditya Mehra",
     title: "Director",
@@ -24,22 +37,24 @@ const FOUNDERS = [
   }
 ];
 
-export function AboutHome() {
+export function AboutHome({ data }: AboutHomeProps) {
+  const founders = data?.directors?.length ? data.directors : DEFAULT_FOUNDERS;
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % FOUNDERS.length);
+      setCurrentSlide((prev) => (prev + 1) % founders.length);
     }, 2000);
     return () => clearInterval(timer);
-  }, []);
+  }, [founders.length]);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % FOUNDERS.length);
+    setCurrentSlide((prev) => (prev + 1) % founders.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + FOUNDERS.length) % FOUNDERS.length);
+    setCurrentSlide((prev) => (prev - 1 + founders.length) % founders.length);
   };
 
   return (
@@ -53,7 +68,8 @@ export function AboutHome() {
         {/* Large editorial title — spans full width */}
         <ScrollReveal direction="up" className={styles.titleBlock}>
           <h2 className={styles.title}>
-            BEHIND THE <span className={styles.goldText}>SPOTLIGHT</span>
+            BEHIND THE<br />
+            <span className={styles.goldText}>SPOTLIGHT</span>
           </h2>
           {/* <div className={styles.titleUnderline}></div> */}
         </ScrollReveal>
@@ -74,7 +90,7 @@ export function AboutHome() {
                     className={styles.carouselTrack}
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                   >
-                    {FOUNDERS.map((founder, idx) => (
+                    {founders.map((founder, idx) => (
                       <div key={idx} className={styles.founderSlide}>
                         <img
                           src={founder.image}
@@ -89,8 +105,8 @@ export function AboutHome() {
                 {/* Founder info — overlaid at bottom */}
                 <div className={styles.founderInfoBar}>
                   <div className={styles.founderMeta}>
-                    <h4 className={styles.founderName}>{FOUNDERS[currentSlide].name}</h4>
-                    <p className={styles.founderRole}>{FOUNDERS[currentSlide].title}</p>
+                    <h4 className={styles.founderName}>{founders[currentSlide]?.name}</h4>
+                    <p className={styles.founderRole}>{founders[currentSlide]?.title}</p>
                   </div>
                   <div className={styles.navControls}>
                     <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous">
@@ -99,7 +115,7 @@ export function AboutHome() {
                     <div className={styles.slideCounter}>
                       <span className={styles.currentNum}>0{currentSlide + 1}</span>
                       <span className={styles.dividerSlash}>/</span>
-                      <span className={styles.totalNum}>0{FOUNDERS.length}</span>
+                      <span className={styles.totalNum}>0{founders.length}</span>
                     </div>
                     <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next">
                       <ArrowRight size={16} />
@@ -115,15 +131,23 @@ export function AboutHome() {
             <ScrollReveal delay={300} direction="up">
               <div className={styles.storyInner}>
                 <div className={styles.storyAccent}></div>
-                <p className={styles.leadCopy}>
-                  22nd Avenue was born from a vision to craft world-class experiences in entertainment, founded by Aditya Mehra, Daryl Sheldon and Manoj Gopalani.
-                </p>
-                <p className={styles.bodyCopy}>
-                  Under <span className={styles.goldText}>Manoj&apos;s leadership</span>, what started as an idea soon evolved into a <span className={styles.goldText}>trusted name</span> in an ever-evolving industry, one that understands both the <span className={styles.goldText}>art and the precision</span> behind great entertainment.
-                </p>
-                <p className={styles.bodyCopy}>
-                  Our mission is simple: to <span className={styles.goldText}>redefine industry norms</span> and <span className={styles.goldText}>stay ahead of the curve</span>. Over the years we&apos;ve built <span className={styles.goldText}>lasting relationships</span> with <span className={styles.goldText}>renowned talent</span> across the global stage.
-                </p>
+                {data?.story ? (
+                  <div className={styles.portableTextWrapper}>
+                    <PortableText value={data.story} />
+                  </div>
+                ) : (
+                  <>
+                    <p className={styles.leadCopy}>
+                      22nd Avenue was born from a vision to craft world-class experiences in entertainment, founded by Aditya Mehra, Daryl Sheldon and Manoj Gopalani.
+                    </p>
+                    <p className={styles.bodyCopy}>
+                      Under <span className={styles.goldText}>Manoj&apos;s leadership</span>, what started as an idea soon evolved into a <span className={styles.goldText}>trusted name</span> in an ever-evolving industry, one that understands both the <span className={styles.goldText}>art and the precision</span> behind great entertainment.
+                    </p>
+                    <p className={styles.bodyCopy}>
+                      Our mission is simple: to <span className={styles.goldText}>redefine industry norms</span> and <span className={styles.goldText}>stay ahead of the curve</span>. Over the years we&apos;ve built <span className={styles.goldText}>lasting relationships</span> with <span className={styles.goldText}>renowned talent</span> across the global stage.
+                    </p>
+                  </>
+                )}
               </div>
             </ScrollReveal>
           </div>

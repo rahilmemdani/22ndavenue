@@ -12,7 +12,24 @@ interface GalleryMedia {
   thumbnail?: string;
 }
 
-const services = [
+interface ServicesProps {
+  data?: {
+    servicesList: {
+      title: string;
+      description: string;
+      image: string;
+      shape: string;
+      gallery: {
+        type: string;
+        image?: string;
+        videoUrl?: string;
+        thumbnail?: string;
+      }[];
+    }[];
+  };
+}
+
+const DEFAULT_SERVICES = [
   {
     title: "LIVE EVENTS",
     description: "Crafting unforgettable moments that captivate audiences and create lasting impressions across the global stage.",
@@ -45,7 +62,19 @@ const services = [
   }
 ];
 
-export function Services() {
+export function Services({ data }: ServicesProps) {
+  const services = data?.servicesList?.length 
+    ? data.servicesList.map(s => ({
+        ...s,
+        shape: s.shape || "shapeDiamond",
+        gallery: (s.gallery || []).map(g => ({
+          type: g.type as "image" | "video",
+          url: (g.type === "video" ? g.videoUrl : g.image) || "",
+          thumbnail: g.thumbnail
+        }))
+      }))
+    : DEFAULT_SERVICES;
+
   const carouselRef = useRef<HTMLDivElement>(null);
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
   const [mobileCardIndex, setMobileCardIndex] = useState(0);

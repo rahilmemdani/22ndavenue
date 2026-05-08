@@ -5,11 +5,36 @@ import { useState, useEffect, useRef } from "react";
 import { Volume2, VolumeX, Maximize } from "lucide-react";
 import styles from "./TransformationHero.module.css";
 
-const TransformationHero = () => {
+interface TransformationHeroProps {
+  data?: {
+    desktopVideoUrl?: string;
+    mobileVideoUrl?: string;
+    fallbackImage?: string;
+  };
+}
+
+const TransformationHero = ({ data }: TransformationHeroProps) => {
   const [isSplit, setIsSplit] = useState(false);
   const [isMuted, setIsMuted] = useState(true); // Auto-play requires mute initially
+  const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Play video only after animation completes (isSplit becomes true)
+  useEffect(() => {
+    if (isSplit && videoRef.current) {
+      // Start playing when the split animation completes
+      videoRef.current.play().catch(err => console.log("Play prevented:", err));
+    }
+  }, [isSplit]);
+
 
   useEffect(() => {
     const checkScrollAndSkip = () => {
@@ -125,7 +150,7 @@ const TransformationHero = () => {
 
   return (
     <section ref={containerRef} className={`${styles.heroContainer} ${isSplit ? styles.split : ""}`}>
-      
+
       {/* Left Panel: Cream background, holds the typography */}
       <div className={styles.leftPanel}>
         <div className={styles.ambientOrb2}></div>
@@ -149,28 +174,25 @@ const TransformationHero = () => {
         <div className={styles.videoContainer}>
           <video
             ref={videoRef}
-            src="/assets/hero/showcase.mp4"
+            src={(isMobile && data?.mobileVideoUrl ? data.mobileVideoUrl : data?.desktopVideoUrl) || "/assets/hero/Intro AV.mp4"}
+            poster={data?.fallbackImage}
             className={styles.showcaseVideo}
-            autoPlay
             loop
             muted={isMuted}
             playsInline
           />
         </div>
-        
+
         <div className={styles.overlay} />
-        
+
         {/* Video Controls Overlay */}
         <div className={styles.videoControls}>
           <button onClick={toggleMute} className={styles.controlBtn} aria-label="Toggle Mute">
             {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
-          <button onClick={toggleFullscreen} className={styles.controlBtn} aria-label="Fullscreen">
-            <Maximize size={20} />
-          </button>
         </div>
 
-        <span className={styles.reelLabel}>Showcase Reel</span>
+        {/* <span className={styles.reelLabel}>Showcase Reel</span> */}
       </div>
 
     </section>
