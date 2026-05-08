@@ -32,7 +32,7 @@ interface ServicesProps {
 const DEFAULT_SERVICES = [
   {
     title: "LIVE EVENTS",
-    description: "Crafting unforgettable moments that captivate audiences and create lasting impressions across the global stage.",
+    // description: "Crafting unforgettable moments that captivate audiences and create lasting impressions across the global stage.",
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
     shape: "shapeArch",
     num: "01",
@@ -47,7 +47,7 @@ const DEFAULT_SERVICES = [
   },
   {
     title: "BRAND COLLABS",
-    description: "Strategic partnerships that align talent with brands, creating authentic connections and measurable impact.",
+    // description: "Strategic partnerships that align talent with brands, creating authentic connections and measurable impact.",
     image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop",
     shape: "shapeArch",
     num: "02",
@@ -63,16 +63,16 @@ const DEFAULT_SERVICES = [
 ];
 
 export function Services({ data }: ServicesProps) {
-  const services = data?.servicesList?.length 
+  const services = data?.servicesList?.length
     ? data.servicesList.map(s => ({
-        ...s,
-        shape: s.shape || "shapeDiamond",
-        gallery: (s.gallery || []).map(g => ({
-          type: g.type as "image" | "video",
-          url: (g.type === "video" ? g.videoUrl : g.image) || "",
-          thumbnail: g.thumbnail
-        }))
+      ...s,
+      shape: s.shape || "shapeDiamond",
+      gallery: (s.gallery || []).map(g => ({
+        type: g.type as "image" | "video",
+        url: (g.type === "video" ? g.videoUrl : g.image) || "",
+        thumbnail: g.thumbnail
       }))
+    }))
     : DEFAULT_SERVICES;
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -204,20 +204,21 @@ export function Services({ data }: ServicesProps) {
                     <div className={`${styles.imageWrapper} ${styles[service.shape]}`}>
                       <img src={service.image} alt={service.title} className={styles.image} />
                       <div className={styles.cinemaOverlay}></div>
-                      
+
                       {/* Content overlaid on image */}
                       <div className={styles.cardContent}>
                         <div className={styles.contentInner}>
                           <div className={styles.shimmerLine}></div>
-                          <h3 className={styles.serviceTitle}>{service.title}</h3>
-                          <p className={styles.serviceDesc}>{service.description}</p>
-                          <div className={styles.exploreCta}>
-                            <span>Explore Gallery</span>
+                          <h3 className={styles.serviceTitle}>{service.title}
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <line x1="7" y1="17" x2="17" y2="7"></line>
                               <polyline points="7 7 17 7 17 17"></polyline>
                             </svg>
-                          </div>
+                          </h3>
+                          {/* <p className={styles.serviceDesc}>{service.description}</p> */}
+                          {/* <div className={styles.exploreCta}>
+                            <span>Explore Gallery</span>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -278,11 +279,10 @@ export function Services({ data }: ServicesProps) {
                 return (
                   <div
                     key={rowIdx}
-                    className={`${styles.masonryRow} ${
-                      row.count === 1 ? styles.rowHero :
+                    className={`${styles.masonryRow} ${row.count === 1 ? styles.rowHero :
                       row.count === 2 ? styles.rowDuo :
-                      styles.rowTriple
-                    }`}
+                        styles.rowTriple
+                      }`}
                   >
                     {items.map((item, itemIdx) => {
                       const globalIdx = row.start + itemIdx;
@@ -316,7 +316,7 @@ export function Services({ data }: ServicesProps) {
                           {/* Video indicator */}
                           {item.type === "video" && (
                             <div className={styles.videoIndicator}>
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3" /></svg>
                             </div>
                           )}
                         </div>

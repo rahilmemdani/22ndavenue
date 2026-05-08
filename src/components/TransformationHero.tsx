@@ -84,15 +84,21 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
-            // Mute video if user scrolls past the hero section
+            // Pause and Mute video if user scrolls past 80% of the hero section
             if (videoRef.current) {
+              videoRef.current.pause();
               videoRef.current.muted = true;
               setIsMuted(true);
+            }
+          } else {
+            // Resume playing if it comes back into view
+            if (videoRef.current && isSplit) {
+              videoRef.current.play().catch(() => {});
             }
           }
         });
       },
-      { threshold: 0.1 } // Trigger when 90% out of view
+      { threshold: 0.2 } // Trigger when 80% out of view (20% remaining)
     );
 
     observer.observe(containerRef.current);

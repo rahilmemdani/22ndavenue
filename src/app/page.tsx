@@ -50,32 +50,36 @@ export default async function HomePage() {
   }
   return (
     <main style={{ position: 'relative' }}>
-      <TransformationHero data={heroData} />
+      {/* Background Video Layer - Sticky so cards can slide over it */}
+      <div style={{ position: 'sticky', top: 0, zIndex: 1 }}>
+        <TransformationHero data={heroData} />
+      </div>
       
-      {/* First Card Stack */}
-      <StackedCard zIndex={10}>
+      {/* First Card Stack: Behind the Spotlight + Stats - Slides OVER the video */}
+      <StackedCard zIndex={2}>
         <AboutHome data={aboutData} />
         <StatsBand />
       </StackedCard>
 
-      {/* Normal Scrolling Sections */}
-      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#050505' }}>
+      {/* Normal Scrolling Sections: Our Collabs & Mic Drop Moments */}
+      <div style={{ position: 'relative', zIndex: 3, backgroundColor: '#050505' }}>
         <FeaturedArtists data={collabsData} />
         <MicDropMoments data={momentsData} />
       </div>
 
-      {/* Second Card Stack Sequence */}
-      <StackedCard zIndex={30}>
+      {/* Normal Scrolling Section: Testimonials */}
+      <div style={{ position: 'relative', zIndex: 4, backgroundColor: '#050505' }}>
         <Testimonials data={testimonialsData} />
-      </StackedCard>
-      
-      {/* <Values /> */}
+        {/* <Values /> */}
+      </div>
 
-      <StackedCard zIndex={40}>
+      {/* Card Stack: Our Services */}
+      <StackedCard zIndex={5}>
         <Services data={servicesData} />
       </StackedCard>
 
-      <StackedCard zIndex={50}>
+      {/* Final Card Stack: Global Footprint */}
+      <StackedCard zIndex={6}>
         <GlobalFootprint />
       </StackedCard>
     </main>
