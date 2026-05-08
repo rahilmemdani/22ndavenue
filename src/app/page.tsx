@@ -6,6 +6,7 @@ import { Services } from "@/components/Spotlight/Services";
 import { FeaturedArtists } from "@/components/Spotlight/FeaturedArtists";
 import { MicDropMoments } from "@/components/Spotlight/MicDropMoments";
 import { Testimonials } from "@/components/Spotlight/Testimonials";
+import { GlobalFootprint } from "@/components/Spotlight/GlobalFootprint";
 
 import { client } from "@/sanity/client";
 import {
@@ -56,6 +57,7 @@ export default async function HomePage() {
       <Testimonials data={testimonialsData} />
       {/* <Values /> */}
       <Services data={servicesData} />
+      <GlobalFootprint />
     </main>
   );
 }
