@@ -100,7 +100,7 @@ export function Services({ data }: ServicesProps) {
     const cardWidth = el.scrollWidth / services.length;
     const index = Math.round(scrollLeft / cardWidth);
     setMobileCardIndex(Math.min(index, services.length - 1));
-  }, []);
+  }, [services.length]);
 
   const scrollToCard = (index: number) => {
     const el = carouselRef.current;

@@ -21,24 +21,30 @@ export default async function HomePage() {
   // Fetch all data concurrently
   let heroData, aboutData, collabsData, momentsData, testimonialsData, servicesData;
 
-  try {
-    [
-      heroData,
-      aboutData,
-      collabsData,
-      momentsData,
-      testimonialsData,
-      servicesData
-    ] = await Promise.all([
-      client.fetch(heroQuery),
-      client.fetch(aboutQuery),
-      client.fetch(collabsQuery),
-      client.fetch(momentsQuery),
-      client.fetch(testimonialsQuery),
-      client.fetch(servicesQuery)
-    ]);
-  } catch (error) {
-    console.error("Failed to fetch from Sanity (make sure NEXT_PUBLIC_SANITY_PROJECT_ID is set):", error);
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+
+  if (projectId && projectId !== 'your-project-id') {
+    try {
+      [
+        heroData,
+        aboutData,
+        collabsData,
+        momentsData,
+        testimonialsData,
+        servicesData
+      ] = await Promise.all([
+        client.fetch(heroQuery),
+        client.fetch(aboutQuery),
+        client.fetch(collabsQuery),
+        client.fetch(momentsQuery),
+        client.fetch(testimonialsQuery),
+        client.fetch(servicesQuery)
+      ]);
+    } catch (error) {
+      console.error("Failed to fetch from Sanity:", error);
+    }
+  } else {
+    console.log("Skipping Sanity fetch because NEXT_PUBLIC_SANITY_PROJECT_ID is not set or is 'your-project-id'. Using local fallback data.");
   }
   return (
     <main>
