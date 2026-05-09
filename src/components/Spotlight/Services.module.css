@@ -20,11 +20,9 @@
   transform: translateX(-50%);
   width: 60%;
   height: 60%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(228, 192, 87, 0.04) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(228, 192, 87, 0.04) 0%,
+      transparent 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
@@ -32,8 +30,15 @@
 }
 
 @keyframes shimmerFloat {
-  0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 0.5; }
-  100% { transform: translateX(-50%) translateY(20px) scale(1.1); opacity: 1; }
+  0% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(20px) scale(1.1);
+    opacity: 1;
+  }
 }
 
 .wrapper {
@@ -83,8 +88,13 @@
 }
 
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .marquee span {
@@ -128,11 +138,18 @@
   transform: translateY(-50%) scale(1.1);
 }
 
-.desktopArrowLeft  { left: 1.25rem; }
-.desktopArrowRight { right: 1.25rem; }
+.desktopArrowLeft {
+  left: 1.25rem;
+}
+
+.desktopArrowRight {
+  right: 1.25rem;
+}
 
 @media (min-width: 768px) {
-  .desktopArrow { display: flex; }
+  .desktopArrow {
+    display: flex;
+  }
 }
 
 /* ===== CAROUSEL TRACK ===== */
@@ -149,7 +166,9 @@
   scroll-behavior: smooth;
 }
 
-.servicesCarousel::-webkit-scrollbar { display: none; }
+.servicesCarousel::-webkit-scrollbar {
+  display: none;
+}
 
 /* ===== SNAP SLIDE ===== */
 
@@ -175,6 +194,7 @@
     padding: 1.5rem 5% 1rem;
   }
 }
+
 /* ===== SERVICE CARD — Premium Editorial ===== */
 
 .serviceCard {
@@ -200,24 +220,20 @@
   opacity: 0.4;
   transition: opacity 0.5s ease;
   pointer-events: none;
-  background: linear-gradient(
-    135deg,
-    rgba(228, 192, 87, 0.2) 0%,
-    rgba(255, 255, 255, 0.05) 40%,
-    rgba(228, 192, 87, 0.1) 70%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(228, 192, 87, 0.2) 0%,
+      rgba(255, 255, 255, 0.05) 40%,
+      rgba(228, 192, 87, 0.1) 70%,
+      rgba(255, 255, 255, 0.03) 100%);
 }
 
 .serviceCard:hover .cardBorderGlow {
   opacity: 1;
-  background: linear-gradient(
-    135deg,
-    rgba(228, 192, 87, 0.6) 0%,
-    rgba(228, 192, 87, 0.1) 35%,
-    rgba(228, 192, 87, 0.35) 65%,
-    rgba(228, 192, 87, 0.05) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(228, 192, 87, 0.6) 0%,
+      rgba(228, 192, 87, 0.1) 35%,
+      rgba(228, 192, 87, 0.35) 65%,
+      rgba(228, 192, 87, 0.05) 100%);
 }
 
 /* Image wrapper — compact landscape, capped height */
@@ -231,15 +247,16 @@
 }
 
 /* Universal Premium Shape */
-.shapeDiamond, .shapeWave {
+.shapeDiamond,
+.shapeWave {
   border-radius: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.shapeDiamond ~ .cardBorderGlow,
-.shapeWave ~ .cardBorderGlow {
+.shapeDiamond~.cardBorderGlow,
+.shapeWave~.cardBorderGlow {
   border-radius: 1.5rem;
 }
 
@@ -266,26 +283,22 @@
 .cinemaOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.92) 0%,
-    rgba(0, 0, 0, 0.4) 40%,
-    rgba(0, 0, 0, 0.1) 60%,
-    rgba(0, 0, 0, 0.02) 100%
-  );
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.4) 40%,
+      rgba(0, 0, 0, 0.1) 60%,
+      rgba(0, 0, 0, 0.02) 100%);
   z-index: 2;
   pointer-events: none;
   transition: all 0.5s ease;
 }
 
 .serviceCard:hover .cinemaOverlay {
-  background: linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(0, 0, 0, 0.55) 45%,
-    rgba(0, 0, 0, 0.15) 65%,
-    rgba(0, 0, 0, 0.05) 100%
-  );
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.55) 45%,
+      rgba(0, 0, 0, 0.15) 65%,
+      rgba(0, 0, 0, 0.05) 100%);
 }
 
 /* Content overlay — positioned at bottom */
@@ -409,7 +422,9 @@
 }
 
 @media (min-width: 768px) {
-  .dotsRow { display: none; }
+  .dotsRow {
+    display: none;
+  }
 }
 
 
@@ -432,8 +447,13 @@
 }
 
 @keyframes overlayIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modal {
@@ -464,8 +484,15 @@
 }
 
 @keyframes modalIn {
-  from { opacity: 0; transform: scale(0.96) translateY(20px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* ===== TOP BAR — Apple-style frosted ===== */
@@ -544,7 +571,10 @@
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
-.galleryScroll::-webkit-scrollbar { width: 4px; }
+.galleryScroll::-webkit-scrollbar {
+  width: 4px;
+}
+
 .galleryScroll::-webkit-scrollbar-thumb {
   background: rgba(228, 192, 87, 0.25);
   border-radius: 99px;
@@ -558,19 +588,32 @@
   width: 100%;
 }
 
-.rowHero .galleryTile  { flex: 1; aspect-ratio: 16 / 7; }
-.rowDuo  .galleryTile  { flex: 1; aspect-ratio: 4 / 3; }
-.rowTriple .galleryTile { flex: 1; aspect-ratio: 1 / 1; }
+.rowHero .galleryTile {
+  flex: 1;
+  aspect-ratio: 16 / 7;
+}
+
+.rowDuo .galleryTile {
+  flex: 1;
+  aspect-ratio: 4 / 3;
+}
+
+.rowTriple .galleryTile {
+  flex: 1;
+  aspect-ratio: 1 / 1;
+}
 
 /* On mobile, rows stack naturally but keep layout */
 @media (max-width: 600px) {
   .rowTriple {
     flex-wrap: wrap;
   }
+
   .rowTriple .galleryTile {
     flex: 1 1 calc(50% - 0.25rem);
     aspect-ratio: 4 / 3;
   }
+
   .rowTriple .galleryTile:last-child:nth-child(3) {
     flex: 1 1 100%;
     aspect-ratio: 16 / 9;
@@ -648,8 +691,13 @@
 }
 
 @keyframes lbIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* Close button — top right */
@@ -714,8 +762,13 @@
   color: #E4C057;
 }
 
-.lbPrev { left: 1rem; }
-.lbNext { right: 1rem; }
+.lbPrev {
+  left: 1rem;
+}
+
+.lbNext {
+  right: 1rem;
+}
 
 /* Media container */
 .lbMediaWrap {
@@ -742,12 +795,21 @@
     width: 36px;
     height: 36px;
   }
-  .lbPrev { left: 0.5rem; }
-  .lbNext { right: 0.5rem; }
+
+  .lbPrev {
+    left: 0.5rem;
+  }
+
+  .lbNext {
+    right: 0.5rem;
+  }
+
   .lbMediaWrap {
     max-width: 96vw;
   }
 }
+
+
 
 
 /* ===== MOBILE SECTION ===== */
@@ -755,6 +817,27 @@
 @media (max-width: 768px) {
   .section {
     padding: 4rem 0 3rem;
+  }
+
+  /* Lock the carousel to horizontal-only movement on phone.
+     - overflow-y: hidden prevents the track itself from scrolling vertically.
+     - touch-action: pan-x tells the browser to only handle horizontal panning
+       inside the carousel, handing vertical scroll back to the page. */
+  .servicesCarousel {
+    overflow-y: hidden;
+    touch-action: pan-x;
+    /* Prevent any scroll chaining that lets the page scroll while swiping cards */
+    overscroll-behavior-x: contain;
+  }
+
+  .snapSlide {
+    /* Cards must not move vertically under any circumstances */
+    touch-action: pan-x;
+    overflow: hidden;
+  }
+
+  .serviceCard {
+    touch-action: pan-x;
   }
 
   .modalTopBar {
