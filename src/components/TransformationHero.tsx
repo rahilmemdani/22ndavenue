@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Volume2, VolumeX, Maximize } from "lucide-react";
+import { Volume2, VolumeX } from "lucide-react";
 import styles from "./TransformationHero.module.css";
 
 interface TransformationHeroProps {
@@ -30,11 +30,9 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
   // Play video only after animation completes (isSplit becomes true)
   useEffect(() => {
     if (isSplit && videoRef.current) {
-      // Start playing when the split animation completes
       videoRef.current.play().catch(err => console.log("Play prevented:", err));
     }
   }, [isSplit]);
-
 
   useEffect(() => {
     // Prevent browser from restoring previous scroll position on reload
@@ -47,7 +45,6 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
 
     const splitTimer = setTimeout(() => {
       setIsSplit(true);
-      // Restore auto scroll restoration after animation if desired, or leave manual
     }, 3800);
 
     return () => clearTimeout(splitTimer);
@@ -76,76 +73,43 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
     };
   }, [isSplit]);
 
-  // Intersection Observer to auto-mute video when scrolling out of view
+  // Pause/resume video based on scroll position.
+  // The hero section is inside a position:sticky wrapper so getBoundingClientRect()
+  // always stays at y=0. Instead we compare window.scrollY directly against the
+  // hero's natural height (one viewport height). When the user scrolls more than
+  // 80% of the viewport, we pause the video.
   useEffect(() => {
-    if (!containerRef.current || !videoRef.current) return;
+    if (!videoRef.current) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            // Pause and Mute video if user scrolls past 80% of the hero section
-            if (videoRef.current) {
-              videoRef.current.pause();
-              videoRef.current.muted = true;
-              setIsMuted(true);
-            }
-          } else {
-            // Resume playing if it comes back into view
-            if (videoRef.current && isSplit) {
-              videoRef.current.play().catch(() => {});
-            }
-          }
-        });
-      },
-      { threshold: 0.2 } // Trigger when 80% out of view (20% remaining)
-    );
+    const handleScroll = () => {
+      const heroHeight = window.innerHeight; // hero is always 100vh
+      // 80% threshold — pause when scrolled past 80% of the hero height
+      const pauseAt = heroHeight * 0.8;
 
-    observer.observe(containerRef.current);
+      if (window.scrollY > pauseAt) {
+        if (videoRef.current && !videoRef.current.paused) {
+          videoRef.current.pause();
+          videoRef.current.muted = true;
+          setIsMuted(true);
+        }
+      } else {
+        // Scroll back up — resume if animation is done
+        if (videoRef.current && videoRef.current.paused && isSplit) {
+          videoRef.current.play().catch(() => {});
+        }
+      }
+    };
 
-    return () => observer.disconnect();
-  }, []);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // check immediately on mount
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isSplit]);
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
-    }
-  };
-
-  const toggleFullscreen = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const video = videoRef.current as any;
-    if (!video) return;
-
-    try {
-      // Try container-level fullscreen first (works on Android/Desktop)
-      const container = video.parentElement;
-      if (container?.requestFullscreen) {
-        container.requestFullscreen();
-        return;
-      }
-      if (container?.webkitRequestFullscreen) {
-        container.webkitRequestFullscreen();
-        return;
-      }
-
-      // iOS Safari: must use video element's native fullscreen
-      if (video.webkitEnterFullscreen) {
-        video.webkitEnterFullscreen();
-      } else if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen();
-      }
-    } catch (err) {
-      // Last resort: try video element directly
-      try {
-        if (video.webkitEnterFullscreen) {
-          video.webkitEnterFullscreen();
-        }
-      } catch (e2) {
-        console.error("Fullscreen not supported:", e2);
-      }
     }
   };
 
@@ -193,8 +157,6 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
             {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
         </div>
-
-        {/* <span className={styles.reelLabel}>Showcase Reel</span> */}
       </div>
 
     </section>

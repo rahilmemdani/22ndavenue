@@ -2,7 +2,24 @@
   position: sticky;
   top: 0;
   width: 100%;
-  /* Fallback z-index, but we will manage via inline styles if needed */
-  z-index: 10;
-  /* Allow shadow or borders if we want, but keeping it clean for now */
+
+  /* Solid background — prevents the sticky video from bleeding through on mobile */
+  background-color: #050505;
+
+  /* Force a GPU compositing layer so mobile browsers render this fully
+     on top of the sticky video without transparency glitches */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+
+  /* Create an isolated stacking context */
+  isolation: isolate;
+}
+
+/* Extra enforcement for iOS/Android where sticky + video combos can leak */
+@media (max-width: 768px) {
+  .stackedCard {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
 }
