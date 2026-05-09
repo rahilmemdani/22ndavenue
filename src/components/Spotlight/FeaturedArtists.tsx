@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./FeaturedArtists.module.css";
@@ -45,19 +45,11 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
-  const scrollToTop = useCallback(() => {
-    if (window.innerWidth <= 1024 && sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, []);
-
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
-    scrollToTop();
   };
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-    scrollToTop();
   };
 
   const slideChunks = Array.from({ length: totalSlides }, (_, i) => 

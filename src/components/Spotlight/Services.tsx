@@ -3,7 +3,8 @@
 
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { useEffect, useRef, useState, useCallback } from "react";
-import { X, ChevronLeft, ChevronRight, Maximize2, Minimize2 } from "lucide-react";
+import { createPortal } from "react-dom";
+import { X, ChevronLeft, ChevronRight, Maximize2, Play } from "lucide-react";
 import styles from "./Services.module.css";
 
 interface GalleryMedia {
@@ -32,7 +33,6 @@ interface ServicesProps {
 const DEFAULT_SERVICES = [
   {
     title: "LIVE EVENTS",
-    // description: "Crafting unforgettable moments that captivate audiences and create lasting impressions across the global stage.",
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
     shape: "shapeArch",
     num: "01",
@@ -47,7 +47,6 @@ const DEFAULT_SERVICES = [
   },
   {
     title: "BRAND COLLABS",
-    // description: "Strategic partnerships that align talent with brands, creating authentic connections and measurable impact.",
     image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop",
     shape: "shapeArch",
     num: "02",
@@ -61,6 +60,34 @@ const DEFAULT_SERVICES = [
     ]
   }
 ];
+
+// ─── Scroll lock helpers (iOS-safe, no-jump) ─────────────────────────────────
+function lockScroll() {
+  if (document.body.dataset.scrollLocked) return; // already locked
+  const sy = window.scrollY;
+  document.body.dataset.scrollLocked = "1";
+  document.body.dataset.scrollY = String(sy);
+  document.body.style.overflow = "hidden";
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${sy}px`;
+  document.body.style.left = "0";
+  document.body.style.right = "0";
+}
+
+function unlockScroll() {
+  if (!document.body.dataset.scrollLocked) return; // nothing to unlock
+  const sy = parseInt(document.body.dataset.scrollY || "0", 10);
+  document.body.style.overflow = "";
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.left = "";
+  document.body.style.right = "";
+  delete document.body.dataset.scrollLocked;
+  delete document.body.dataset.scrollY;
+  // Use 'instant' to avoid the animated-scroll-back visual
+  window.scrollTo({ top: sy, behavior: "instant" as ScrollBehavior });
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 export function Services({ data }: ServicesProps) {
   const services = data?.servicesList?.length
@@ -79,17 +106,21 @@ export function Services({ data }: ServicesProps) {
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
   const [mobileCardIndex, setMobileCardIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
   const showArrows = services.length > 2;
 
-  // Lock body scroll when modal is open
+  // Ensure portal target exists client-side
+  useEffect(() => { setMounted(true); }, []);
+
+  // iOS-safe scroll lock
   useEffect(() => {
     if (selectedService) {
-      document.body.style.overflow = "hidden";
+      lockScroll();
     } else {
-      document.body.style.overflow = "unset";
+      unlockScroll();
       setLightboxIndex(null);
     }
-    return () => { document.body.style.overflow = "unset"; };
+    return () => { unlockScroll(); };
   }, [selectedService]);
 
   // Track active card on mobile via scroll
@@ -119,22 +150,24 @@ export function Services({ data }: ServicesProps) {
     setLightboxIndex((lightboxIndex + 1) % selectedService.gallery.length);
   };
 
-  // Keyboard nav for lightbox
+  // Keyboard nav
   useEffect(() => {
-    if (lightboxIndex === null) return;
     const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (lightboxIndex !== null) setLightboxIndex(null);
+        else if (selectedService) setSelectedService(null);
+      }
+      if (lightboxIndex === null) return;
       if (e.key === "ArrowLeft") lightboxPrev();
       if (e.key === "ArrowRight") lightboxNext();
-      if (e.key === "Escape") setLightboxIndex(null);
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxIndex, selectedService]);
 
-  // Masonry row pattern — cycles through layouts for any number of items
+  // Masonry layout helper
   const getMasonryLayout = (totalItems: number) => {
-    // Patterns: "triple" = 3 items in a row, "duo" = 2 items, "hero" = 1 wide
     const patterns = ["triple", "duo", "hero", "duo", "triple"];
     const result: { start: number; count: number; type: string }[] = [];
     let idx = 0;
@@ -142,7 +175,6 @@ export function Services({ data }: ServicesProps) {
     while (idx < totalItems) {
       const pat = patterns[patIdx % patterns.length];
       let count = pat === "triple" ? 3 : pat === "duo" ? 2 : 1;
-      // Don't overshoot
       count = Math.min(count, totalItems - idx);
       result.push({ start: idx, count, type: pat });
       idx += count;
@@ -150,6 +182,159 @@ export function Services({ data }: ServicesProps) {
     }
     return result;
   };
+
+  // The modal JSX — rendered via portal to document.body
+  const modalPortal = mounted && selectedService ? createPortal(
+    <div
+      className={styles.modalOverlay}
+      onClick={() => setSelectedService(null)}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${selectedService.title} gallery`}
+    >
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+
+        {/* Gold accent line at very top */}
+        <div className={styles.modalAccentLine} />
+
+        {/* Top bar */}
+        <div className={styles.modalTopBar}>
+          <div className={styles.modalTopBarLeft}>
+            {/* <div className={styles.modalServiceBadge}>
+              <span className={styles.modalServiceNum}>
+                {services.findIndex(s => s.title === selectedService.title) + 1 < 10
+                  ? `0${services.findIndex(s => s.title === selectedService.title) + 1}`
+                  : services.findIndex(s => s.title === selectedService.title) + 1}
+              </span>
+            </div> */}
+            <div>
+              <h3 className={styles.modalServiceName}>{selectedService.title}</h3>
+              <span className={styles.modalCount}>{selectedService.gallery.length} items in collection</span>
+            </div>
+          </div>
+          <button
+            className={styles.modalCloseBtn}
+            onClick={() => setSelectedService(null)}
+            aria-label="Close gallery"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Scrollable masonry gallery */}
+        <div className={styles.galleryScroll}>
+          {getMasonryLayout(selectedService.gallery.length).map((row, rowIdx) => {
+            const items = selectedService.gallery.slice(row.start, row.start + row.count);
+            return (
+              <div
+                key={rowIdx}
+                className={`${styles.masonryRow} ${row.count === 1 ? styles.rowHero :
+                  row.count === 2 ? styles.rowDuo :
+                    styles.rowTriple
+                  }`}
+              >
+                {items.map((item, itemIdx) => {
+                  const globalIdx = row.start + itemIdx;
+                  return (
+                    <div
+                      key={globalIdx}
+                      className={styles.galleryTile}
+                      onClick={() => setLightboxIndex(globalIdx)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === "Enter" && setLightboxIndex(globalIdx)}
+                    >
+                      {item.type === "image" ? (
+                        <img
+                          src={item.url}
+                          alt={`${selectedService.title} ${globalIdx + 1}`}
+                          className={styles.tileMedia}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <video
+                          src={item.url}
+                          className={styles.tileMedia}
+                          poster={item.thumbnail}
+                          muted
+                          playsInline
+                          preload="metadata"
+                        />
+                      )}
+                      {/* Hover overlay */}
+                      <div className={styles.tileHover}>
+                        {item.type === "video"
+                          ? <Play size={22} fill="white" stroke="none" />
+                          : <Maximize2 size={18} />}
+                      </div>
+                      {/* Video badge */}
+                      {item.type === "video" && (
+                        <div className={styles.videoIndicator}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── LIGHTBOX ─────────────────────────────────────── */}
+      {lightboxIndex !== null && (
+        <div className={styles.lightbox} onClick={() => setLightboxIndex(null)}>
+
+          <button className={styles.lbClose} onClick={() => setLightboxIndex(null)} aria-label="Close">
+            <X size={20} />
+          </button>
+
+          <div className={styles.lbCounter}>
+            {lightboxIndex + 1} / {selectedService.gallery.length}
+          </div>
+
+          <button
+            className={`${styles.lbNav} ${styles.lbPrev}`}
+            onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
+            aria-label="Previous"
+          >
+            <ChevronLeft size={26} />
+          </button>
+
+          <div className={styles.lbMediaWrap} onClick={(e) => e.stopPropagation()}>
+            {selectedService.gallery[lightboxIndex].type === "image" ? (
+              <img
+                src={selectedService.gallery[lightboxIndex].url}
+                alt=""
+                className={styles.lbMedia}
+              />
+            ) : (
+              <video
+                src={selectedService.gallery[lightboxIndex].url}
+                className={styles.lbMedia}
+                controls
+                autoPlay
+                playsInline
+                poster={selectedService.gallery[lightboxIndex].thumbnail}
+              />
+            )}
+          </div>
+
+          <button
+            className={`${styles.lbNav} ${styles.lbNext}`}
+            onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
+            aria-label="Next"
+          >
+            <ChevronRight size={26} />
+          </button>
+        </div>
+      )}
+    </div>,
+    document.body
+  ) : null;
 
   return (
     <section className={styles.section} id="services-section">
@@ -174,7 +359,6 @@ export function Services({ data }: ServicesProps) {
 
         {/* Carousel */}
         <div className={styles.carouselContainer}>
-          {/* Desktop arrows — only if > 2 cards */}
           {showArrows && (
             <button
               className={`${styles.desktopArrow} ${styles.desktopArrowLeft}`}
@@ -197,15 +381,10 @@ export function Services({ data }: ServicesProps) {
                     className={styles.serviceCard}
                     onClick={() => setSelectedService(service)}
                   >
-                    {/* Animated gradient border */}
                     <div className={styles.cardBorderGlow}></div>
-
-                    {/* Image with cinematic overlay */}
                     <div className={`${styles.imageWrapper} ${styles[service.shape]}`}>
                       <img src={service.image} alt={service.title} className={styles.image} />
                       <div className={styles.cinemaOverlay}></div>
-
-                      {/* Content overlaid on image */}
                       <div className={styles.cardContent}>
                         <div className={styles.contentInner}>
                           <div className={styles.shimmerLine}></div>
@@ -215,10 +394,6 @@ export function Services({ data }: ServicesProps) {
                               <polyline points="7 7 17 7 17 17"></polyline>
                             </svg>
                           </h3>
-                          {/* <p className={styles.serviceDesc}>{service.description}</p> */}
-                          {/* <div className={styles.exploreCta}>
-                            <span>Explore Gallery</span>
-                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -239,7 +414,7 @@ export function Services({ data }: ServicesProps) {
           )}
         </div>
 
-        {/* Mobile dots — only if > 1 */}
+        {/* Mobile dots */}
         {services.length > 1 && (
           <div className={styles.dotsRow}>
             {services.map((_, i) => (
@@ -254,134 +429,8 @@ export function Services({ data }: ServicesProps) {
         )}
       </div>
 
-      {/* ═══════════════════════════════════════════════
-          GALLERY MODAL — Apple-inspired scrollable gallery
-          ═══════════════════════════════════════════════ */}
-      {selectedService && (
-        <div className={styles.modalOverlay} onClick={() => setSelectedService(null)}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-
-            {/* Top bar — fixed, Apple style */}
-            <div className={styles.modalTopBar}>
-              <div className={styles.modalTopBarLeft}>
-                <h3 className={styles.modalServiceName}>{selectedService.title}</h3>
-                <span className={styles.modalCount}>{selectedService.gallery.length} items</span>
-              </div>
-              <button className={styles.modalCloseBtn} onClick={() => setSelectedService(null)}>
-                <X size={18} />
-              </button>
-            </div>
-
-            {/* Scrollable masonry gallery */}
-            <div className={styles.galleryScroll}>
-              {getMasonryLayout(selectedService.gallery.length).map((row, rowIdx) => {
-                const items = selectedService.gallery.slice(row.start, row.start + row.count);
-                return (
-                  <div
-                    key={rowIdx}
-                    className={`${styles.masonryRow} ${row.count === 1 ? styles.rowHero :
-                      row.count === 2 ? styles.rowDuo :
-                        styles.rowTriple
-                      }`}
-                  >
-                    {items.map((item, itemIdx) => {
-                      const globalIdx = row.start + itemIdx;
-                      return (
-                        <div
-                          key={globalIdx}
-                          className={styles.galleryTile}
-                          onClick={() => setLightboxIndex(globalIdx)}
-                        >
-                          {item.type === "image" ? (
-                            <img
-                              src={item.url}
-                              alt={`${selectedService.title} ${globalIdx + 1}`}
-                              className={styles.tileMedia}
-                              loading="lazy"
-                            />
-                          ) : (
-                            <video
-                              src={item.url}
-                              className={styles.tileMedia}
-                              poster={item.thumbnail}
-                              muted
-                              playsInline
-                              preload="metadata"
-                            />
-                          )}
-                          {/* Hover overlay */}
-                          <div className={styles.tileHover}>
-                            <Maximize2 size={18} />
-                          </div>
-                          {/* Video indicator */}
-                          {item.type === "video" && (
-                            <div className={styles.videoIndicator}>
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3" /></svg>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ═══════════════════════════════════════════════
-          LIGHTBOX — Full-screen single media viewer
-          ═══════════════════════════════════════════════ */}
-      {selectedService && lightboxIndex !== null && (
-        <div className={styles.lightbox} onClick={() => setLightboxIndex(null)}>
-          {/* Close */}
-          <button className={styles.lbClose} onClick={() => setLightboxIndex(null)}>
-            <Minimize2 size={18} />
-          </button>
-
-          {/* Counter */}
-          <div className={styles.lbCounter}>
-            {lightboxIndex + 1} / {selectedService.gallery.length}
-          </div>
-
-          {/* Prev */}
-          <button
-            className={`${styles.lbNav} ${styles.lbPrev}`}
-            onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
-          >
-            <ChevronLeft size={28} />
-          </button>
-
-          {/* Media */}
-          <div className={styles.lbMediaWrap} onClick={(e) => e.stopPropagation()}>
-            {selectedService.gallery[lightboxIndex].type === "image" ? (
-              <img
-                src={selectedService.gallery[lightboxIndex].url}
-                alt=""
-                className={styles.lbMedia}
-              />
-            ) : (
-              <video
-                src={selectedService.gallery[lightboxIndex].url}
-                className={styles.lbMedia}
-                controls
-                autoPlay
-                playsInline
-                poster={selectedService.gallery[lightboxIndex].thumbnail}
-              />
-            )}
-          </div>
-
-          {/* Next */}
-          <button
-            className={`${styles.lbNav} ${styles.lbNext}`}
-            onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
-          >
-            <ChevronRight size={28} />
-          </button>
-        </div>
-      )}
+      {/* Portal-rendered modal — lives outside all stacking contexts */}
+      {modalPortal}
     </section>
   );
 }
