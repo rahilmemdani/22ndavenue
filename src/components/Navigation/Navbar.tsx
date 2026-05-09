@@ -356,10 +356,10 @@ export function Navbar() {
 
             <motion.div
               className={styles.mobileDrawer}
-              initial={{ clipPath: "circle(0px at 100% 0%)" }}
-              animate={{ clipPath: "circle(150% at 100% 0%)" }}
-              exit={{ clipPath: "circle(0px at 100% 0%)" }}
-              transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+              initial={{ clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)", opacity: 1 }}
+              animate={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
+              exit={{ clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)", opacity: 1 }}
+              transition={{ duration: 0.65, ease: [0.76, 0, 0.24, 1] }}
             >
               <div className={styles.mobileDrawerDeco} />
               
@@ -375,9 +375,9 @@ export function Navbar() {
                   {navItems.map((item, index) => (
                     <motion.div
                       key={item.name}
-                      initial={{ x: 20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: 0.15 + index * 0.05 }}
+                      initial={{ x: 60, opacity: 0, skewX: -4 }}
+                      animate={{ x: 0, opacity: 1, skewX: 0 }}
+                      transition={{ delay: 0.2 + index * 0.07, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <div className={styles.mobileDrawerLinkRow}>
                         <Link
@@ -432,7 +432,7 @@ export function Navbar() {
                 </div>
 
                 <div className={styles.mobileDrawerFooter}>
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+                  <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}>
                     <button onClick={() => { setIsMobileMenuOpen(false); openModal(); }} className={styles.mobileSayHelloBtn}>
                       Let&apos;s Talk <Rocket className={styles.rocketIcon} />
                     </button>

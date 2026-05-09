@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import styles from "./MobileMenu.module.css";
 
@@ -26,34 +27,72 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose, pathname }: MobileMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Lock body scroll when open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
   return (
     <div
+      ref={menuRef}
       className={`${styles.overlay} ${isOpen ? styles.open : ""}`}
       id="mobile-menu"
+      aria-modal="true"
+      aria-hidden={!isOpen}
     >
+      {/* Dramatic curtain panels that wipe in */}
+      <div className={styles.curtain1} />
+      <div className={styles.curtain2} />
+
+      {/* Gold accent line — draws across on open */}
+      <div className={styles.accentLine} />
+
+      {/* Close area — tap backdrop to close */}
+      <button className={styles.backdropClose} onClick={onClose} aria-label="Close menu" />
+
       <div className={styles.content}>
-        <nav className={styles.nav}>
+
+        {/* Brand wordmark in corner */}
+        <div className={styles.brandMark}>
+          <span className={styles.brandText}>22ND</span>
+          <span className={styles.brandDot}>.</span>
+        </div>
+
+        {/* Nav links */}
+        <nav className={styles.nav} aria-label="Mobile navigation">
           {navLinks.map((link, i) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`${styles.link} ${
-                pathname === link.href ? styles.active : ""
-              }`}
+              className={`${styles.link} ${pathname === link.href ? styles.active : ""}`}
               onClick={onClose}
-              style={{ transitionDelay: isOpen ? `${i * 60 + 200}ms` : "0ms" }}
+              style={{ "--i": i } as React.CSSProperties}
               id={`mobile-nav-${link.href.replace("/", "") || "home"}`}
             >
-              <span className={styles.linkLabel}>{link.label}</span>
-              <span className={styles.linkSub}>{link.creative}</span>
+              {/* Index number */}
+              <span className={styles.linkIndex}>0{i + 1}</span>
+
+              <span className={styles.linkInner}>
+                <span className={styles.linkLabel}>{link.label}</span>
+                <span className={styles.linkSub}>{link.creative}</span>
+              </span>
+
+              {/* Hover arrow */}
+              <span className={styles.linkArrow}>→</span>
             </Link>
           ))}
         </nav>
 
-        <div
-          className={styles.footer}
-          style={{ transitionDelay: isOpen ? "600ms" : "0ms" }}
-        >
+        {/* Footer */}
+        <div className={styles.footer}>
+          <div className={styles.dividerLine} />
           <div className={styles.socials}>
             {socials.map((s) => (
               <a

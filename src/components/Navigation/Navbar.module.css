@@ -24,8 +24,13 @@
   will-change: transform;
 }
 
-.pointerAuto { pointer-events: auto; }
-.pointerNone { pointer-events: none; }
+.pointerAuto {
+  pointer-events: auto;
+}
+
+.pointerNone {
+  pointer-events: none;
+}
 
 /* Desktop Minimal Nav */
 .desktopMinimalNav {
@@ -45,7 +50,9 @@
 }
 
 @media (min-width: 1024px) {
-  .desktopMinimalNav { display: flex; }
+  .desktopMinimalNav {
+    display: flex;
+  }
 }
 
 .minimalMenuBtn {
@@ -53,10 +60,12 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: rgba(10, 10, 10, 0.85); /* Dark Glass */
+  background: rgba(10, 10, 10, 0.85);
+  /* Dark Glass */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(228, 192, 87, 0.3); /* Gold border */
+  border: 1px solid rgba(228, 192, 87, 0.3);
+  /* Gold border */
   border-radius: 9999px;
   padding: 0.75rem 1.5rem;
   color: #fff;
@@ -79,7 +88,8 @@
   font-weight: 600;
   font-size: 0.875rem;
   letter-spacing: 0.2em;
-  color: #E4C057; /* Gold text */
+  color: #E4C057;
+  /* Gold text */
   margin-top: 2px;
 }
 
@@ -92,9 +102,26 @@
   height: 100%;
 }
 
-.burgerLine1 { width: 24px; height: 1.5px; background: #E4C057; transition: all 0.3s ease; }
-.burgerLine2 { width: 16px; height: 1.5px; background: #E4C057; transition: all 0.3s ease; }
-.burgerLine3 { width: 20px; height: 1.5px; background: #E4C057; transition: all 0.3s ease; }
+.burgerLine1 {
+  width: 24px;
+  height: 1.5px;
+  background: #E4C057;
+  transition: all 0.3s ease;
+}
+
+.burgerLine2 {
+  width: 16px;
+  height: 1.5px;
+  background: #E4C057;
+  transition: all 0.3s ease;
+}
+
+.burgerLine3 {
+  width: 20px;
+  height: 1.5px;
+  background: #E4C057;
+  transition: all 0.3s ease;
+}
 
 .minimalMenuBtn:hover .burgerLine1,
 .minimalMenuBtn:hover .burgerLine2,
@@ -114,7 +141,9 @@
 }
 
 @media (min-width: 1024px) {
-  .desktopNav { display: flex; }
+  .desktopNav {
+    display: flex;
+  }
 }
 
 .logoLink {
@@ -130,9 +159,17 @@
   object-fit: contain;
 }
 
-.logoSmall { height: 3rem; }
-.logoLarge { height: 3.5rem; }
-.logoInvert { filter: brightness(0) invert(1); }
+.logoSmall {
+  height: 3rem;
+}
+
+.logoLarge {
+  height: 3.5rem;
+}
+
+.logoInvert {
+  filter: brightness(0) invert(1);
+}
 
 .desktopLinks {
   display: flex;
@@ -192,12 +229,15 @@
 .activePill {
   position: absolute;
   inset: 0.25rem;
-  background: #E4C057; 
+  background: #E4C057;
   border-radius: 9999px;
   z-index: 0;
 }
 
-.navLinkText { position: relative; z-index: 10; }
+.navLinkText {
+  position: relative;
+  z-index: 10;
+}
 
 .chevron {
   width: 1rem;
@@ -205,8 +245,14 @@
   transition: all 0.3s ease;
 }
 
-.chevronDark { color: rgba(255, 255, 255, 0.9); }
-.chevronLight { color: #64748b; }
+.chevronDark {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.chevronLight {
+  color: #64748b;
+}
+
 .chevronOpen {
   transform: rotate(180deg);
   color: #E4C057;
@@ -225,7 +271,7 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);
   border-radius: 1rem;
-  box-shadow: 0 20px 60px -15px rgba(0,0,0,0.25);
+  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(228, 192, 87, 0.2);
   overflow: hidden;
   padding: 0.5rem;
@@ -294,15 +340,23 @@
 }
 
 @media (min-width: 1024px) {
-  .mobileBar { display: none; }
+  .mobileBar {
+    display: none;
+  }
 }
 
 .mobileLogoImage {
   transition: all 0.3s ease;
   object-fit: contain;
 }
-.mobileLogoSmall { height: 3rem; }
-.mobileLogoLarge { height: 3.5rem; }
+
+.mobileLogoSmall {
+  height: 3rem;
+}
+
+.mobileLogoLarge {
+  height: 3.5rem;
+}
 
 .mobileMenuBtn {
   padding: 0.5rem;
@@ -313,15 +367,26 @@
   cursor: pointer;
 }
 
-.mobileMenuBtn:active { transform: scale(0.9); }
-.mobileMenuBtnDark { color: #fff; background: rgba(255, 255, 255, 0.2); }
-.mobileMenuBtnLight { color: #1e293b; background: rgba(255, 255, 255, 0.8); }
+.mobileMenuBtn:active {
+  transform: scale(0.9);
+}
+
+.mobileMenuBtnDark {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mobileMenuBtnLight {
+  color: #1e293b;
+  background: rgba(255, 255, 255, 0.8);
+}
 
 /* Mobile Drawer */
 .mobileBackdrop {
   position: fixed;
   inset: 0;
-  z-index: 200; /* Extremely high to cover everything else */
+  z-index: 200;
+  /* Extremely high to cover everything else */
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -330,11 +395,12 @@
 .mobileDrawer {
   position: fixed;
   inset: 0 0 0 auto;
-  z-index: 201; 
+  z-index: 201;
   width: 85%;
   max-width: 450px;
-  background: #0A0A0A; /* Dark theme for mobile menu */
-  box-shadow: -20px 0 60px rgba(0,0,0,0.8);
+  background: #0A0A0A;
+  /* Dark theme for mobile menu */
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.8);
   border-left: 1px solid rgba(228, 192, 87, 0.2);
   overflow: hidden;
   will-change: transform, clip-path;
@@ -367,12 +433,12 @@
   border-bottom: 1px solid rgba(228, 192, 87, 0.1);
 }
 
-.mobileDrawerLogo { 
+.mobileDrawerLogo {
   height: auto;
   width: auto;
-  max-height: 2.2rem; 
-  max-width: 65%; 
-  object-fit: contain; 
+  max-height: 2.2rem;
+  max-width: 65%;
+  object-fit: contain;
 }
 
 .mobileCloseBtn {
@@ -380,9 +446,10 @@
   padding: 0.5rem;
   margin-right: -0.5rem;
   color: #1e293b;
-  background: #fff; /* Solid background prevents seeing hamburger underneath */
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #fff;
+  /* Solid background prevents seeing hamburger underneath */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -423,8 +490,8 @@
   width: auto;
 }
 
-.mobileDrawerLinkActive { 
-  color: #E4C057; 
+.mobileDrawerLinkActive {
+  color: #E4C057;
   text-shadow: 0 0 20px rgba(228, 192, 87, 0.3);
 }
 
@@ -437,16 +504,22 @@
   transition: transform 0.2s ease;
 }
 
-.mobileDrawerChevronBtn:active { transform: scale(0.95); }
+.mobileDrawerChevronBtn:active {
+  transform: scale(0.95);
+}
 
 .mobileDrawerChevron {
   transition: transform 0.3s ease;
   color: #E4C057;
 }
 
-.mobileDrawerChevronOpen { transform: rotate(-180deg); }
+.mobileDrawerChevronOpen {
+  transform: rotate(-180deg);
+}
 
-.mobileDrawerSubLinksWrapper { overflow: hidden; }
+.mobileDrawerSubLinksWrapper {
+  overflow: hidden;
+}
 
 .mobileDrawerSubLinks {
   margin-top: 1.25rem;
@@ -468,7 +541,9 @@
   transition: color 0.2s ease;
 }
 
-.mobileDrawerSubLink:hover { color: #E4C057; }
+.mobileDrawerSubLink:hover {
+  color: #E4C057;
+}
 
 .mobileDrawerFooter {
   padding: 3rem 2rem;
@@ -493,8 +568,14 @@
   transition: all 0.2s ease;
 }
 
-.mobileSayHelloBtn:active { transform: scale(0.95); }
-.rocketIcon { width: 1.25rem; height: 1.25rem; }
+.mobileSayHelloBtn:active {
+  transform: scale(0.95);
+}
+
+.rocketIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
 
 .socialsRow {
   margin-top: 2rem;
@@ -512,17 +593,27 @@
   height: 3rem;
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   will-change: transform;
 }
 
-@media (min-width: 640px) { .socialLink { width: 3.5rem; height: 3.5rem; } }
+@media (min-width: 640px) {
+  .socialLink {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
 @media (min-width: 768px) {
-  .socialLink { width: 4rem; height: 4rem; }
+  .socialLink {
+    width: 4rem;
+    height: 4rem;
+  }
+
   .socialLink:hover {
-    box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
     transform: scale(1.05);
   }
 }
@@ -535,7 +626,9 @@
 }
 
 @media (min-width: 768px) {
-  .socialLink:hover .socialLinkBg { transform: translateY(0); }
+  .socialLink:hover .socialLinkBg {
+    transform: translateY(0);
+  }
 }
 
 .socialLinkIcon {
@@ -548,10 +641,23 @@
 }
 
 @media (min-width: 768px) {
-  .socialLink:hover .socialLinkIcon { color: #fff; }
+  .socialLink:hover .socialLinkIcon {
+    color: #fff;
+  }
 }
 
-.fbColor .socialLinkBg { background: #1877F2; }
-.igColor .socialLinkBg { background: linear-gradient(to top right, #facc15, #ef4444, #9333ea); }
-.inColor .socialLinkBg { background: #0A66C2; }
-.xColor .socialLinkBg { background: #000; }
+.fbColor .socialLinkBg {
+  background: #1877F2;
+}
+
+.igColor .socialLinkBg {
+  background: linear-gradient(to top right, #facc15, #ef4444, #9333ea);
+}
+
+.inColor .socialLinkBg {
+  background: #0A66C2;
+}
+
+.xColor .socialLinkBg {
+  background: #000;
+}

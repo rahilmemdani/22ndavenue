@@ -1,103 +1,264 @@
+/* =====================================================
+   MOBILE MENU — Cinematic Full-Screen Takeover
+   ===================================================== */
+
+/* ===== OVERLAY ===== */
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: var(--z-modal);
-  background: rgba(10, 10, 10, 0.97);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
+  z-index: 9000;
   pointer-events: none;
-  transition: opacity var(--duration-normal) var(--ease-out-quart);
+  overflow: hidden;
 }
 
 .overlay.open {
-  opacity: 1;
   pointer-events: all;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-16);
+/* ===== CURTAIN PANELS — dramatic wipe-in from top ===== */
+/* Two staggered dark panels that cover the screen like a theatre curtain */
+.curtain1,
+.curtain2 {
+  position: absolute;
+  inset: 0;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.curtain1 {
+  background: #0a0a0a;
+  transition-delay: 0s;
+  z-index: 1;
+}
+
+.curtain2 {
+  background: #050505;
+  transition-delay: 0.08s;
+  z-index: 2;
+}
+
+.overlay.open .curtain1,
+.overlay.open .curtain2 {
+  transform: scaleY(1);
+}
+
+/* ===== GOLD ACCENT LINE — draws across horizontally on open ===== */
+.accentLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, #E4C057, rgba(228, 192, 87, 0.3), transparent);
+  z-index: 10;
+  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+}
+
+.overlay.open .accentLine {
   width: 100%;
-  padding: var(--space-8);
 }
 
-/* ---------- Nav Links ---------- */
-.nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
+/* Invisible tap-to-close area behind content */
+.backdropClose {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: none;
+  z-index: 3;
+  cursor: default;
 }
 
-.link {
+/* ===== CONTENT ===== */
+.content {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  text-decoration: none;
-  padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-md);
+  justify-content: center;
+  padding: 5rem 2rem 3rem;
+  pointer-events: none; /* children override this */
+}
+
+.overlay.open .content {
+  pointer-events: all;
+}
+
+/* ===== BRAND MARK — top-left corner ===== */
+.brandMark {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.75rem;
+  display: flex;
+  align-items: baseline;
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity var(--duration-normal) var(--ease-out-expo),
-              transform var(--duration-normal) var(--ease-out-expo),
-              background var(--duration-fast);
+  transform: translateY(-10px);
+  transition: opacity 0.5s ease 0.55s, transform 0.5s ease 0.55s;
 }
 
-.overlay.open .link {
+.overlay.open .brandMark {
   opacity: 1;
   transform: translateY(0);
 }
 
-.link:hover {
-  background: rgba(255, 255, 255, 0.04);
+.brandText {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.12em;
+}
+
+.brandDot {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #E4C057;
+}
+
+/* ===== NAV ===== */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+/* ===== LINK ROWS ===== */
+.link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: hidden;
+
+  /* Each link starts clipped below and slams up */
+  opacity: 0;
+  transform: translateY(40px) skewY(2deg);
+  transition:
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Stagger via CSS custom property --i */
+  transition-delay: calc(0.18s + var(--i, 0) * 0.07s);
+}
+
+.overlay.open .link {
+  opacity: 1;
+  transform: translateY(0) skewY(0deg);
+}
+
+/* Hover gold sweep */
+.link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(228, 192, 87, 0.06) 0%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link:hover::before {
+  transform: translateX(0);
+}
+
+/* Gold left-border flash on hover */
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #E4C057;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link:hover::after,
+.link.active::after {
+  transform: scaleY(1);
+}
+
+/* Index number */
+.linkIndex {
+  font-family: var(--font-accent);
+  font-size: 0.65rem;
+  color: rgba(228, 192, 87, 0.5);
+  letter-spacing: 0.15em;
+  flex-shrink: 0;
+  width: 2rem;
+}
+
+.link.active .linkIndex {
+  color: #E4C057;
+}
+
+/* Label + sub stacked */
+.linkInner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
 }
 
 .linkLabel {
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
-  font-weight: 600;
-  color: var(--text-primary);
-  transition: color var(--duration-fast);
+  font-size: clamp(1.4rem, 7vw, 1.9rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease;
+}
+
+.link:hover .linkLabel,
+.link.active .linkLabel {
+  color: #E4C057;
 }
 
 .linkSub {
   font-family: var(--font-accent);
-  font-size: var(--text-xs);
-  color: var(--text-secondary);
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.3);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
+  transition: color 0.25s ease;
 }
 
-.link:hover .linkLabel {
-  color: var(--accent-gold);
-}
-
-.link.active .linkLabel {
-  color: var(--accent-gold);
-}
-
+.link:hover .linkSub,
 .link.active .linkSub {
-  color: var(--accent-gold-light);
+  color: rgba(228, 192, 87, 0.6);
 }
 
-/* ---------- Footer ---------- */
+/* Arrow — slides in on hover */
+.linkArrow {
+  font-size: 1.2rem;
+  color: #E4C057;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.link:hover .linkArrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===== FOOTER ===== */
 .footer {
+  margin-top: 2.5rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
+  align-items: flex-start;
+  gap: 0.85rem;
   opacity: 0;
-  transform: translateY(15px);
-  transition: opacity var(--duration-normal) var(--ease-out-expo),
-              transform var(--duration-normal) var(--ease-out-expo);
+  transform: translateY(20px);
+  transition: opacity 0.5s ease 0.75s, transform 0.5s ease 0.75s;
 }
 
 .overlay.open .footer {
@@ -105,33 +266,43 @@
   transform: translateY(0);
 }
 
+.dividerLine {
+  width: 40px;
+  height: 1px;
+  background: rgba(228, 192, 87, 0.4);
+}
+
 .socials {
   display: flex;
-  gap: var(--space-6);
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .socialLink {
   font-family: var(--font-accent);
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
   text-decoration: none;
-  transition: color var(--duration-fast);
-  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: color 0.25s ease;
 }
 
 .socialLink:hover {
-  color: var(--accent-gold);
+  color: #E4C057;
 }
 
 .email {
   font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: var(--text-muted);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.05em;
+  margin: 0;
 }
 
-/* Override: hide on desktop */
+/* ===== DESKTOP — hidden ===== */
 @media (min-width: 1024px) {
   .overlay {
-    display: none;
+    display: none !important;
   }
 }
