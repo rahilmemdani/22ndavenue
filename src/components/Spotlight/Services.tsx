@@ -63,29 +63,21 @@ const DEFAULT_SERVICES = [
 
 // ─── Scroll lock helpers (iOS-safe, no-jump) ─────────────────────────────────
 function lockScroll() {
-  if (document.body.dataset.scrollLocked) return; // already locked
-  const sy = window.scrollY;
+  if (document.body.dataset.scrollLocked) return;
   document.body.dataset.scrollLocked = "1";
-  document.body.dataset.scrollY = String(sy);
+  
+  // Clean overflow lock on both html and body (works on modern iOS Safari without layout thrashing)
+  document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
-  document.body.style.position = "fixed";
-  document.body.style.top = `-${sy}px`;
-  document.body.style.left = "0";
-  document.body.style.right = "0";
 }
 
 function unlockScroll() {
-  if (!document.body.dataset.scrollLocked) return; // nothing to unlock
-  const sy = parseInt(document.body.dataset.scrollY || "0", 10);
+  if (!document.body.dataset.scrollLocked) return;
+  
+  document.documentElement.style.overflow = "";
   document.body.style.overflow = "";
-  document.body.style.position = "";
-  document.body.style.top = "";
-  document.body.style.left = "";
-  document.body.style.right = "";
+  
   delete document.body.dataset.scrollLocked;
-  delete document.body.dataset.scrollY;
-  // Use 'instant' to avoid the animated-scroll-back visual
-  window.scrollTo({ top: sy, behavior: "instant" as ScrollBehavior });
 }
 // ─────────────────────────────────────────────────────────────────────────────
 

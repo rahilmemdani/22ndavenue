@@ -47,9 +47,10 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
 
   const scrollToTop = () => {
     if (window.innerWidth <= 1024 && sectionRef.current) {
-      // Calculate precise position to avoid iOS smooth scroll glitches exposing background
-      const y = sectionRef.current.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      // Use 'instant' — smooth scroll causes intermediate frames
+      // where the GPU compositor briefly exposes the sticky hero video
+      const y = sectionRef.current.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: y, behavior: "instant" as ScrollBehavior });
     }
   };
 
