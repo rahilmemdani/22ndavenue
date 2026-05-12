@@ -56,12 +56,12 @@ export default async function HomePage() {
       </div>
       
       {/* Normal Scrolling Section: Behind the Spotlight + Stats */}
-      <div style={{ position: 'relative', zIndex: 2, backgroundColor: '#050505', minHeight: '100vh' }}>
+      <div style={{ position: 'relative', zIndex: 2, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate' }}>
         <AboutHome data={aboutData} />
         <StatsBand />
       </div>
       {/* Normal Scrolling Sections: Our Collabs & Mic Drop Moments */}
-      <div style={{ position: 'relative', zIndex: 3, backgroundColor: '#050505', minHeight: '100vh' }}>
+      <div style={{ position: 'relative', zIndex: 3, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate' }}>
         <FeaturedArtists data={collabsData} />
         <MicDropMoments data={momentsData} />
       </div>
@@ -72,7 +72,7 @@ export default async function HomePage() {
       </StackedCard>
 
       {/* Normal Scrolling Section: Our Services */}
-      <div style={{ position: 'relative', zIndex: 5, backgroundColor: '#050505', minHeight: '100vh' }}>
+      <div style={{ position: 'relative', zIndex: 5, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate' }}>
         <Services data={servicesData} />
       </div>
 
