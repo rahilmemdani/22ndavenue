@@ -45,11 +45,21 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
+  const scrollToTop = () => {
+    if (window.innerWidth <= 1024 && sectionRef.current) {
+      // Calculate precise position to avoid iOS smooth scroll glitches exposing background
+      const y = sectionRef.current.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    scrollToTop();
   };
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    scrollToTop();
   };
 
   const slideChunks = Array.from({ length: totalSlides }, (_, i) => 
