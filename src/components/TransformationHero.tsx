@@ -73,26 +73,29 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
     };
   }, [isSplit]);
 
+  const [isVideoVisible, setIsVideoVisible] = useState(true);
+
   // Pause/resume video based on scroll position.
   // The hero section is inside a position:sticky wrapper so getBoundingClientRect()
   // always stays at y=0. Instead we compare window.scrollY directly against the
   // hero's natural height (one viewport height). When the user scrolls more than
-  // 80% of the viewport, we pause the video.
+  // 80% of the viewport, we pause the video and hide it to prevent any iOS bleed.
   useEffect(() => {
     if (!videoRef.current) return;
 
     const handleScroll = () => {
-      const heroHeight = window.innerHeight; // hero is always 100vh
-      // 80% threshold — pause when scrolled past 80% of the hero height
+      const heroHeight = window.innerHeight;
       const pauseAt = heroHeight * 0.8;
 
       if (window.scrollY > pauseAt) {
+        setIsVideoVisible(false); // Hide completely to stop bleeding
         if (videoRef.current && !videoRef.current.paused) {
           videoRef.current.pause();
           videoRef.current.muted = true;
           setIsMuted(true);
         }
       } else {
+        setIsVideoVisible(true); // Show when scrolled back up
         // Scroll back up — resume if animation is done
         if (videoRef.current && videoRef.current.paused && isSplit) {
           videoRef.current.play().catch(() => {});
@@ -136,7 +139,10 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
 
       {/* Right Panel: Showcase Reel */}
       <div className={styles.rightPanel}>
-        <div className={styles.videoContainer}>
+        <div 
+          className={styles.videoContainer}
+          style={{ visibility: isVideoVisible ? 'visible' : 'hidden' }}
+        >
           <video
             ref={videoRef}
             src={(isMobile && data?.mobileVideoUrl ? data.mobileVideoUrl : data?.desktopVideoUrl) || "/assets/hero/Intro AV.mp4"}
