@@ -889,4 +889,21 @@
   .modalServiceName {
     font-size: 0.85rem;
   }
+
+  /* Prevent scroll disruption from hover zooms on touch */
+  .serviceCard:hover {
+    transform: none !important;
+  }
+  
+  .serviceCard:hover .image {
+    transform: none !important;
+    filter: brightness(0.85) saturate(1.1) !important;
+  }
+
+  /* Always show text on touch devices where hover doesn't exist */
+  .serviceDesc,
+  .exploreCta {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
