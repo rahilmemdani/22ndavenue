@@ -893,17 +893,46 @@
   /* Prevent scroll disruption from hover zooms on touch */
   .serviceCard:hover {
     transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  .serviceCard:hover .cardBorderGlow {
+    opacity: 0.4 !important;
+    background: linear-gradient(135deg, rgba(228, 192, 87, 0.2) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(228, 192, 87, 0.1) 70%, rgba(255, 255, 255, 0.03) 100%) !important;
+  }
+  
+  .serviceCard:hover .shapeDiamond, 
+  .serviceCard:hover .shapeWave {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02) !important;
   }
   
   .serviceCard:hover .image {
     transform: none !important;
     filter: brightness(0.85) saturate(1.1) !important;
   }
+  
+  .serviceCard:hover .cinemaOverlay {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 0.02) 100%) !important;
+  }
+  
+  .serviceCard:hover .shimmerLine {
+    width: 40px !important;
+    background: linear-gradient(90deg, #E4C057, rgba(228, 192, 87, 0.3)) !important;
+  }
+  
+  .serviceCard:hover .serviceTitle {
+    color: #fff !important;
+  }
+  
+  .serviceCard:hover .exploreCta svg {
+    transform: none !important;
+  }
 
   /* Always show text on touch devices where hover doesn't exist */
   .serviceDesc,
   .exploreCta {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 }
