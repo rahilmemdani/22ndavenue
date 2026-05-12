@@ -51,14 +51,17 @@ export function AboutHome({ data }: AboutHomeProps) {
     : DEFAULT_FOUNDERS;
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
+    if (isHovered) return;
+
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % founders.length);
     }, 2000);
 
     return () => clearInterval(timer);
-  }, [founders.length]);
+  }, [founders.length, isHovered]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % founders.length);
@@ -90,7 +93,11 @@ export function AboutHome({ data }: AboutHomeProps) {
               direction="up"
               className={styles.imageReveal}
             >
-              <div className={styles.imageFrame}>
+              <div 
+                className={styles.imageFrame}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
                 <span className={styles.cornerTL}></span>
                 <span className={styles.cornerBR}></span>
 
