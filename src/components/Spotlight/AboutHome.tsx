@@ -6,39 +6,49 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./AboutHome.module.css";
 
-import { PortableText } from '@portabletext/react';
+import type { StaticImageData } from "next/image";
+
+import AdityaMehra from "../../../public/assets/hero/Director photos/Aditya Mehra.png";
+import DaryllSheldon from "../../../public/assets/hero/Director photos/Daryl Sheldon.png";
+import ManojGoplani from "../../../public/assets/hero/Director photos/Manoj Gopalani.png";
+
+import { PortableText } from "@portabletext/react";
+
+interface Founder {
+  name: string;
+  title: string;
+  image: string | StaticImageData;
+}
 
 interface AboutHomeProps {
   data?: {
-    directors: {
-      name: string;
-      title: string;
-      image: string;
-    }[];
+    directors: Founder[];
     story: any;
   };
 }
 
-const DEFAULT_FOUNDERS = [
+const DEFAULT_FOUNDERS: Founder[] = [
   {
     name: "Aditya Mehra",
     title: "Director",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop"
+    image: AdityaMehra,
   },
   {
     name: "Daryl Sheldon",
     title: "Director",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
+    image: DaryllSheldon,
   },
   {
     name: "Manoj Gopalani",
     title: "Director",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop"
-  }
+    image: ManojGoplani,
+  },
 ];
 
 export function AboutHome({ data }: AboutHomeProps) {
-  const founders = data?.directors?.length ? data.directors : DEFAULT_FOUNDERS;
+  const founders = data?.directors?.length
+    ? data.directors
+    : DEFAULT_FOUNDERS;
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -46,6 +56,7 @@ export function AboutHome({ data }: AboutHomeProps) {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % founders.length);
     }, 2000);
+
     return () => clearInterval(timer);
   }, [founders.length]);
 
@@ -59,40 +70,45 @@ export function AboutHome({ data }: AboutHomeProps) {
 
   return (
     <section className={styles.section} id="about-home">
-
       {/* Decorative accent line */}
       <div className={styles.accentLine}></div>
 
       <div className={styles.container}>
-
-        {/* Large editorial title — spans full width */}
+        {/* Large editorial title */}
         <ScrollReveal direction="up" className={styles.titleBlock}>
           <h2 className={styles.title}>
             BEHIND THE <span className={styles.goldText}>SPOTLIGHT</span>
           </h2>
-          {/* <div className={styles.titleUnderline}></div> */}
         </ScrollReveal>
 
-        {/* Content area: Image + Story */}
+        {/* Content area */}
         <div className={styles.contentArea}>
-
-          {/* Image / Carousel — takes the dominant visual space */}
+          {/* Image Carousel */}
           <div className={styles.imageCol}>
-            <ScrollReveal delay={150} direction="up" className={styles.imageReveal}>
+            <ScrollReveal
+              delay={150}
+              direction="up"
+              className={styles.imageReveal}
+            >
               <div className={styles.imageFrame}>
-                {/* Decorative corner marks */}
                 <span className={styles.cornerTL}></span>
                 <span className={styles.cornerBR}></span>
 
                 <div className={styles.carouselViewport}>
                   <div
                     className={styles.carouselTrack}
-                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                    style={{
+                      transform: `translateX(-${currentSlide * 100}%)`,
+                    }}
                   >
                     {founders.map((founder, idx) => (
                       <div key={idx} className={styles.founderSlide}>
                         <img
-                          src={founder.image}
+                          src={
+                            typeof founder.image === "string"
+                              ? founder.image
+                              : founder.image.src
+                          }
                           alt={founder.name}
                           className={styles.founderImg}
                         />
@@ -101,22 +117,44 @@ export function AboutHome({ data }: AboutHomeProps) {
                   </div>
                 </div>
 
-                {/* Founder info — overlaid at bottom */}
+                {/* Founder info */}
                 <div className={styles.founderInfoBar}>
                   <div className={styles.founderMeta}>
-                    <h4 className={styles.founderName}>{founders[currentSlide]?.name}</h4>
-                    <p className={styles.founderRole}>{founders[currentSlide]?.title}</p>
+                    <h4 className={styles.founderName}>
+                      {founders[currentSlide]?.name}
+                    </h4>
+
+                    <p className={styles.founderRole}>
+                      {founders[currentSlide]?.title}
+                    </p>
                   </div>
+
                   <div className={styles.navControls}>
-                    <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous">
+                    <button
+                      onClick={prevSlide}
+                      className={styles.arrowBtn}
+                      aria-label="Previous"
+                    >
                       <ArrowLeft size={16} />
                     </button>
+
                     <div className={styles.slideCounter}>
-                      <span className={styles.currentNum}>0{currentSlide + 1}</span>
+                      <span className={styles.currentNum}>
+                        0{currentSlide + 1}
+                      </span>
+
                       <span className={styles.dividerSlash}>/</span>
-                      <span className={styles.totalNum}>0{founders.length}</span>
+
+                      <span className={styles.totalNum}>
+                        0{founders.length}
+                      </span>
                     </div>
-                    <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next">
+
+                    <button
+                      onClick={nextSlide}
+                      className={styles.arrowBtn}
+                      aria-label="Next"
+                    >
                       <ArrowRight size={16} />
                     </button>
                   </div>
@@ -125,11 +163,12 @@ export function AboutHome({ data }: AboutHomeProps) {
             </ScrollReveal>
           </div>
 
-          {/* Story text — sits alongside with editorial spacing */}
+          {/* Story section */}
           <div className={styles.storyCol}>
             <ScrollReveal delay={300} direction="up">
               <div className={styles.storyInner}>
                 <div className={styles.storyAccent}></div>
+
                 {data?.story ? (
                   <div className={styles.portableTextWrapper}>
                     <PortableText value={data.story} />
@@ -137,20 +176,39 @@ export function AboutHome({ data }: AboutHomeProps) {
                 ) : (
                   <>
                     <p className={styles.leadCopy}>
-                      22nd Avenue was born from a vision to craft world-class experiences in entertainment, founded by Aditya Mehra, Daryl Sheldon and Manoj Gopalani.
+                      22nd Avenue was born from a vision to craft world-class
+                      experiences in entertainment, founded by Aditya Mehra,
+                      Daryl Sheldon and Manoj Gopalani.
                     </p>
+
                     <p className={styles.bodyCopy}>
-                      Under <span className={styles.goldText}>Manoj&apos;s leadership</span>, what started as an idea soon evolved into a <span className={styles.goldText}>trusted name</span> in an ever-evolving industry, one that understands both the <span className={styles.goldText}>art and the precision</span> behind great entertainment.
+                      Under{" "}
+                      <span className={styles.goldText}>
+                        Manoj&apos;s leadership
+                      </span>
+                      , what started as an idea soon evolved into a{" "}
+                      <span className={styles.goldText}>
+                        trusted name
+                      </span>{" "}
+                      in an ever-evolving industry.
                     </p>
+
                     <p className={styles.bodyCopy}>
-                      Our mission is simple: to <span className={styles.goldText}>redefine industry norms</span> and <span className={styles.goldText}>stay ahead of the curve</span>. Over the years we&apos;ve built <span className={styles.goldText}>lasting relationships</span> with <span className={styles.goldText}>renowned talent</span> across the global stage.
+                      Our mission is simple: to{" "}
+                      <span className={styles.goldText}>
+                        redefine industry norms
+                      </span>{" "}
+                      and{" "}
+                      <span className={styles.goldText}>
+                        stay ahead of the curve
+                      </span>
+                      .
                     </p>
                   </>
                 )}
               </div>
             </ScrollReveal>
           </div>
-
         </div>
       </div>
     </section>
