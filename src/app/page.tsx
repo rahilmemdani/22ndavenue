@@ -20,23 +20,27 @@ import {
   footprintQuery
 } from "@/sanity/queries";
 
+// Force fresh data on every request (Instant Sanity updates)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function HomePage() {
-  // Fetch all data concurrently
-  let heroData, aboutData, collabsData, momentsData, testimonialsData, servicesData, footprintData;
+  // Initialize with null so we can check if fetch succeeded
+  let heroData = null;
+  let aboutData = null;
+  let collabsData = null;
+  let momentsData = null;
+  let testimonialsData = null;
+  let servicesData = null;
+  let footprintData = null;
 
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 
-  if (projectId && projectId !== 'your-project-id') {
+  // Force fetch if we have a project ID
+  if (projectId) {
     try {
-      [
-        heroData,
-        aboutData,
-        collabsData,
-        momentsData,
-        testimonialsData,
-        servicesData,
-        footprintData
-      ] = await Promise.all([
+      console.log(`Attempting to fetch data for project: ${projectId}`);
+      const results = await Promise.all([
         client.fetch(heroQuery),
         client.fetch(aboutQuery),
         client.fetch(collabsQuery),
@@ -45,41 +49,50 @@ export default async function HomePage() {
         client.fetch(servicesQuery),
         client.fetch(footprintQuery)
       ]);
+
+      [
+        heroData,
+        aboutData,
+        collabsData,
+        momentsData,
+        testimonialsData,
+        servicesData,
+        footprintData
+      ] = results;
+      
+      console.log("Sanity fetch successful!");
     } catch (error) {
-      console.error("Failed to fetch from Sanity:", error);
+      console.error("Sanity connection failed:", error);
     }
   } else {
-    console.log("Skipping Sanity fetch because NEXT_PUBLIC_SANITY_PROJECT_ID is not set or is 'your-project-id'. Using local fallback data.");
+    console.warn("NEXT_PUBLIC_SANITY_PROJECT_ID is missing from environment variables.");
   }
+
   return (
     <main style={{ position: 'relative' }}>
-      {/* Background Video Layer - Sticky so cards can slide over it */}
+      {/* Background Video Layer */}
       <div style={{ position: 'sticky', top: 0, zIndex: 1 }}>
         <TransformationHero data={heroData} />
       </div>
       
-      {/* Normal Scrolling Section: Behind the Spotlight + Stats */}
       <div style={{ position: 'relative', zIndex: 2, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
         <AboutHome data={aboutData} />
         <StatsBand />
       </div>
-      {/* Normal Scrolling Sections: Our Collabs & Mic Drop Moments */}
+      
       <div style={{ position: 'relative', zIndex: 3, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
         <FeaturedArtists data={collabsData} />
         <MicDropMoments data={momentsData} />
       </div>
 
-      {/* Card Stack: Testimonials (THE BUZZ IS REAL) */}
       <StackedCard zIndex={4}>
         <Testimonials data={testimonialsData} />
       </StackedCard>
 
-      {/* Normal Scrolling Section: Our Services */}
       <div style={{ position: 'relative', zIndex: 5, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
         <Services data={servicesData} />
       </div>
 
-      {/* Final Card Stack: Global Footprint */}
       <StackedCard zIndex={6}>
         <GlobalFootprint data={footprintData} />
       </StackedCard>
