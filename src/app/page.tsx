@@ -16,12 +16,13 @@ import {
   collabsQuery,
   momentsQuery,
   testimonialsQuery,
-  servicesQuery
+  servicesQuery,
+  footprintQuery
 } from "@/sanity/queries";
 
 export default async function HomePage() {
   // Fetch all data concurrently
-  let heroData, aboutData, collabsData, momentsData, testimonialsData, servicesData;
+  let heroData, aboutData, collabsData, momentsData, testimonialsData, servicesData, footprintData;
 
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 
@@ -33,14 +34,16 @@ export default async function HomePage() {
         collabsData,
         momentsData,
         testimonialsData,
-        servicesData
+        servicesData,
+        footprintData
       ] = await Promise.all([
         client.fetch(heroQuery),
         client.fetch(aboutQuery),
         client.fetch(collabsQuery),
         client.fetch(momentsQuery),
         client.fetch(testimonialsQuery),
-        client.fetch(servicesQuery)
+        client.fetch(servicesQuery),
+        client.fetch(footprintQuery)
       ]);
     } catch (error) {
       console.error("Failed to fetch from Sanity:", error);
@@ -78,7 +81,7 @@ export default async function HomePage() {
 
       {/* Final Card Stack: Global Footprint */}
       <StackedCard zIndex={6}>
-        <GlobalFootprint />
+        <GlobalFootprint data={footprintData} />
       </StackedCard>
     </main>
   );

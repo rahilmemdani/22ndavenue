@@ -60,3 +60,7 @@ export const servicesQuery = groq`*[_type == "services"][0] {
     }
   }
 }`
+
+export const footprintQuery = groq`*[_type == "footprint"][0] {
+  "image": image.asset->url
+}`

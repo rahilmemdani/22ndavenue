@@ -4,5 +4,6 @@ import { collabs } from './collabs'
 import { moments } from './moments'
 import { testimonials } from './testimonials'
 import { services } from './services'
+import { footprint } from './footprint'
 
-export const schemaTypes = [hero, about, collabs, moments, testimonials, services]
+export const schemaTypes = [hero, about, collabs, moments, testimonials, services, footprint]

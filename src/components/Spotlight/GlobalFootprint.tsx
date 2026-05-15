@@ -1,7 +1,13 @@
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import styles from "./GlobalFootprint.module.css";
 
-export function GlobalFootprint() {
+interface GlobalFootprintProps {
+  data?: {
+    image: string;
+  };
+}
+
+export function GlobalFootprint({ data }: GlobalFootprintProps) {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
@@ -13,7 +19,7 @@ export function GlobalFootprint() {
         
         <ScrollReveal direction="up" delay={200} className={styles.imageWrapper}>
           <img 
-            src="/assets/hero/Global map.png" 
+            src={data?.image || "/assets/hero/Global map.png"} 
             alt="Global Footprint Map" 
             className={styles.mapImage} 
           />
