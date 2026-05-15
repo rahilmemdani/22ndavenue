@@ -8,7 +8,9 @@ import styles from "./TransformationHero.module.css";
 interface TransformationHeroProps {
   data?: {
     desktopVideoUrl?: string;
+    desktopVideoUploadUrl?: string;
     mobileVideoUrl?: string;
+    mobileVideoUploadUrl?: string;
     fallbackImage?: string;
   };
 }
@@ -116,6 +118,10 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
     }
   };
 
+  const desktopSrc = data?.desktopVideoUploadUrl || data?.desktopVideoUrl;
+  const mobileSrc = data?.mobileVideoUploadUrl || data?.mobileVideoUrl;
+  const videoSrc = (isMobile && mobileSrc ? mobileSrc : desktopSrc) || "/assets/hero/Intro AV.mp4";
+
   return (
     <section ref={containerRef} className={`${styles.heroContainer} ${isSplit ? styles.split : ""}`}>
 
@@ -145,7 +151,7 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
         >
           <video
             ref={videoRef}
-            src={(isMobile && data?.mobileVideoUrl ? data.mobileVideoUrl : data?.desktopVideoUrl) || "/assets/hero/Intro AV.mp4"}
+            src={videoSrc}
             poster={data?.fallbackImage}
             className={styles.showcaseVideo}
             autoPlay
