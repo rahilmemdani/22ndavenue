@@ -31,7 +31,32 @@ export const about = defineType({
       name: 'story',
       title: 'Story Copy',
       type: 'array',
-      of: [{ type: 'block' }]
-    })
+      of: [
+        {
+          type: 'block',
+          marks: {
+            annotations: [
+              {
+                name: 'textColor',
+                type: 'object',
+                title: 'Text Color',
+                fields: [
+                  {
+                    name: 'color',
+                    type: 'string',
+                    title: 'Color',
+                    options: {
+                      list: [
+                        { title: 'Gold', value: 'gold' },
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    }),
   ],
 })

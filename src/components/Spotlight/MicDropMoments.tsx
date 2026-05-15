@@ -8,15 +8,13 @@ import styles from "./MicDropMoments.module.css";
 
 interface MicDropMomentsProps {
   data?: {
-    momentsList: {
-      title: string;
-      category: string;
-      placeholderImage: string;
-      gallery: {
-        type: string;
+    categories: {
+      categoryName: string;
+      tiles: {
+        title?: string;
+        subtitle?: string;
         image?: string;
-        videoUrl?: string;
-        thumbnail?: string;
+        video?: string;
       }[];
     }[];
   };
@@ -139,30 +137,18 @@ const DEFAULT_CATEGORIES = [
 export function MicDropMoments({ data }: MicDropMomentsProps) {
   let showcaseCategories = DEFAULT_CATEGORIES;
 
-  if (data?.momentsList && data.momentsList.length > 0) {
-    const grouped = data.momentsList.reduce((acc, curr) => {
-      const cat = curr.category || 'Other';
-      if (!acc[cat]) {
-        acc[cat] = { name: cat, tiles: [] };
-      }
-      
-      const parts = curr.title ? curr.title.split(' ') : ['Moment', ''];
-      const title = parts[0];
-      const subtitle = parts.slice(1).join(' ') || 'EXPERIENCE';
-      const firstVideo = curr.gallery?.find(g => g.type === 'video')?.videoUrl;
-
-      acc[cat].tiles.push({
-        id: curr.title,
-        title: title,
-        subtitle: subtitle,
-        verticalText: curr.title,
-        image: curr.placeholderImage,
-        video: firstVideo
-      });
-      return acc;
-    }, {} as Record<string, any>);
-    
-    showcaseCategories = Object.values(grouped);
+  if (data?.categories && data.categories.length > 0) {
+    showcaseCategories = data.categories.map((cat) => ({
+      name: cat.categoryName || "Unnamed Category",
+      tiles: (cat.tiles || []).map((t, index) => ({
+        id: `${t.title || "Moment"}-${index}`,
+        title: t.title || "",
+        subtitle: t.subtitle || "",
+        verticalText: `${t.title || ''} ${t.subtitle || ''}`.trim() || "Moment",
+        image: t.image || "",
+        video: t.video || "",
+      })),
+    }));
   }
 
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
@@ -170,7 +156,7 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isSliding, setIsSliding] = useState(false);
 
-  const currentCategory = showcaseCategories[activeCategoryIndex];
+  const currentCategory = showcaseCategories[activeCategoryIndex] || showcaseCategories[0];
 
   const nextCategory = () => {
     if (isSliding) return;
@@ -193,6 +179,8 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
       setIsSliding(false);
     }, 500);
   };
+
+  if (!currentCategory) return null;
 
   return (
     <section className={styles.section} id="showcase-section">
@@ -253,7 +241,7 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
                     {isActive ? (
                       <div className={styles.activeBottomArea}>
                         <h3 className={styles.cardTitle}>{tile.title}</h3>
-                        <p className={styles.cardSubtitle}>{tile.subtitle}</p>
+                        {tile.subtitle && <p className={styles.cardSubtitle}>{tile.subtitle}</p>}
                       </div>
                     ) : (
                       <div className={styles.inactiveBottomArea}>

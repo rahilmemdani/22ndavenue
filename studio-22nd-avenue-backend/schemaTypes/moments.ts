@@ -6,38 +6,48 @@ export const moments = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'momentsList',
-      title: 'Moments List',
+      name: 'categories',
+      title: 'Categories (Carousel Sections)',
       type: 'array',
       of: [
         {
           type: 'object',
+          name: 'category',
           fields: [
-            { name: 'title', title: 'Title', type: 'string' },
-            { name: 'category', title: 'Category (e.g., EXPERIENCES, ACTIVATIONS)', type: 'string' },
-            { name: 'placeholderImage', title: 'Placeholder Image', type: 'image', options: { hotspot: true } },
+            { name: 'categoryName', title: 'Category Name (e.g., Corporate Events, Live Concerts)', type: 'string' },
             {
-              name: 'gallery',
-              title: 'Gallery Collection',
+              name: 'tiles',
+              title: 'Accordion Cards (Tiles)',
               type: 'array',
               of: [
                 {
                   type: 'object',
+                  name: 'tile',
                   fields: [
-                    { name: 'type', title: 'Media Type', type: 'string', options: { list: ['image', 'video'] } },
-                    { name: 'image', title: 'Image', type: 'image', hidden: ({ parent }) => parent?.type !== 'image' },
-                    { name: 'videoUrl', title: 'Video URL', type: 'url', hidden: ({ parent }) => parent?.type !== 'video' },
-                    { name: 'thumbnail', title: 'Video Thumbnail', type: 'image', hidden: ({ parent }) => parent?.type !== 'video' }
-                  ]
+                    { name: 'title', title: 'Card Main Title (e.g., Summit)', type: 'string' },
+                    { name: 'subtitle', title: 'Card Subtitle (e.g., EXPERIENCES)', type: 'string' },
+                    { name: 'placeholderImage', title: 'Background Image', type: 'image', options: { hotspot: true } },
+                    { name: 'video', title: 'Hover Background Video', type: 'file', options: { accept: 'video/mp4,video/*' } }
+                  ],
+                  preview: {
+                    select: {
+                      title: 'title',
+                      subtitle: 'subtitle',
+                      media: 'placeholderImage'
+                    }
+                  }
                 }
               ]
             }
           ],
           preview: {
             select: {
-              title: 'title',
-              subtitle: 'category',
-              media: 'placeholderImage'
+              title: 'categoryName'
+            },
+            prepare(selection: any) {
+              return {
+                title: selection.title || 'Unnamed Category'
+              }
             }
           }
         }

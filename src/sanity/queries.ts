@@ -24,15 +24,13 @@ export const collabsQuery = groq`*[_type == "collabs"][0] {
 }`
 
 export const momentsQuery = groq`*[_type == "moments"][0] {
-  "momentsList": momentsList[] {
-    title,
-    category,
-    "placeholderImage": placeholderImage.asset->url,
-    "gallery": gallery[] {
-      type,
-      "image": image.asset->url,
-      videoUrl,
-      "thumbnail": thumbnail.asset->url
+  "categories": categories[] {
+    categoryName,
+    "tiles": tiles[] {
+      title,
+      subtitle,
+      "image": placeholderImage.asset->url,
+      "video": video.asset->url
     }
   }
 }`

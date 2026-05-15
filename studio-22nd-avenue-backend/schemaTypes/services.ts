@@ -29,7 +29,21 @@ export const services = defineType({
                     { name: 'image', title: 'Image', type: 'image', hidden: ({ parent }) => parent?.type !== 'image' },
                     { name: 'videoUrl', title: 'Video URL', type: 'url', hidden: ({ parent }) => parent?.type !== 'video' },
                     { name: 'thumbnail', title: 'Video Thumbnail', type: 'image', hidden: ({ parent }) => parent?.type !== 'video' }
-                  ]
+                  ],
+                  preview: {
+                    select: {
+                      type: 'type',
+                      image: 'image',
+                      thumbnail: 'thumbnail'
+                    },
+                    prepare(selection: any) {
+                      const { type, image, thumbnail } = selection
+                      return {
+                        title: type === 'video' ? 'Video' : 'Image',
+                        media: type === 'video' ? thumbnail : image
+                      }
+                    }
+                  }
                 }
               ]
             }

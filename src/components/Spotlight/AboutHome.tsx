@@ -178,7 +178,19 @@ export function AboutHome({ data }: AboutHomeProps) {
 
                 {data?.story ? (
                   <div className={styles.portableTextWrapper}>
-                    <PortableText value={data.story} />
+                    <PortableText 
+                      value={data.story} 
+                      components={{
+                        marks: {
+                          textColor: ({ children, value }: any) => {
+                            if (value?.color === 'gold') {
+                              return <span className={styles.goldText}>{children}</span>;
+                            }
+                            return <span>{children}</span>;
+                          }
+                        }
+                      }}
+                    />
                   </div>
                 ) : (
                   <>
