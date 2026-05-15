@@ -11,9 +11,21 @@ export const hero = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'desktopVideo',
+      title: 'Desktop Background Video Upload (Overrides URL if provided)',
+      type: 'file',
+      options: { accept: 'video/*' },
+    }),
+    defineField({
       name: 'mobileVideoUrl',
       title: 'Mobile Background Video URL (Optional - Vimeo/CDN/Local)',
       type: 'url',
+    }),
+    defineField({
+      name: 'mobileVideo',
+      title: 'Mobile Background Video Upload (Overrides URL if provided)',
+      type: 'file',
+      options: { accept: 'video/*' },
     }),
     defineField({
       name: 'fallbackImage',

@@ -1,10 +1,6 @@
 import { groq } from 'next-sanity'
 
-export const heroQuery = groq`*[_type == "hero"][0] {
-  desktopVideoUrl,
-  mobileVideoUrl,
-  "fallbackImage": fallbackImage.asset->url
-}`
+
 
 export const aboutQuery = groq`*[_type == "about"][0] {
   "directors": directors[] {
