@@ -65,18 +65,14 @@ const DEFAULT_SERVICES = [
 function lockScroll() {
   if (document.body.dataset.scrollLocked) return;
   document.body.dataset.scrollLocked = "1";
-  
-  // Clean overflow lock on both html and body (works on modern iOS Safari without layout thrashing)
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
 }
 
 function unlockScroll() {
   if (!document.body.dataset.scrollLocked) return;
-  
   document.documentElement.style.overflow = "";
   document.body.style.overflow = "";
-  
   delete document.body.dataset.scrollLocked;
 }
 // ─────────────────────────────────────────────────────────────────────────────
@@ -99,12 +95,11 @@ export function Services({ data }: ServicesProps) {
   const [mobileCardIndex, setMobileCardIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
+
   const showArrows = services.length > 2;
 
-  // Ensure portal target exists client-side
   useEffect(() => { setMounted(true); }, []);
 
-  // iOS-safe scroll lock
   useEffect(() => {
     if (selectedService) {
       lockScroll();
@@ -115,24 +110,30 @@ export function Services({ data }: ServicesProps) {
     return () => { unlockScroll(); };
   }, [selectedService]);
 
-  // Track active card on mobile via scroll
   const handleCarouselScroll = useCallback(() => {
     const el = carouselRef.current;
     if (!el) return;
     const scrollLeft = el.scrollLeft;
-    const cardWidth = el.scrollWidth / services.length;
-    const index = Math.round(scrollLeft / cardWidth);
+    const itemWidth = el.scrollWidth / services.length;
+    const index = Math.round(scrollLeft / itemWidth);
     setMobileCardIndex(Math.min(index, services.length - 1));
   }, [services.length]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    const el = carouselRef.current;
+    if (!el) return;
+    // To scroll exactly 2 cards (one full frame), we use el.clientWidth
+    const scrollAmount = el.clientWidth;
+    el.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: "smooth" });
+  };
 
   const scrollToCard = (index: number) => {
     const el = carouselRef.current;
     if (!el) return;
-    const cardWidth = el.scrollWidth / services.length;
-    el.scrollTo({ left: cardWidth * index, behavior: "smooth" });
+    const itemWidth = el.scrollWidth / services.length;
+    el.scrollTo({ left: itemWidth * index, behavior: "smooth" });
   };
 
-  // Lightbox navigation
   const lightboxPrev = () => {
     if (lightboxIndex === null || !selectedService) return;
     setLightboxIndex((lightboxIndex - 1 + selectedService.gallery.length) % selectedService.gallery.length);
@@ -142,7 +143,6 @@ export function Services({ data }: ServicesProps) {
     setLightboxIndex((lightboxIndex + 1) % selectedService.gallery.length);
   };
 
-  // Keyboard nav
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -158,7 +158,6 @@ export function Services({ data }: ServicesProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxIndex, selectedService]);
 
-  // Masonry layout helper
   const getMasonryLayout = (totalItems: number) => {
     const patterns = ["triple", "duo", "hero", "duo", "triple"];
     const result: { start: number; count: number; type: string }[] = [];
@@ -175,7 +174,6 @@ export function Services({ data }: ServicesProps) {
     return result;
   };
 
-  // The modal JSX — rendered via portal to document.body
   const modalPortal = mounted && selectedService ? createPortal(
     <div
       className={styles.modalOverlay}
@@ -185,20 +183,9 @@ export function Services({ data }: ServicesProps) {
       aria-label={`${selectedService.title} gallery`}
     >
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-
-        {/* Gold accent line at very top */}
         <div className={styles.modalAccentLine} />
-
-        {/* Top bar */}
         <div className={styles.modalTopBar}>
           <div className={styles.modalTopBarLeft}>
-            {/* <div className={styles.modalServiceBadge}>
-              <span className={styles.modalServiceNum}>
-                {services.findIndex(s => s.title === selectedService.title) + 1 < 10
-                  ? `0${services.findIndex(s => s.title === selectedService.title) + 1}`
-                  : services.findIndex(s => s.title === selectedService.title) + 1}
-              </span>
-            </div> */}
             <div>
               <h3 className={styles.modalServiceName}>{selectedService.title}</h3>
               <span className={styles.modalCount}>{selectedService.gallery.length} items in collection</span>
@@ -213,7 +200,6 @@ export function Services({ data }: ServicesProps) {
           </button>
         </div>
 
-        {/* Scrollable masonry gallery */}
         <div className={styles.galleryScroll}>
           {getMasonryLayout(selectedService.gallery.length).map((row, rowIdx) => {
             const items = selectedService.gallery.slice(row.start, row.start + row.count);
@@ -253,13 +239,11 @@ export function Services({ data }: ServicesProps) {
                           preload="metadata"
                         />
                       )}
-                      {/* Hover overlay */}
                       <div className={styles.tileHover}>
                         {item.type === "video"
                           ? <Play size={22} fill="white" stroke="none" />
                           : <Maximize2 size={18} />}
                       </div>
-                      {/* Video badge */}
                       {item.type === "video" && (
                         <div className={styles.videoIndicator}>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -276,18 +260,14 @@ export function Services({ data }: ServicesProps) {
         </div>
       </div>
 
-      {/* ── LIGHTBOX ─────────────────────────────────────── */}
       {lightboxIndex !== null && (
         <div className={styles.lightbox} onClick={() => setLightboxIndex(null)}>
-
           <button className={styles.lbClose} onClick={() => setLightboxIndex(null)} aria-label="Close">
             <X size={20} />
           </button>
-
           <div className={styles.lbCounter}>
             {lightboxIndex + 1} / {selectedService.gallery.length}
           </div>
-
           <button
             className={`${styles.lbNav} ${styles.lbPrev}`}
             onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
@@ -295,7 +275,6 @@ export function Services({ data }: ServicesProps) {
           >
             <ChevronLeft size={26} />
           </button>
-
           <div className={styles.lbMediaWrap} onClick={(e) => e.stopPropagation()}>
             {selectedService.gallery[lightboxIndex].type === "image" ? (
               <img
@@ -314,7 +293,6 @@ export function Services({ data }: ServicesProps) {
               />
             )}
           </div>
-
           <button
             className={`${styles.lbNav} ${styles.lbNext}`}
             onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
@@ -331,7 +309,6 @@ export function Services({ data }: ServicesProps) {
   return (
     <section className={styles.section} id="services-section">
       <div className={styles.wrapper}>
-        {/* Header */}
         <div className={styles.header}>
           <ScrollReveal direction="up">
             <h2 className={styles.sectionTitle}>
@@ -341,7 +318,6 @@ export function Services({ data }: ServicesProps) {
           </ScrollReveal>
         </div>
 
-        {/* Marquee */}
         <div className={styles.marqueeWrapper}>
           <div className={styles.marquee}>
             <span>OUR SERVICES — OUR SERVICES — OUR SERVICES — OUR SERVICES — OUR SERVICES — OUR SERVICES — OUR SERVICES — OUR SERVICES — </span>
@@ -349,12 +325,11 @@ export function Services({ data }: ServicesProps) {
           </div>
         </div>
 
-        {/* Carousel */}
         <div className={styles.carouselContainer}>
           {showArrows && (
             <button
               className={`${styles.desktopArrow} ${styles.desktopArrowLeft}`}
-              onClick={() => carouselRef.current?.scrollBy({ left: -370, behavior: "smooth" })}
+              onClick={() => scroll('left')}
               aria-label="Previous"
             >
               <ChevronLeft size={20} />
@@ -368,7 +343,7 @@ export function Services({ data }: ServicesProps) {
           >
             {services.map((service, i) => (
               <div key={service.title} className={styles.snapSlide}>
-                <ScrollReveal delay={100 * i}>
+                <ScrollReveal delay={100 * i} width="100%">
                   <div
                     className={styles.serviceCard}
                     onClick={() => setSelectedService(service)}
@@ -386,6 +361,9 @@ export function Services({ data }: ServicesProps) {
                               <polyline points="7 7 17 7 17 17"></polyline>
                             </svg>
                           </h3>
+                          {/* {service.description && (
+                            <p className={styles.serviceDesc}>{service.description}</p>
+                          )} */}
                         </div>
                       </div>
                     </div>
@@ -398,7 +376,7 @@ export function Services({ data }: ServicesProps) {
           {showArrows && (
             <button
               className={`${styles.desktopArrow} ${styles.desktopArrowRight}`}
-              onClick={() => carouselRef.current?.scrollBy({ left: 370, behavior: "smooth" })}
+              onClick={() => scroll('right')}
               aria-label="Next"
             >
               <ChevronRight size={20} />
@@ -406,7 +384,6 @@ export function Services({ data }: ServicesProps) {
           )}
         </div>
 
-        {/* Mobile dots */}
         {services.length > 1 && (
           <div className={styles.dotsRow}>
             {services.map((_, i) => (
@@ -421,7 +398,6 @@ export function Services({ data }: ServicesProps) {
         )}
       </div>
 
-      {/* Portal-rendered modal — lives outside all stacking contexts */}
       {modalPortal}
     </section>
   );

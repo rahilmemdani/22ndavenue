@@ -16,7 +16,19 @@ export const services = defineType({
             { name: 'title', title: 'Title', type: 'string' },
             { name: 'description', title: 'Description', type: 'text' },
             { name: 'image', title: 'Placeholder Image', type: 'image', options: { hotspot: true } },
-            { name: 'shape', title: 'Shape', type: 'string', options: { list: ['shapeDiamond', 'shapeWave'] }, initialValue: 'shapeDiamond' },
+            { 
+              name: 'shape', 
+              title: 'Shape', 
+              type: 'string', 
+              options: { 
+                list: [
+                  { title: 'Diamond', value: 'shapeDiamond' },
+                  { title: 'Wave', value: 'shapeWave' },
+                  { title: 'Arch', value: 'shapeArch' }
+                ] 
+              }, 
+              initialValue: 'shapeDiamond' 
+            },
             {
               name: 'gallery',
               title: 'Gallery Collection',

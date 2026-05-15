@@ -112,7 +112,7 @@
   width: 100%;
 }
 
-/* Desktop prev/next arrows — only rendered when >2 cards */
+/* Desktop prev/next arrows */
 .desktopArrow {
   display: none;
   position: absolute;
@@ -183,13 +183,14 @@
 
 @media (min-width: 768px) {
   .snapSlide {
-    flex: 1 1 0;
+    /* Exactly 2 cards in 1 frame */
+    flex: 0 0 calc(50% - 1rem);
     padding: 0;
-    min-width: 0;
+    min-width: calc(50% - 1rem); /* Force rigid width */
   }
 
   .servicesCarousel {
-    justify-content: center;
+    justify-content: flex-start;
     gap: 2rem;
     padding: 1.5rem 5% 1rem;
   }
@@ -203,6 +204,10 @@
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   overflow: hidden;
+  /* Fixed card aspect ratio ensures same size regardless of content */
+  aspect-ratio: 16 / 10;
+  display: flex;
+  flex-direction: column;
 }
 
 .serviceCard:hover {
@@ -239,8 +244,8 @@
 /* Image wrapper — compact landscape, capped height */
 .imageWrapper {
   width: 100%;
-  aspect-ratio: 16 / 10;
-  max-height: 55vh;
+  height: 100%;
+  flex: 1;
   overflow: hidden;
   position: relative;
   background: #111;
@@ -248,20 +253,32 @@
 
 /* Universal Premium Shape */
 .shapeDiamond,
-.shapeWave {
+.shapeWave,
+.shapeArch {
   border-radius: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Ensure these classes match the data-shape props */
+.shapeArch {
+  border-radius: 10rem 10rem 1.5rem 1.5rem;
+}
+
 .shapeDiamond~.cardBorderGlow,
-.shapeWave~.cardBorderGlow {
+.shapeWave~.cardBorderGlow,
+.shapeArch~.cardBorderGlow {
   border-radius: 1.5rem;
 }
 
+.shapeArch~.cardBorderGlow {
+  border-radius: 10rem 10rem 1.5rem 1.5rem;
+}
+
 .serviceCard:hover .shapeDiamond,
-.serviceCard:hover .shapeWave {
+.serviceCard:hover .shapeWave,
+.serviceCard:hover .shapeArch {
   border-color: rgba(228, 192, 87, 0.4);
   box-shadow: inset 0 0 40px rgba(228, 192, 87, 0.08);
 }
@@ -270,6 +287,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
   filter: brightness(0.85) saturate(1.1);
 }
@@ -798,24 +816,22 @@
 }
 
 .lbNav:hover {
-  background: rgba(228, 192, 87, 0.2);
-  border-color: rgba(228, 192, 87, 0.5);
-  color: #E4C057;
+  background: #E4C057;
+  color: #000;
 }
 
 .lbPrev {
-  left: 1rem;
+  left: 1.5rem;
 }
 
 .lbNext {
-  right: 1rem;
+  right: 1.5rem;
 }
 
-/* Media container */
+/* Media wrapper */
 .lbMediaWrap {
-  max-width: 90vw;
-  max-height: 85vh;
-  max-height: 85dvh;
+  width: 90%;
+  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -823,116 +839,8 @@
 
 .lbMedia {
   max-width: 100%;
-  max-height: 85vh;
-  max-height: 85dvh;
+  max-height: 100%;
   object-fit: contain;
-  border-radius: 0.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-/* Mobile lightbox adjustments */
-@media (max-width: 768px) {
-  .lbNav {
-    width: 36px;
-    height: 36px;
-  }
-
-  .lbPrev {
-    left: 0.5rem;
-  }
-
-  .lbNext {
-    right: 0.5rem;
-  }
-
-  .lbMediaWrap {
-    max-width: 96vw;
-  }
-}
-
-
-
-
-/* ===== MOBILE SECTION ===== */
-
-@media (max-width: 768px) {
-  .section {
-    padding: 4rem 0 3rem;
-  }
-
-  /* Lock the carousel to horizontal-only movement on phone.
-     - overflow-y: hidden prevents the track itself from scrolling vertically.
-     - touch-action: pan-x tells the browser to only handle horizontal panning
-       inside the carousel, handing vertical scroll back to the page. */
-  .servicesCarousel {
-    overflow-y: hidden;
-    touch-action: pan-x;
-    /* Prevent any scroll chaining that lets the page scroll while swiping cards */
-    overscroll-behavior-x: contain;
-  }
-
-  .snapSlide {
-    /* Cards must not move vertically under any circumstances */
-    touch-action: pan-x;
-    overflow: hidden;
-  }
-
-  .serviceCard {
-    touch-action: pan-x;
-  }
-
-  .modalTopBar {
-    padding: 0.75rem 1rem;
-    padding-top: max(0.75rem, env(safe-area-inset-top));
-  }
-
-  .modalServiceName {
-    font-size: 0.85rem;
-  }
-
-  /* Prevent scroll disruption from hover zooms on touch */
-  .serviceCard:hover {
-    transform: none !important;
-    box-shadow: none !important;
-  }
-  
-  .serviceCard:hover .cardBorderGlow {
-    opacity: 0.4 !important;
-    background: linear-gradient(135deg, rgba(228, 192, 87, 0.2) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(228, 192, 87, 0.1) 70%, rgba(255, 255, 255, 0.03) 100%) !important;
-  }
-  
-  .serviceCard:hover .shapeDiamond, 
-  .serviceCard:hover .shapeWave {
-    border-color: rgba(255, 255, 255, 0.08) !important;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02) !important;
-  }
-  
-  .serviceCard:hover .image {
-    transform: none !important;
-    filter: brightness(0.85) saturate(1.1) !important;
-  }
-  
-  .serviceCard:hover .cinemaOverlay {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 0.02) 100%) !important;
-  }
-  
-  .serviceCard:hover .shimmerLine {
-    width: 40px !important;
-    background: linear-gradient(90deg, #E4C057, rgba(228, 192, 87, 0.3)) !important;
-  }
-  
-  .serviceCard:hover .serviceTitle {
-    color: #fff !important;
-  }
-  
-  .serviceCard:hover .exploreCta svg {
-    transform: none !important;
-  }
-
-  /* Always show text on touch devices where hover doesn't exist */
-  .serviceDesc,
-  .exploreCta {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }
