@@ -91,11 +91,12 @@ export function Services({ data }: ServicesProps) {
     : DEFAULT_SERVICES;
 
   const carouselRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
   const [mobileCardIndex, setMobileCardIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
-
+  
   const showArrows = services.length > 2;
 
   useEffect(() => { setMounted(true); }, []);
@@ -110,6 +111,18 @@ export function Services({ data }: ServicesProps) {
     return () => { unlockScroll(); };
   }, [selectedService]);
 
+  // Handle video playback safely
+  useEffect(() => {
+    if (lightboxIndex !== null && selectedService?.gallery[lightboxIndex].type === 'video' && videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Automatic playback failed or was interrupted, ignore the error
+        });
+      }
+    }
+  }, [lightboxIndex, selectedService]);
+
   const handleCarouselScroll = useCallback(() => {
     const el = carouselRef.current;
     if (!el) return;
@@ -122,8 +135,7 @@ export function Services({ data }: ServicesProps) {
   const scroll = (direction: 'left' | 'right') => {
     const el = carouselRef.current;
     if (!el) return;
-    // To scroll exactly 2 cards (one full frame), we use el.clientWidth
-    const scrollAmount = el.clientWidth;
+    const scrollAmount = el.clientWidth; 
     el.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: "smooth" });
   };
 
@@ -155,7 +167,7 @@ export function Services({ data }: ServicesProps) {
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxIndex, selectedService]);
 
   const getMasonryLayout = (totalItems: number) => {
@@ -284,10 +296,10 @@ export function Services({ data }: ServicesProps) {
               />
             ) : (
               <video
+                ref={videoRef}
                 src={selectedService.gallery[lightboxIndex].url}
                 className={styles.lbMedia}
                 controls
-                autoPlay
                 playsInline
                 poster={selectedService.gallery[lightboxIndex].thumbnail}
               />

@@ -24,7 +24,7 @@ interface TestimonialsProps {
       videoUrl?: string;
       text?: string;
     }[];
-  };
+  } | null;
 }
 
 const DEFAULT_TESTIMONIALS: Testimonial[] = [
@@ -51,54 +51,17 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
     role: "Artist Manager",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&auto=format&fit=crop",
     video: "https://www.w3schools.com/html/mov_bbb.mp4"
-  },
-  {
-    name: "Vikram Desai",
-    role: "Concert Promoter",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop",
-    quote: "They don't just manage events — they craft experiences that leave audiences speechless."
-  },
-  {
-    name: "Ananya Reddy",
-    role: "Creative Director",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
-    video: "https://www.w3schools.com/html/mov_bbb.mp4"
-  },
-  {
-    name: "Karan Johar",
-    role: "Media Mogul",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop",
-    quote: "Working with 22nd Avenue is always a pleasure. They understand the pulse of the audience."
-  },
-  {
-    name: "Zoya Akhtar",
-    role: "Film Director",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop",
-    video: "https://www.w3schools.com/html/mov_bbb.mp4"
-  },
-  {
-    name: "Ranveer Singh",
-    role: "Performer",
-    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600&auto=format&fit=crop",
-    quote: "Energy, passion, and perfection. That's what 22nd Avenue brings to every stage."
-  },
-  {
-    name: "Deepika Padukone",
-    role: "Global Icon",
-    image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=600&auto=format&fit=crop",
-    video: "https://www.w3schools.com/html/mov_bbb.mp4"
   }
 ];
 
-
-
 export function Testimonials({ data }: TestimonialsProps) {
-  const testimonials: Testimonial[] = data?.buzzList?.length 
+  // Map data with fallback to ensure we don't skip items
+  const testimonials: Testimonial[] = (data?.buzzList && data.buzzList.length > 0)
     ? data.buzzList.map(item => ({
-        name: item.authorName,
-        role: item.authorTitle,
-        image: item.authorImage,
-        quote: !item.hasVideo ? item.text : undefined,
+        name: item.authorName || "Anonymous",
+        role: item.authorTitle || "",
+        image: item.authorImage || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600",
+        quote: !item.hasVideo ? (item.text || "No testimonial text provided.") : undefined,
         video: item.hasVideo ? item.videoUrl : undefined,
       }))
     : DEFAULT_TESTIMONIALS;
@@ -118,22 +81,26 @@ export function Testimonials({ data }: TestimonialsProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const totalPages = Math.ceil(testimonials.length / visibleCount);
-  
+  // Ensure current page is valid if items change
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [testimonials.length]);
+
+  const totalPages = Math.ceil(testimonials.length / visibleCount) || 1;
   const startIndex = currentPage * visibleCount;
   const visibleTestimonials = testimonials.slice(startIndex, startIndex + visibleCount);
 
   const next = useCallback(() => {
-    if (isAnimating) return;
+    if (isAnimating || totalPages <= 1) return;
     setIsAnimating(true);
     setTimeout(() => {
       setCurrentPage((prev) => (prev + 1) % totalPages);
       setIsAnimating(false);
-    }, 400); // Matches CSS transition duration
+    }, 400);
   }, [isAnimating, totalPages]);
 
   const prev = useCallback(() => {
-    if (isAnimating) return;
+    if (isAnimating || totalPages <= 1) return;
     setIsAnimating(true);
     setTimeout(() => {
       setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
@@ -166,35 +133,31 @@ export function Testimonials({ data }: TestimonialsProps) {
           </ScrollReveal>
         </div>
 
-        {/* Pills — alternating up/down */}
+        {/* Pills Container */}
         <div className={`${styles.pillsContainer} ${isAnimating ? styles.fadeOut : styles.fadeIn}`}>
           {visibleTestimonials.map((t, i) => {
             const isDown = i % 2 !== 0;
-            const globalIndex = startIndex + i;
             const isVideo = !!t.video;
             const isText = !!t.quote;
 
             return (
               <div
-                key={`${globalIndex}`}
+                key={`${t.name}-${i}`}
                 className={`${styles.pillWrapper} ${isDown ? styles.pillDown : styles.pillUp}`}
               >
                 <div
                   className={styles.pill}
                   onClick={() => isVideo && t.video && setVideoModal(t.video)}
                 >
-                  {/* Image */}
                   <div className={styles.mediaArea}>
                     <img src={t.image} alt={t.name} className={styles.pillImage} />
 
-                    {/* Video badge */}
                     {isVideo && (
                       <div className={styles.playBadge}>
                         <Play size={18} fill="white" stroke="white" />
                       </div>
                     )}
 
-                    {/* Text quote overlay */}
                     {isText && t.quote && (
                       <div className={styles.quoteOverlay}>
                         <Quote size={18} className={styles.quoteIcon} />
@@ -220,7 +183,6 @@ export function Testimonials({ data }: TestimonialsProps) {
                     )}
                   </div>
 
-                  {/* Info bar at bottom */}
                   <div className={styles.pillInfo}>
                     <h4 className={styles.pillName}>{t.name}</h4>
                     <p className={styles.pillRole}>{t.role}</p>
@@ -231,24 +193,26 @@ export function Testimonials({ data }: TestimonialsProps) {
           })}
         </div>
 
-        {/* Nav Controls at bottom */}
-        <div className={styles.navControlsWrapper}>
-          <div className={styles.navControls}>
-            <button onClick={prev} className={styles.arrowBtn} aria-label="Previous">
-              <ArrowLeft size={16} />
-            </button>
-            <span className={styles.counter}>
-              {currentPage + 1} / {totalPages}
-            </span>
-            <button onClick={next} className={styles.arrowBtn} aria-label="Next">
-              <ArrowRight size={16} />
-            </button>
+        {/* Nav Controls */}
+        {totalPages > 1 && (
+          <div className={styles.navControlsWrapper}>
+            <div className={styles.navControls}>
+              <button onClick={prev} className={styles.arrowBtn} aria-label="Previous">
+                <ArrowLeft size={16} />
+              </button>
+              <span className={styles.counter}>
+                {currentPage + 1} / {totalPages}
+              </span>
+              <button onClick={next} className={styles.arrowBtn} aria-label="Next">
+                <ArrowRight size={16} />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
       </div>
 
-      {/* ===== TEXT MODAL ===== */}
+      {/* TEXT MODAL */}
       {textModal && (
         <div className={styles.modalBackdrop} onClick={() => setTextModal(null)}>
           <div className={styles.textModalContent} onClick={(e) => e.stopPropagation()}>
@@ -267,7 +231,7 @@ export function Testimonials({ data }: TestimonialsProps) {
         </div>
       )}
 
-      {/* ===== VIDEO MODAL ===== */}
+      {/* VIDEO MODAL */}
       {videoModal && (
         <div className={styles.modalBackdrop} onClick={() => setVideoModal(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>

@@ -1,12 +1,12 @@
 import { groq } from 'next-sanity'
 
-export const heroQuery = groq`*[_type == "hero"][0] {
+export const heroQuery = groq`*[_type == "hero"] | order(_updatedAt desc)[0] {
   "desktopVideoUrl": desktopVideo.asset->url,
   "mobileVideoUrl": mobileVideo.asset->url,
   "fallbackImage": fallbackImage.asset->url
 }`
 
-export const aboutQuery = groq`*[_type == "about"][0] {
+export const aboutQuery = groq`*[_type == "about"] | order(_updatedAt desc)[0] {
   "directors": directors[] {
     name,
     title,
@@ -15,7 +15,7 @@ export const aboutQuery = groq`*[_type == "about"][0] {
   story
 }`
 
-export const collabsQuery = groq`*[_type == "collabs"][0] {
+export const collabsQuery = groq`*[_type == "collabs"] | order(_updatedAt desc)[0] {
   "artists": artists[] {
     name,
     link,
@@ -23,7 +23,7 @@ export const collabsQuery = groq`*[_type == "collabs"][0] {
   }
 }`
 
-export const momentsQuery = groq`*[_type == "moments"][0] {
+export const momentsQuery = groq`*[_type == "moments"] | order(_updatedAt desc)[0] {
   "categories": categories[] {
     categoryName,
     "tiles": tiles[] {
@@ -35,7 +35,7 @@ export const momentsQuery = groq`*[_type == "moments"][0] {
   }
 }`
 
-export const testimonialsQuery = groq`*[_type == "testimonials"][0] {
+export const testimonialsQuery = groq`*[_type == "testimonials"] | order(_updatedAt desc)[0] {
   "buzzList": buzzList[] {
     authorName,
     authorTitle,
@@ -46,7 +46,7 @@ export const testimonialsQuery = groq`*[_type == "testimonials"][0] {
   }
 }`
 
-export const servicesQuery = groq`*[_type == "services"][0] {
+export const servicesQuery = groq`*[_type == "services"] | order(_updatedAt desc)[0] {
   "servicesList": servicesList[] {
     title,
     description,
@@ -61,6 +61,6 @@ export const servicesQuery = groq`*[_type == "services"][0] {
   }
 }`
 
-export const footprintQuery = groq`*[_type == "footprint"][0] {
+export const footprintQuery = groq`*[_type == "footprint"] | order(_updatedAt desc)[0] {
   "image": image.asset->url
 }`
