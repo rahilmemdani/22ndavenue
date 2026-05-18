@@ -78,7 +78,7 @@ export function ContactModal() {
         <div className={styles.body}>
           {/* Type Selector */}
           <div className={styles.typeSelector}>
-            {(["Artists", "Careers", "Business"] as ContactType[]).map((type) => (
+            {(["Business", "Artists", "Careers"] as ContactType[]).map((type) => (
               <button
                 key={type}
                 className={`${styles.typeBtn} ${activeType === type ? styles.typeBtnActive : ""}`}

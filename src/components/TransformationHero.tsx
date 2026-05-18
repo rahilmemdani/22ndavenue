@@ -133,7 +133,6 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
             <span className={`${styles.splashWord} ${styles.splashOutline}`}>22ND</span>
             <div>
               <span className={`${styles.splashWord} ${styles.splashGold}`}>AVENUE</span>
-              <span className={styles.splashDot}>.</span>
             </div>
           </h2>
         </div>

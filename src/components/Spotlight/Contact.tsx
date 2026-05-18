@@ -48,7 +48,7 @@ export function Contact() {
           <ScrollReveal direction="right" delay={200}>
             {/* Type Selector */}
             <div className={styles.typeSelector}>
-              {(["Artists", "Careers", "Business"] as ContactType[]).map((type) => (
+              {(["Business", "Artists", "Careers"] as ContactType[]).map((type) => (
                 <button
                   key={type}
                   className={`${styles.typeBtn} ${activeType === type ? styles.typeBtnActive : ""}`}

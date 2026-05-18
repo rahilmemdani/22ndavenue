@@ -38,9 +38,9 @@ export const services = defineType({
                   type: 'object',
                   fields: [
                     { name: 'type', title: 'Media Type', type: 'string', options: { list: ['image', 'video'] } },
-                    { name: 'image', title: 'Image', type: 'image', hidden: ({ parent }) => parent?.type !== 'image' },
+                    { name: 'image', title: 'Image', type: 'image', options: { hotspot: true }, hidden: ({ parent }) => parent?.type !== 'image' },
                     { name: 'videoUrl', title: 'Video URL', type: 'url', hidden: ({ parent }) => parent?.type !== 'video' },
-                    { name: 'thumbnail', title: 'Video Thumbnail', type: 'image', hidden: ({ parent }) => parent?.type !== 'video' }
+                    { name: 'thumbnail', title: 'Video Thumbnail', type: 'image', options: { hotspot: true }, hidden: ({ parent }) => parent?.type !== 'video' }
                   ],
                   preview: {
                     select: {
