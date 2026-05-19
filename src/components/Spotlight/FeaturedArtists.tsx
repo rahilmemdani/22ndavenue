@@ -5,15 +5,31 @@ import { useState, useRef } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./FeaturedArtists.module.css";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/sanity/client";
 
 interface FeaturedArtistsProps {
   data?: {
     artists: {
       name: string;
-      image: string;
+      image: any;
       link?: string;
     }[];
   };
+}
+
+const builder = imageUrlBuilder(client);
+
+function getImageUrl(imageSource: any) {
+  if (!imageSource) return "";
+  if (typeof imageSource === "string") return imageSource;
+  try {
+    // Generate image URL with fixed width, maintaining original aspect ratio
+    return builder.image(imageSource).width(400).auto("format").url();
+  } catch (err) {
+    console.error("Error building image URL:", err);
+    return "";
+  }
 }
 
 const DEFAULT_ARTISTS = [
@@ -32,11 +48,10 @@ const DEFAULT_ARTISTS = [
 export function FeaturedArtists({ data }: FeaturedArtistsProps) {
   const baseArtists = data?.artists?.length ? data.artists : DEFAULT_ARTISTS;
   
-  // Create enough artists to fill the grid if needed, or just use what we have
-  const allArtists = baseArtists.length > 0 ? [...baseArtists, ...baseArtists, ...baseArtists].map((artist, idx) => ({
+  const allArtists = baseArtists.map((artist, idx) => ({
     ...artist,
     uniqueKey: `${artist.name}-${idx}`
-  })) : [];
+  }));
 
 
   const ITEMS_PER_SLIDE = 10;
@@ -94,7 +109,7 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
                         <div key={artist.uniqueKey} className={styles.artistCard}>
                           <div className={styles.imageWrapper}>
                             <img
-                              src={artist.image}
+                              src={getImageUrl(artist.image)}
                               alt={artist.name}
                               className={styles.artistImage}
                               loading="lazy"
