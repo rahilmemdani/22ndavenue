@@ -75,20 +75,19 @@ async def apply(
         is_career = "Career" in position or "Careers" in position
 
         # Email credentials
-        email_user = os.getenv("EMAIL_USER")
+        email_user = os.getenv("EMAIL_USER") or "experiences@22ndavenue.co.in"
         email_pass = os.getenv("EMAIL_PASS")
         email_host = os.getenv("EMAIL_HOST", "smtp.gmail.com")
         email_port = int(os.getenv("EMAIL_PORT", 587))
 
-        # Destination routing based on enquiry type
+        # Destination routing (all go to experiences@22ndavenue.co.in by default)
+        destination_email = os.getenv("DESTINATION_EMAIL") or email_user
+
         if is_business:
-            destination_email = os.getenv("DESTINATION_EMAIL_BUSINESS") or os.getenv("EMAIL_USER") or "hello@22ndavenue.in"
             subject_prefix = "New Business Enquiry"
         elif is_artist:
-            destination_email = os.getenv("DESTINATION_EMAIL_ARTISTS") or os.getenv("EMAIL_USER") or "hello@22ndavenue.in"
             subject_prefix = "New Artist Profile Submission"
         else:  # Careers / Default
-            destination_email = os.getenv("DESTINATION_EMAIL_CAREERS") or os.getenv("EMAIL_USER") or "hello@22ndavenue.in"
             subject_prefix = "New Career Application"
 
         # If credentials are not configured, fallback to log mode for development testing

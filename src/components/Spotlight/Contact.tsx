@@ -54,7 +54,7 @@ export function Contact() {
 
     const apiUrl =
       process.env.NEXT_PUBLIC_API_URL ||
-      "https://7ty7-backend-mail.vercel.app/api/apply";
+      "http://localhost:5000/api/apply";
 
     try {
       const response = await fetch(apiUrl, {
@@ -98,7 +98,7 @@ export function Contact() {
             <div className={styles.contactDetails}>
               <div className={styles.detailItem}>
                 <span className={styles.detailLabel}>Email us</span>
-                <a href="mailto:hello@22ndavenue.in" className={styles.detailValue}>hello@22ndavenue.in</a>
+                <a href="mailto:experiences@22ndavenue.co.in" className={styles.detailValue}>experiences@22ndavenue.co.in</a>
               </div>
               <div className={styles.detailItem}>
                 <span className={styles.detailLabel}>Visit us</span>

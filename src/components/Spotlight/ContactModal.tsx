@@ -78,7 +78,7 @@ export function ContactModal() {
       submitData.append("attachment", resumeFile);
     }
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://7ty7-backend-mail.vercel.app/api/apply";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/apply";
 
     try {
       const response = await fetch(apiUrl, {
@@ -225,7 +225,7 @@ export function ContactModal() {
         <div className={styles.contactBar}>
           <div className={styles.contactItem}>
             <span className={styles.contactLabel}>Email</span>
-            <a href="mailto:hello@22ndavenue.in" className={styles.contactValue}>hello@22ndavenue.in</a>
+            <a href="mailto:experiences@22ndavenue.co.in" className={styles.contactValue}>experiences@22ndavenue.co.in</a>
           </div>
           <div className={styles.contactItem}>
             <span className={styles.contactLabel}>Location</span>
