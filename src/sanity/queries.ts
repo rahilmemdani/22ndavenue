@@ -19,7 +19,7 @@ export const collabsQuery = groq`*[_type == "collabs"] | order(_updatedAt desc)[
   "artists": artists[] {
     name,
     link,
-    "image": image.asset->url
+    image
   }
 }`
 
