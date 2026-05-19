@@ -45,6 +45,10 @@ export const metadata: Metadata = {
     "22nd Avenue",
   ],
   authors: [{ name: "22nd Avenue Creative Talent Management" }],
+  icons: {
+    icon: "/assets/favicon.ico",
+    shortcut: "/assets/favicon.ico",
+  },
   openGraph: {
     title: "22nd Avenue — Creative Talent Management",
     description:
