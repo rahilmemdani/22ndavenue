@@ -44,20 +44,16 @@ EMAIL_STYLES = """
 """
 
 def send_smtp_emails(messages: list, host: str, port: int, user: str, password: str):
-    """Internal helper to send emails via SMTP in the background."""
-    try:
-        with smtplib.SMTP(host, port) as server:
-            if port == 587:
-                server.starttls()
-            server.login(user, password)
-            for msg in messages:
-                server.send_message(msg)
-    except Exception as e:
-        print(f"SMTP Background Error: {e}")
+    """Internal helper to send emails via SMTP."""
+    with smtplib.SMTP(host, port) as server:
+        if port == 587:
+            server.starttls()
+        server.login(user, password)
+        for msg in messages:
+            server.send_message(msg)
 
 @app.post("/api/apply")
 async def apply(
-    background_tasks: BackgroundTasks,
     name: str = Form(...),
     email: str = Form(...),
     position: str = Form(...),
@@ -199,9 +195,8 @@ async def apply(
             cv_part.add_header("Content-Disposition", f'attachment; filename="{attachment.filename}"')
             admin_msg.attach(cv_part)
 
-        # Schedule background task to send emails asynchronously
-        background_tasks.add_task(
-            send_smtp_emails, 
+        # Send emails synchronously
+        send_smtp_emails(
             [admin_msg, user_msg], 
             email_host, 
             email_port, 
