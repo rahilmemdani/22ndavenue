@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ArrowLeft, ArrowRight, Play, X, Quote } from "lucide-react";
 import styles from "./Testimonials.module.css";
@@ -71,6 +72,63 @@ export function Testimonials({ data }: TestimonialsProps) {
   const [videoModal, setVideoModal] = useState<string | null>(null);
   const [textModal, setTextModal] = useState<{ name: string, role: string, quote: string } | null>(null);
   const [visibleCount, setVisibleCount] = useState(4);
+  const [mounted, setMounted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Autoplay video when modal opens, and close modal when fullscreen exits
+  useEffect(() => {
+    if (!videoModal) return;
+
+    let active = true;
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Listener for exiting fullscreen
+    const handleFullscreenChange = () => {
+      if (!active) return;
+      const isFullscreen = document.fullscreenElement === video || 
+                           (document as any).webkitFullscreenElement === video || 
+                           (video as any).webkitDisplayingFullscreen;
+      if (!isFullscreen) {
+        setVideoModal(null);
+      }
+    };
+
+    // iOS Safari specific fullscreen listeners
+    const handleWebkitBegin = () => {
+      // Entered fullscreen
+    };
+    const handleWebkitEnd = () => {
+      if (active) {
+        setVideoModal(null);
+      }
+    };
+
+    // Register listeners
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    video.addEventListener("webkitbeginfullscreen", handleWebkitBegin);
+    video.addEventListener("webkitendfullscreen", handleWebkitEnd);
+
+    // Try to play automatically inside the inline modal player
+    video.play().catch(err => {
+      console.log("Auto-play failed:", err);
+    });
+
+    return () => {
+      active = false;
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+      if (video) {
+        video.removeEventListener("webkitbeginfullscreen", handleWebkitBegin);
+        video.removeEventListener("webkitendfullscreen", handleWebkitEnd);
+      }
+    };
+  }, [videoModal]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -213,7 +271,7 @@ export function Testimonials({ data }: TestimonialsProps) {
       </div>
 
       {/* TEXT MODAL */}
-      {textModal && (
+      {mounted && textModal && createPortal(
         <div className={styles.modalBackdrop} onClick={() => setTextModal(null)}>
           <div className={styles.textModalContent} onClick={(e) => e.stopPropagation()}>
             <button className={styles.modalClose} onClick={() => setTextModal(null)} aria-label="Close">
@@ -228,17 +286,19 @@ export function Testimonials({ data }: TestimonialsProps) {
               <p className={styles.fullQuote}>{textModal.quote}</p>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* VIDEO MODAL */}
-      {videoModal && (
+      {mounted && videoModal && createPortal(
         <div className={styles.modalBackdrop} onClick={() => setVideoModal(null)}>
           <button className={styles.modalClose} onClick={() => setVideoModal(null)} aria-label="Close">
             <X size={22} />
           </button>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <video
+              ref={videoRef}
               src={videoModal}
               className={styles.modalVideo}
               autoPlay
@@ -246,7 +306,8 @@ export function Testimonials({ data }: TestimonialsProps) {
               playsInline
             />
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );
