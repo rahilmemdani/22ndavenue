@@ -707,7 +707,7 @@
 .tileHover {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -718,6 +718,34 @@
 
 .galleryTile:hover .tileHover {
   opacity: 1;
+}
+
+.hoverCircle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  transform: scale(0.85);
+  color: #fff;
+}
+
+.galleryTile:hover .hoverCircle {
+  transform: scale(1.1);
+  background: #E4C057;
+  border-color: #E4C057;
+  color: #000;
+}
+
+.galleryTile:hover .hoverCircle svg {
+  color: #000;
+  fill: currentColor;
 }
 
 /* Video play badge */
@@ -744,19 +772,20 @@
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.97);
-  z-index: 10001;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 100000;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: lbIn 0.25s ease;
+  animation: lbIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes lbIn {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
@@ -765,13 +794,15 @@
 /* Close button — top right */
 .lbClose {
   position: absolute;
-  top: max(1rem, env(safe-area-inset-top));
-  right: 1rem;
-  width: 40px;
-  height: 40px;
+  top: max(1.5rem, env(safe-area-inset-top));
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #fff;
   display: flex;
   align-items: center;
@@ -783,19 +814,20 @@
 
 .lbClose:hover {
   background: #E4C057;
+  border-color: #E4C057;
   color: #000;
 }
 
 /* Counter badge */
 .lbCounter {
   position: absolute;
-  top: max(1.25rem, env(safe-area-inset-top));
+  top: max(1.75rem, env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-accent);
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.25em;
   z-index: 10;
 }
 
@@ -804,11 +836,13 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #fff;
   display: flex;
   align-items: center;
@@ -820,15 +854,16 @@
 
 .lbNav:hover {
   background: #E4C057;
+  border-color: #E4C057;
   color: #000;
 }
 
 .lbPrev {
-  left: 1.5rem;
+  left: 2rem;
 }
 
 .lbNext {
-  right: 1.5rem;
+  right: 2rem;
 }
 
 /* Media wrapper */
@@ -838,12 +873,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: mediaZoomIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes mediaZoomIn {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .lbMedia {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.65);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }

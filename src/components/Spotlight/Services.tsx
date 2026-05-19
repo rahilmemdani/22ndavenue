@@ -79,15 +79,21 @@ function unlockScroll() {
 
 export function Services({ data }: ServicesProps) {
   const services = data?.servicesList?.length
-    ? data.servicesList.map(s => ({
-      ...s,
-      shape: s.shape || "shapeDiamond",
-      gallery: (s.gallery || []).map(g => ({
-        type: g.type as "image" | "video",
-        url: (g.type === "video" ? g.videoUrl : g.image) || "",
-        thumbnail: g.thumbnail
-      }))
-    }))
+    ? data.servicesList.map(s => {
+      const defaultService = DEFAULT_SERVICES.find(
+        ds => ds.title.toUpperCase() === s.title.toUpperCase()
+      );
+      return {
+        ...s,
+        image: s.image || defaultService?.image || "",
+        shape: s.shape || "shapeDiamond",
+        gallery: (s.gallery || []).map(g => ({
+          type: g.type as "image" | "video",
+          url: (g.type === "video" ? g.videoUrl : g.image) || "",
+          thumbnail: g.thumbnail
+        }))
+      };
+    })
     : DEFAULT_SERVICES;
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -248,13 +254,23 @@ export function Services({ data }: ServicesProps) {
                           poster={item.thumbnail}
                           muted
                           playsInline
+                          loop
                           preload="metadata"
+                          onMouseEnter={(e) => {
+                            e.currentTarget.play().catch(() => {});
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.pause();
+                            e.currentTarget.currentTime = 0;
+                          }}
                         />
                       )}
                       <div className={styles.tileHover}>
-                        {item.type === "video"
-                          ? <Play size={22} fill="white" stroke="none" />
-                          : <Maximize2 size={18} />}
+                        <div className={styles.hoverCircle}>
+                          {item.type === "video"
+                            ? <Play size={20} fill="white" stroke="none" />
+                            : <Maximize2 size={16} />}
+                        </div>
                       </div>
                       {item.type === "video" && (
                         <div className={styles.videoIndicator}>
@@ -273,8 +289,21 @@ export function Services({ data }: ServicesProps) {
       </div>
 
       {lightboxIndex !== null && (
-        <div className={styles.lightbox} onClick={() => setLightboxIndex(null)}>
-          <button className={styles.lbClose} onClick={() => setLightboxIndex(null)} aria-label="Close">
+        <div
+          className={styles.lightbox}
+          onClick={(e) => {
+            e.stopPropagation();
+            setLightboxIndex(null);
+          }}
+        >
+          <button
+            className={styles.lbClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxIndex(null);
+            }}
+            aria-label="Close"
+          >
             <X size={20} />
           </button>
           <div className={styles.lbCounter}>
