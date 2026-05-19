@@ -1,0 +1,9 @@
+{
+  "python.defaultInterpreterPath": "/Users/rahilmemdani/Desktop/22ndAvenue/backend/.venv/bin/python3",
+  "python.analysis.extraPaths": [
+    "/Users/rahilmemdani/Desktop/22ndAvenue/backend/.venv/lib/python3.13/site-packages",
+    "/Users/rahilmemdani/Desktop/22ndAvenue/backend/.venv/lib/python3.12/site-packages",
+    "/Users/rahilmemdani/Desktop/22ndAvenue/backend/.venv/lib/python3.11/site-packages",
+    "/Users/rahilmemdani/Desktop/22ndAvenue/backend/.venv/lib/python3.10/site-packages"
+  ]
+}

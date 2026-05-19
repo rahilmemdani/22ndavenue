@@ -1,0 +1,8 @@
+{
+  "venvPath": "/Users/rahilmemdani/Desktop/22ndAvenue/backend",
+  "venv": ".venv",
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__"
+  ]
+}

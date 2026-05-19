@@ -11,6 +11,9 @@ export function ContactModal() {
   const { isOpen, closeModal } = useContactModal();
   const [activeType, setActiveType] = useState<ContactType>("Business");
   const [isClosing, setIsClosing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -31,8 +34,76 @@ export function ContactModal() {
     setTimeout(() => {
       closeModal();
       setIsClosing(false);
+      setIsSubmitted(false); // Reset submit state on close
     }, 250);
   }, [closeModal]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const form = e.currentTarget;
+    const nameInput = (form.elements.namedItem("name") as HTMLInputElement)?.value;
+    const emailInput = (form.elements.namedItem("email") as HTMLInputElement)?.value;
+    const messageInput = (form.elements.namedItem("message") as HTMLTextAreaElement)?.value;
+    
+    let positionStr = "";
+    let noteStr = messageInput;
+
+    if (activeType === "Business") {
+      const companyInput = (form.elements.namedItem("company") as HTMLInputElement)?.value;
+      positionStr = `Business Enquiry from ${companyInput || "Unknown"}`;
+    } else if (activeType === "Artists") {
+      const portfolioInput = (form.elements.namedItem("portfolio") as HTMLInputElement)?.value;
+      positionStr = `Artist Enquiry`;
+      noteStr = `Portfolio/Social: ${portfolioInput}\n\nMessage:\n${messageInput}`;
+    } else if (activeType === "Careers") {
+      const positionInput = (form.elements.namedItem("position") as HTMLInputElement)?.value;
+      positionStr = `Career Application: ${positionInput || "Unknown"}`;
+    }
+
+    if (resumeFile && resumeFile.size > 10 * 1024 * 1024) {
+      alert("Resume must be under 10MB.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const submitData = new FormData();
+    submitData.append("name", nameInput || "");
+    submitData.append("email", emailInput || "");
+    submitData.append("position", positionStr);
+    submitData.append("note", noteStr || "");
+
+    if (resumeFile && activeType === "Careers") {
+      submitData.append("attachment", resumeFile);
+    }
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://7ty7-backend-mail.vercel.app/api/apply";
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        body: submitData,
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        form.reset();
+        setResumeFile(null);
+        setTimeout(() => {
+          handleClose();
+        }, 2000);
+      } else {
+        const result = await response.json().catch(() => ({}));
+        alert(result.detail?.error || result.error || "Submission failed.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Could not connect to the server.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // Escape key
   useEffect(() => {
@@ -89,21 +160,21 @@ export function ContactModal() {
             ))}
           </div>
 
-          <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
               <label className={styles.label}>Full Name</label>
-              <input type="text" className={styles.input} placeholder="John Doe" required />
+              <input type="text" name="name" className={styles.input} placeholder="John Doe" required />
             </div>
 
             <div className={styles.inputGroup}>
               <label className={styles.label}>Email Address</label>
-              <input type="email" className={styles.input} placeholder="john@example.com" required />
+              <input type="email" name="email" className={styles.input} placeholder="john@example.com" required />
             </div>
 
             {activeType === "Artists" && (
               <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                 <label className={styles.label}>Portfolio / Social Link</label>
-                <input type="url" className={styles.input} placeholder="https://instagram.com/yourhandle" />
+                <input type="url" name="portfolio" className={styles.input} placeholder="https://instagram.com/yourhandle" />
               </div>
             )}
 
@@ -111,12 +182,17 @@ export function ContactModal() {
               <>
                 <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                   <label className={styles.label}>Position Interested In</label>
-                  <input type="text" className={styles.input} placeholder="e.g. Talent Manager" />
+                  <input type="text" name="position" className={styles.input} placeholder="e.g. Talent Manager" />
                 </div>
                 <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                   <label className={styles.label}>Upload Resume / CV</label>
                   <div className={styles.fileInputWrapper}>
-                    <input type="file" className={styles.fileInput} accept=".pdf,.doc,.docx" />
+                    <input 
+                      type="file" 
+                      className={styles.fileInput} 
+                      accept=".pdf,.doc,.docx" 
+                      onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
+                    />
                   </div>
                 </div>
               </>
@@ -125,21 +201,22 @@ export function ContactModal() {
             {activeType === "Business" && (
               <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                 <label className={styles.label}>Company / Brand Name</label>
-                <input type="text" className={styles.input} placeholder="Your Company Ltd." />
+                <input type="text" name="company" className={styles.input} placeholder="Your Company Ltd." />
               </div>
             )}
 
             <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
               <label className={styles.label}>Your Message</label>
               <textarea
+                name="message"
                 className={styles.textarea}
                 placeholder={`Tell us about your ${activeType === "Artists" ? "art" : activeType === "Careers" ? "experience" : "business enquiry"}...`}
                 required
               ></textarea>
             </div>
 
-            <button type="submit" className={styles.submitBtn}>
-              Send Message
+            <button type="submit" className={styles.submitBtn} disabled={isSubmitting || isSubmitted}>
+              {isSubmitting ? "Sending..." : isSubmitted ? "Message Sent!" : "Send Message"}
             </button>
           </form>
         </div>
