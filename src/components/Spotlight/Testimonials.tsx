@@ -234,10 +234,10 @@ export function Testimonials({ data }: TestimonialsProps) {
       {/* VIDEO MODAL */}
       {videoModal && (
         <div className={styles.modalBackdrop} onClick={() => setVideoModal(null)}>
+          <button className={styles.modalClose} onClick={() => setVideoModal(null)} aria-label="Close">
+            <X size={22} />
+          </button>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.modalClose} onClick={() => setVideoModal(null)} aria-label="Close">
-              <X size={22} />
-            </button>
             <video
               src={videoModal}
               className={styles.modalVideo}
