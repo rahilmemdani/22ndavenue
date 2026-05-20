@@ -5,15 +5,15 @@ import { Instagram, Linkedin } from "lucide-react";
 import styles from "./Footer.module.css";
 
 const socials = [
-  { 
-    label: "Instagram", 
-    href: "https://www.instagram.com/22ndavenuetalentmanagement/", 
-    icon: <Instagram size={18} strokeWidth={1.5} /> 
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/22ndavenuetalentmanagement/",
+    icon: <Instagram size={18} strokeWidth={1.5} />
   },
-  { 
-    label: "LinkedIn", 
-    href: "https://www.linkedin.com/in/twenty-second-avenue-talent-management-company/", 
-    icon: <Linkedin size={18} strokeWidth={1.5} /> 
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/twenty-second-avenue-talent-management-company/",
+    icon: <Linkedin size={18} strokeWidth={1.5} />
   },
 ];
 
@@ -22,7 +22,7 @@ export function Footer() {
     <footer className={styles.footer} id="site-footer">
       {/* Subtle warm ambient glow in background */}
       <div className={styles.ambientGlow}></div>
-      
+
       <div className={styles.container}>
         {/* Top Separator Line */}
         <div className={styles.topDivider}></div>
@@ -68,14 +68,14 @@ export function Footer() {
         </div>
 
         {/* Divider Line */}
-        <div className={styles.divider}></div>
+        {/* <div className={styles.divider}></div> */}
 
         {/* Bottom Row: Copyright & Policy Links */}
         <div className={styles.bottomRow}>
           <p className={styles.copyright}>
             © {new Date().getFullYear()} 22nd Avenue Talent Management Pvt.Ltd. All rights reserved.
           </p>
-          <div className={styles.bottomLinks}>
+          {/* <div className={styles.bottomLinks}>
             <a href="#" className={styles.bottomLink}>
               Privacy Policy
             </a>
@@ -83,7 +83,7 @@ export function Footer() {
             <a href="#" className={styles.bottomLink}>
               Terms & Conditions
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>
