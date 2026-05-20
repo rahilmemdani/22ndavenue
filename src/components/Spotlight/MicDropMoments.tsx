@@ -238,12 +238,7 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
                       {/* Numbering removed */}
                     </div>
 
-                    {isActive ? (
-                      <div className={styles.activeBottomArea}>
-                        <h3 className={styles.cardTitle}>{tile.title}</h3>
-                        {tile.subtitle && <p className={styles.cardSubtitle}>{tile.subtitle}</p>}
-                      </div>
-                    ) : (
+                    {isActive ? null : (
                       <div className={styles.inactiveBottomArea}>
                         <span className={styles.verticalText}>{tile.verticalText}</span>
                       </div>
@@ -264,9 +259,6 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
             
             <div className={styles.categoryLabel}>
               <span className={styles.categoryName}>{currentCategory.name}</span>
-              <span className={styles.categoryCounter}>
-                {String(activeCategoryIndex + 1).padStart(2, "0")} / {String(showcaseCategories.length).padStart(2, "0")}
-              </span>
             </div>
 
             <button onClick={nextCategory} className={styles.catArrowBtn} aria-label="Next Category">

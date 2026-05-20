@@ -125,7 +125,8 @@
 .accordionContainer {
   display: flex;
   width: 100%;
-  max-width: 1100px; /* Restrict width so active card stays vertical, but allowing wider inactive cards */
+  max-width: 1100px;
+  /* Restrict width so active card stays vertical, but allowing wider inactive cards */
   height: 75vh;
   min-height: 550px;
   max-height: 800px;
@@ -187,7 +188,7 @@
 }
 
 .inactiveCard .bgImage {
-  filter: grayscale(80%) brightness(0.4);
+  filter: grayscale(50%) contrast(0.8) brightness(0.9);
 }
 
 .activeCard .bgImage {
@@ -222,7 +223,7 @@
 }
 
 .inactiveCard .overlay {
-  background: rgba(5, 5, 5, 0.7);
+  background: rgba(5, 5, 5, 0.2);
 }
 
 /* ===== CARD CONTENT ===== */
@@ -296,9 +297,11 @@
   font-family: var(--font-accent);
   font-size: 0.8rem;
   letter-spacing: 0.25em;
-  color: rgba(255, 255, 255, 0.5);
+  color: #FFFFFF;
+  font-weight: 600;
   text-transform: uppercase;
   white-space: nowrap;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 
 /* ===== TABLET ===== */
@@ -421,11 +424,11 @@
   }
 
   .inactiveCard .bgImage {
-    filter: grayscale(60%) brightness(0.45);
+    filter: grayscale(40%) contrast(0.8) brightness(0.9);
   }
 
   .inactiveCard .overlay {
-    background: linear-gradient(90deg, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0.3) 100%);
+    background: linear-gradient(90deg, rgba(5, 5, 5, 0.2) 0%, rgba(5, 5, 5, 0.1) 100%);
   }
 
   .number {
@@ -457,6 +460,8 @@
     transform: none;
     font-size: 0.65rem;
     letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.55);
+    color: #FFFFFF;
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 0.9);
   }
 }
