@@ -4,8 +4,42 @@
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { X, ChevronLeft, ChevronRight, Maximize2, Play } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "./Services.module.css";
+
+// ─── Lazy Video Tile ──────────────────────────────────────────────────────────
+// In the gallery grid, video tiles show a thumbnail poster if available,
+// or the video's first frame (via preload="metadata") if no thumbnail exists.
+// Clicking opens the lightbox — the correct place to play video.
+// Zero full-video bytes loaded until the user explicitly clicks.
+function VideoTilePoster({ src, poster, className }: { src: string; poster?: string; className?: string }) {
+  if (poster) {
+    return (
+      <img
+        src={poster}
+        alt=""
+        className={className}
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
+  // No thumbnail — show video's first frame via preload="metadata"
+  // Browser fetches only a tiny metadata chunk, renders frame 0 visually
+  return (
+    <video
+      src={src}
+      className={className}
+      muted
+      playsInline
+      preload="metadata"
+      style={{ pointerEvents: "none" }}
+    />
+  );
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 
 interface GalleryMedia {
   type: "image" | "video";
@@ -83,15 +117,26 @@ export function Services({ data }: ServicesProps) {
       const defaultService = DEFAULT_SERVICES.find(
         ds => ds.title.toUpperCase() === s.title.toUpperCase()
       );
-      return {
-        ...s,
-        image: s.image || defaultService?.image || "",
-        shape: s.shape || "shapeDiamond",
-        gallery: (s.gallery || []).map(g => ({
+
+      // Build gallery from Sanity, filter out items with no URL
+      const sanityGallery = (s.gallery || [])
+        .map(g => ({
           type: g.type as "image" | "video",
           url: (g.type === "video" ? g.videoUrl : g.image) || "",
           thumbnail: g.thumbnail
         }))
+        .filter(g => g.url.length > 0);
+
+      // Fall back to the matching default gallery if Sanity has none
+      const gallery = sanityGallery.length > 0
+        ? sanityGallery
+        : (defaultService?.gallery || []);
+
+      return {
+        ...s,
+        image: s.image || defaultService?.image || "",
+        shape: s.shape || "shapeDiamond",
+        gallery,
       };
     })
     : DEFAULT_SERVICES;
@@ -235,23 +280,14 @@ export function Services({ data }: ServicesProps) {
                     alt={`${selectedService.title} ${globalIdx + 1}`}
                     className={styles.tileMedia}
                     loading="lazy"
+                    decoding="async"
                   />
                 ) : (
-                  <video
+                  /* Show poster thumbnail in grid — click opens lightbox to play */
+                  <VideoTilePoster
                     src={item.url}
-                    className={styles.tileMedia}
                     poster={item.thumbnail}
-                    muted
-                    playsInline
-                    loop
-                    preload="metadata"
-                    onMouseEnter={(e) => {
-                      e.currentTarget.play().catch(() => {});
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.pause();
-                      e.currentTarget.currentTime = 0;
-                    }}
+                    className={styles.tileMedia}
                   />
                 )}
                 <div className={styles.tileHover}></div>
@@ -310,6 +346,8 @@ export function Services({ data }: ServicesProps) {
                 className={styles.lbMedia}
                 controls
                 playsInline
+                autoPlay
+                preload="auto"
                 poster={selectedService.gallery[lightboxIndex].thumbnail}
               />
             )}
