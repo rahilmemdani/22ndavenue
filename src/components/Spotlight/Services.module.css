@@ -649,41 +649,21 @@
 
 /* ===== MASONRY ROWS ===== */
 
-.masonryRow {
-  display: flex;
-  gap: 0.75rem;
+.masonryGrid {
+  column-count: 3;
+  column-gap: 0.75rem;
   width: 100%;
 }
 
-.rowHero .galleryTile {
-  flex: 1;
-  aspect-ratio: 16 / 9;
+@media (max-width: 900px) {
+  .masonryGrid {
+    column-count: 2;
+  }
 }
 
-.rowDuo .galleryTile {
-  flex: 1;
-  aspect-ratio: 3 / 2;
-}
-
-.rowTriple .galleryTile {
-  flex: 1;
-  aspect-ratio: 1 / 1;
-}
-
-/* On mobile, rows stack naturally but keep layout */
 @media (max-width: 600px) {
-  .rowTriple {
-    flex-wrap: wrap;
-  }
-
-  .rowTriple .galleryTile {
-    flex: 1 1 calc(50% - 0.375rem);
-    aspect-ratio: 4 / 3;
-  }
-
-  .rowTriple .galleryTile:last-child:nth-child(3) {
-    flex: 1 1 100%;
-    aspect-ratio: 16 / 9;
+  .masonryGrid {
+    column-count: 1;
   }
 }
 
@@ -696,13 +676,13 @@
   cursor: pointer;
   background: #111;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  break-inside: avoid;
+  margin-bottom: 0.75rem;
 }
 
 .tileMedia {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  height: auto;
   display: block;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -770,6 +750,12 @@
   background: rgba(228, 192, 87, 0.95);
   color: #000;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.galleryTile:hover .videoIndicator {
+  opacity: 1;
 }
 
 
@@ -910,6 +896,7 @@
   .section {
     padding: 2rem 0 1rem;
   }
+
   .marquee {
     animation: marquee 12s linear infinite;
   }

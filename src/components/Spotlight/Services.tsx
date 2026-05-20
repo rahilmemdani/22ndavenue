@@ -219,72 +219,52 @@ export function Services({ data }: ServicesProps) {
         </div>
 
         <div className={styles.galleryScroll}>
-          {getMasonryLayout(selectedService.gallery.length).map((row, rowIdx) => {
-            const items = selectedService.gallery.slice(row.start, row.start + row.count);
-            return (
+          <div className={styles.masonryGrid}>
+            {selectedService.gallery.map((item, globalIdx) => (
               <div
-                key={rowIdx}
-                className={`${styles.masonryRow} ${row.count === 1 ? styles.rowHero :
-                  row.count === 2 ? styles.rowDuo :
-                    styles.rowTriple
-                  }`}
+                key={globalIdx}
+                className={styles.galleryTile}
+                onClick={() => setLightboxIndex(globalIdx)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === "Enter" && setLightboxIndex(globalIdx)}
               >
-                {items.map((item, itemIdx) => {
-                  const globalIdx = row.start + itemIdx;
-                  return (
-                    <div
-                      key={globalIdx}
-                      className={styles.galleryTile}
-                      onClick={() => setLightboxIndex(globalIdx)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => e.key === "Enter" && setLightboxIndex(globalIdx)}
-                    >
-                      {item.type === "image" ? (
-                        <img
-                          src={item.url}
-                          alt={`${selectedService.title} ${globalIdx + 1}`}
-                          className={styles.tileMedia}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <video
-                          src={item.url}
-                          className={styles.tileMedia}
-                          poster={item.thumbnail}
-                          muted
-                          playsInline
-                          loop
-                          preload="metadata"
-                          onMouseEnter={(e) => {
-                            e.currentTarget.play().catch(() => {});
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.pause();
-                            e.currentTarget.currentTime = 0;
-                          }}
-                        />
-                      )}
-                      <div className={styles.tileHover}>
-                        <div className={styles.hoverCircle}>
-                          {item.type === "video"
-                            ? <Play size={20} fill="white" stroke="none" />
-                            : <Maximize2 size={16} />}
-                        </div>
-                      </div>
-                      {item.type === "video" && (
-                        <div className={styles.videoIndicator}>
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                            <polygon points="5 3 19 12 5 21 5 3" />
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {item.type === "image" ? (
+                  <img
+                    src={item.url}
+                    alt={`${selectedService.title} ${globalIdx + 1}`}
+                    className={styles.tileMedia}
+                    loading="lazy"
+                  />
+                ) : (
+                  <video
+                    src={item.url}
+                    className={styles.tileMedia}
+                    poster={item.thumbnail}
+                    muted
+                    playsInline
+                    loop
+                    preload="metadata"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.play().catch(() => {});
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.pause();
+                      e.currentTarget.currentTime = 0;
+                    }}
+                  />
+                )}
+                <div className={styles.tileHover}></div>
+                {item.type === "video" && (
+                  <div className={styles.videoIndicator}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                  </div>
+                )}
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
 
