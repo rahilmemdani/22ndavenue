@@ -20,6 +20,9 @@ const socials = [
 export function Footer() {
   return (
     <footer className={styles.footer} id="site-footer">
+      {/* Subtle warm ambient glow in background */}
+      <div className={styles.ambientGlow}></div>
+      
       <div className={styles.container}>
         {/* Top Separator Line */}
         <div className={styles.topDivider}></div>
@@ -36,7 +39,7 @@ export function Footer() {
               />
             </Link>
             <p className={styles.tagline}>
-              Where Talent Meets The Spotlight.
+              Where Talent Meets <span className={styles.goldText}>The Spotlight</span>.
             </p>
             <div className={styles.socialRow}>
               {socials.map((s) => (
@@ -56,10 +59,11 @@ export function Footer() {
 
           {/* Contact (Right) */}
           <div className={styles.contact}>
-            <h3 className={styles.colTitle}>Get in Touch</h3>
+            <span className={styles.contactLabel}>LET&apos;S CREATE MAGIC</span>
             <a href="mailto:experiences@22ndavenue.co.in" className={styles.email}>
               experiences@22ndavenue.co.in
             </a>
+            <p className={styles.location}>Mumbai, India</p>
           </div>
         </div>
 
