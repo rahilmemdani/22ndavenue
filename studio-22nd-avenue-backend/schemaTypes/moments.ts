@@ -27,7 +27,8 @@ export const moments = defineType({
                     { name: 'title', title: 'Card Main Title (e.g., Summit)', type: 'string' },
                     { name: 'subtitle', title: 'Card Subtitle (e.g., EXPERIENCES)', type: 'string' },
                     { name: 'placeholderImage', title: 'Background Image', type: 'image', options: { hotspot: true } },
-                    { name: 'video', title: 'Hover Background Video', type: 'file', options: { accept: 'video/mp4,video/*' } }
+                    { name: 'videoUrl', title: 'Video URL (Vimeo/YouTube/External)', type: 'url' },
+                    { name: 'video', title: 'Or Upload Background Video', type: 'file', options: { accept: 'video/mp4,video/*' } }
                   ],
                   preview: {
                     select: {

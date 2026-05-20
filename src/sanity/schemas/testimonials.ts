@@ -17,7 +17,8 @@ export const testimonials = defineType({
             { name: 'authorTitle', title: 'Author Title / Company', type: 'string' },
             { name: 'authorImage', title: 'Author Image', type: 'image', options: { hotspot: true } },
             { name: 'hasVideo', title: 'Has Video Testimonial?', type: 'boolean', initialValue: false },
-            { name: 'videoUrl', title: 'Video URL', type: 'url', hidden: ({ parent }) => !parent?.hasVideo },
+            { name: 'videoUrl', title: 'Video URL (Vimeo/YouTube/External)', type: 'url', hidden: ({ parent }) => !parent?.hasVideo },
+            { name: 'videoFile', title: 'Or Upload Video File', type: 'file', options: { accept: 'video/*' }, hidden: ({ parent }) => !parent?.hasVideo },
             { name: 'text', title: 'Testimonial Text', type: 'text', hidden: ({ parent }) => parent?.hasVideo }
           ],
           preview: {

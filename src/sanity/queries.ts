@@ -30,7 +30,7 @@ export const momentsQuery = groq`*[_type == "moments"] | order(_updatedAt desc)[
       title,
       subtitle,
       "image": placeholderImage.asset->url + "?w=1200&h=800&fit=crop&auto=format&q=80&fm=webp",
-      "video": video.asset->url
+      "video": coalesce(videoUrl, video.asset->url)
     }
   }
 }`
@@ -41,7 +41,7 @@ export const testimonialsQuery = groq`*[_type == "testimonials"] | order(_update
     authorTitle,
     "authorImage": authorImage.asset->url + "?w=400&h=400&fit=crop&auto=format&q=80&fm=webp",
     hasVideo,
-    videoUrl,
+    "videoUrl": coalesce(videoUrl, videoFile.asset->url),
     text
   }
 }`
@@ -55,7 +55,7 @@ export const servicesQuery = groq`*[_type == "services"] | order(_updatedAt desc
     "gallery": gallery[] {
       type,
       "image": image.asset->url + "?w=1200&auto=format&q=80&fm=webp",
-      videoUrl,
+      "videoUrl": coalesce(videoUrl, videoFile.asset->url),
       "thumbnail": thumbnail.asset->url + "?w=800&h=450&fit=crop&auto=format&q=80&fm=webp"
     }
   }

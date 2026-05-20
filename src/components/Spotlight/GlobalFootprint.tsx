@@ -28,7 +28,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hasEntered, setHasEntered] = useState(false);
-  
+
   const sectionRef = useRef<HTMLElement>(null);
   const mapScrollRef = useRef<HTMLDivElement>(null);
 
@@ -76,7 +76,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
   // Generate curved path
   const getArcPath = (target: Location) => {
     const hub = locations.find((l) => l.name === "India") || locations[7];
-    
+
     const x1 = (hub.x / 100) * 1000;
     const y1 = (hub.y / 100) * 562.5;
     const x2 = (target.x / 100) * 1000;
@@ -154,7 +154,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
                       d={pathData}
                       className={styles.baseArc}
                     />
-                    
+
                     {/* Shooting light beam pulse */}
                     <path
                       d={pathData}
@@ -175,11 +175,10 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
               return (
                 <div
                   key={idx}
-                  className={`${styles.pinContainer} ${isHub ? styles.hubContainer : ""} ${
-                    hasEntered ? styles.entrancePin : ""
-                  }`}
-                  style={{ 
-                    left: `${loc.x}%`, 
+                  className={`${styles.pinContainer} ${isHub ? styles.hubContainer : ""} ${hasEntered ? styles.entrancePin : ""
+                    }`}
+                  style={{
+                    left: `${loc.x}%`,
                     top: `${loc.y}%`,
                     animationDelay: `${idx * 0.18}s`
                   }}
@@ -189,7 +188,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
                 >
                   {/* Glowing Radar Ring */}
                   <span className={`${styles.radarRing} ${isActualActive ? styles.pulseRadar : ""}`} />
-                  
+
                   {/* Central glowing indicator dot */}
                   <span className={`${styles.pinDot} ${isActive ? styles.pinDotActive : ""} ${isHub ? styles.hubDot : ""}`} />
 
