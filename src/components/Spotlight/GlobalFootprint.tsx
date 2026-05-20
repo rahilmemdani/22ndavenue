@@ -77,10 +77,10 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
   const getArcPath = (target: Location) => {
     const hub = locations.find((l) => l.name === "India") || locations[7];
 
-    const x1 = (hub.x / 100) * 1000;
-    const y1 = (hub.y / 100) * 562.5;
-    const x2 = (target.x / 100) * 1000;
-    const y2 = (target.y / 100) * 562.5;
+    const x1 = (hub.x / 100) * 1582;
+    const y1 = (hub.y / 100) * 796;
+    const x2 = (target.x / 100) * 1582;
+    const y2 = (target.y / 100) * 796;
 
     const dx = x2 - x1;
     const dy = y2 - y1;
@@ -128,7 +128,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
             />
 
             {/* SVG Connection Lines Overlay */}
-            <svg className={styles.svgOverlay} viewBox="0 0 1000 562.5">
+            <svg className={styles.svgOverlay} viewBox="0 0 1582 796">
               <defs>
                 <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#E4C057" stopOpacity="0.1" />
