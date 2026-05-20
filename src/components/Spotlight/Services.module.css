@@ -910,4 +910,7 @@
   .section {
     padding: 2rem 0 1rem;
   }
+  .marquee {
+    animation: marquee 12s linear infinite;
+  }
 }
