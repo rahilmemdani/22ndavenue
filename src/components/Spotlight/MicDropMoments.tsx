@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "./MicDropMoments.module.css";
 
 interface MicDropMomentsProps {
@@ -254,7 +254,7 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
         <div className={styles.footerNav}>
           <div className={styles.categoryNav}>
             <button onClick={prevCategory} className={styles.catArrowBtn} aria-label="Previous Category">
-              <ArrowLeft size={16} />
+              <ChevronLeft size={18} strokeWidth={1.5} />
             </button>
             
             <div className={styles.categoryLabel}>
@@ -262,7 +262,7 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
             </div>
 
             <button onClick={nextCategory} className={styles.catArrowBtn} aria-label="Next Category">
-              <ArrowRight size={16} />
+              <ChevronRight size={18} strokeWidth={1.5} />
             </button>
           </div>
         </div>

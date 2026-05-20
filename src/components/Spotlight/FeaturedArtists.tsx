@@ -3,7 +3,7 @@
 
 import { useState, useRef } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "./FeaturedArtists.module.css";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/sanity/client";
@@ -129,10 +129,10 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
             {/* Desktop Controls: Overlaying the sides, vertically centered */}
             <div className={styles.controlsDesktop}>
               <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous Slide">
-                <ArrowLeft size={24} />
+                <ChevronLeft size={22} strokeWidth={1.5} />
               </button>
               <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next Slide">
-                <ArrowRight size={24} />
+                <ChevronRight size={22} strokeWidth={1.5} />
               </button>
             </div>
           </div>
@@ -151,7 +151,7 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
         {/* Mobile controls */}
         <div className={styles.controlsMobile}>
           <button onClick={prevSlide} className={styles.arrowBtn} aria-label="Previous Slide">
-            <ArrowLeft size={20} />
+            <ChevronLeft size={20} strokeWidth={1.5} />
           </button>
           <div className={styles.indicators}>
             {Array.from({ length: totalSlides }).map((_, idx) => (
@@ -162,7 +162,7 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
             ))}
           </div>
           <button onClick={nextSlide} className={styles.arrowBtn} aria-label="Next Slide">
-            <ArrowRight size={20} />
+            <ChevronRight size={20} strokeWidth={1.5} />
           </button>
         </div>
 

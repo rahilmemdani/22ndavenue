@@ -49,51 +49,65 @@
   font-style: italic;
 }
 
-.navControlsWrapper {
-  display: flex;
-  justify-content: center;
+.carouselContainer {
+  position: relative;
   width: 100%;
-  margin-top: 0.5rem;
+  max-width: 950px; /* Snug around the 4 pills */
+  margin: 0 auto;
 }
 
-.navControls {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 99px;
-  padding: 0.4rem 0.5rem;
+@media (min-width: 768px) {
+  .carouselContainer {
+    padding: 0; /* Removing the wide 5rem padding */
+  }
+}
+
+.controlsDesktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .controlsDesktop {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -3rem;
+    right: -3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 30;
+  }
+  
+  .controlsDesktop .arrowBtn {
+    pointer-events: auto;
+  }
 }
 
 .arrowBtn {
-  background: rgba(255, 255, 255, 0.06);
+  background: none;
   border: none;
+  outline: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.3);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.35s ease, background-color 0.35s ease;
   flex-shrink: 0;
 }
 
 .arrowBtn:hover {
-  background: rgba(228, 192, 87, 0.2);
   color: #E4C057;
+  background: rgba(228, 192, 87, 0.06);
 }
 
-.counter {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.35);
-  letter-spacing: 0.12em;
-  padding: 0 1.25rem;
-  min-width: 70px;
-  text-align: center;
+.arrowBtn:active {
+  color: rgba(228, 192, 87, 0.6);
 }
 
 /* ===== PILLS CONTAINER ===== */
@@ -461,7 +475,7 @@
 
 @media (max-width: 768px) {
   .section {
-    padding: 5rem 0 3rem;
+    padding: 2rem 0 3rem;
     min-height: auto;
     overflow: visible;
     /* Allow vertical scroll overflow */
@@ -475,10 +489,14 @@
   .pillsContainer {
     gap: 0.75rem;
     overflow-x: auto;
-    padding: 1rem 0 1.5rem;
+    overflow-y: hidden;
+    padding: 1rem 4% 1.5rem;
     justify-content: flex-start;
-    touch-action: pan-y !important;
-    overflow-y: visible;
+    flex-wrap: nowrap;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
   }
 
   .pillsContainer::-webkit-scrollbar {
@@ -486,9 +504,10 @@
   }
 
   .pillWrapper {
-    flex: 0 0 48%;
-    max-width: 180px;
-    touch-action: pan-y !important;
+    flex: 0 0 42%;
+    max-width: 160px;
+    scroll-snap-align: start;
+    touch-action: pan-x;
   }
 
   .pillDown {
@@ -497,7 +516,7 @@
 
   .pill {
     border-radius: 80px;
-    touch-action: pan-y !important;
+    touch-action: pan-x;
   }
 
   .pillName {

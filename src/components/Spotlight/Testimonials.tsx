@@ -4,7 +4,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { ArrowLeft, ArrowRight, Play, X, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, X, Quote } from "lucide-react";
 import styles from "./Testimonials.module.css";
 
 interface Testimonial {
@@ -72,6 +72,7 @@ export function Testimonials({ data }: TestimonialsProps) {
   const [videoModal, setVideoModal] = useState<string | null>(null);
   const [textModal, setTextModal] = useState<{ name: string, role: string, quote: string } | null>(null);
   const [visibleCount, setVisibleCount] = useState(4);
+  const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -132,7 +133,10 @@ export function Testimonials({ data }: TestimonialsProps) {
 
   useEffect(() => {
     const handleResize = () => {
-      setVisibleCount(window.innerWidth < 768 ? 2 : 4);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      // On mobile, show ALL pills for smooth horizontal scroll; on desktop, paginate 4 at a time
+      setVisibleCount(mobile ? 9999 : 4);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -191,8 +195,9 @@ export function Testimonials({ data }: TestimonialsProps) {
           </ScrollReveal>
         </div>
 
-        {/* Pills Container */}
-        <div className={`${styles.pillsContainer} ${isAnimating ? styles.fadeOut : styles.fadeIn}`}>
+        <div className={styles.carouselContainer}>
+          {/* Pills Container */}
+          <div className={`${styles.pillsContainer} ${isAnimating ? styles.fadeOut : styles.fadeIn}`}>
           {visibleTestimonials.map((t, i) => {
             const isDown = i % 2 !== 0;
             const isVideo = !!t.video;
@@ -201,7 +206,7 @@ export function Testimonials({ data }: TestimonialsProps) {
             return (
               <div
                 key={`${t.name}-${i}`}
-                className={`${styles.pillWrapper} ${isDown ? styles.pillDown : styles.pillUp}`}
+                className={`${styles.pillWrapper} ${!isMobile && isDown ? styles.pillDown : styles.pillUp}`}
               >
                 <div
                   className={styles.pill}
@@ -249,24 +254,20 @@ export function Testimonials({ data }: TestimonialsProps) {
               </div>
             );
           })}
-        </div>
+          </div>
 
-        {/* Nav Controls */}
-        {totalPages > 1 && (
-          <div className={styles.navControlsWrapper}>
-            <div className={styles.navControls}>
+          {/* Desktop Nav Controls Only */}
+          {totalPages > 1 && (
+            <div className={styles.controlsDesktop}>
               <button onClick={prev} className={styles.arrowBtn} aria-label="Previous">
-                <ArrowLeft size={16} />
+                <ChevronLeft size={22} strokeWidth={1.5} />
               </button>
-              <span className={styles.counter}>
-                {currentPage + 1} / {totalPages}
-              </span>
               <button onClick={next} className={styles.arrowBtn} aria-label="Next">
-                <ArrowRight size={16} />
+                <ChevronRight size={22} strokeWidth={1.5} />
               </button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
       </div>
 

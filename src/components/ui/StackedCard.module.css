@@ -21,5 +21,7 @@
   .stackedCard {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    position: relative;
+    top: auto;
   }
 }
