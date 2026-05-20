@@ -109,6 +109,8 @@ function unlockScroll() {
   document.body.style.overflow = "";
   delete document.body.dataset.scrollLocked;
 }
+import { getDirectVideoUrl } from "@/utils/video";
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function Services({ data }: ServicesProps) {
@@ -122,7 +124,7 @@ export function Services({ data }: ServicesProps) {
       const sanityGallery = (s.gallery || [])
         .map(g => ({
           type: g.type as "image" | "video",
-          url: (g.type === "video" ? g.videoUrl : g.image) || "",
+          url: (g.type === "video" ? getDirectVideoUrl(g.videoUrl) : g.image) || "",
           thumbnail: g.thumbnail
         }))
         .filter(g => g.url.length > 0);

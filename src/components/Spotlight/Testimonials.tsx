@@ -55,6 +55,8 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   }
 ];
 
+import { getDirectVideoUrl } from "@/utils/video";
+
 export function Testimonials({ data }: TestimonialsProps) {
   // Map data with fallback to ensure we don't skip items
   const testimonials: Testimonial[] = (data?.buzzList && data.buzzList.length > 0)
@@ -63,7 +65,7 @@ export function Testimonials({ data }: TestimonialsProps) {
         role: item.authorTitle || "",
         image: item.authorImage || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600",
         quote: !item.hasVideo ? (item.text || "No testimonial text provided.") : undefined,
-        video: item.hasVideo ? item.videoUrl : undefined,
+        video: item.hasVideo ? getDirectVideoUrl(item.videoUrl) : undefined,
       }))
     : DEFAULT_TESTIMONIALS;
 

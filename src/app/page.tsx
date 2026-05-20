@@ -60,6 +60,7 @@ export default async function HomePage() {
       ] = results;
       
       console.log("Sanity fetch successful!");
+      console.log("momentsData:", JSON.stringify(momentsData, null, 2));
     } catch (error) {
       console.error("Sanity connection failed:", error);
     }

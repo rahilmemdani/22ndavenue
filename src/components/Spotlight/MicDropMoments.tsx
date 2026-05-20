@@ -134,6 +134,8 @@ const DEFAULT_CATEGORIES = [
   }
 ];
 
+import { getDirectVideoUrl } from "@/utils/video";
+
 export function MicDropMoments({ data }: MicDropMomentsProps) {
   let showcaseCategories = DEFAULT_CATEGORIES;
 
@@ -146,7 +148,7 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
         subtitle: t.subtitle || "",
         verticalText: `${t.title || ''} ${t.subtitle || ''}`.trim() || "Moment",
         image: t.image || "",
-        video: t.video || "",
+        video: getDirectVideoUrl(t.video),
       })),
     }));
   }
