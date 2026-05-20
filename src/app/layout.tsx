@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     "entertainment",
     "22nd Avenue",
   ],
-  authors: [{ name: "22nd Avenue Creative Talent Management" }],
+  authors: [{ name: "22nd Avenue Talent Management Pvt.Ltd." }],
   icons: {
     icon: "/assets/favicon.ico",
     shortcut: "/assets/favicon.ico",

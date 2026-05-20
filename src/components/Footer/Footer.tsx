@@ -1,55 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useContactModal } from "@/components/ui/ContactModalContext";
+import { Instagram, Linkedin } from "lucide-react";
 import styles from "./Footer.module.css";
 
-const quickLinks = [
-  { href: "/", label: "The Spotlight" },
-  { href: "/talent", label: "The Talent Pool" },
-  { href: "/backstage", label: "The Backstage" },
-  { href: "/magic", label: "The Magic We Make" },
-  { href: "/hype", label: "The Hype Corner" },
-];
-
-const services = [
-  "Talent Management",
-  "Brand Collaborations",
-  "Event Representation",
-  "Strategic Partnerships",
-];
-
 const socials = [
-  { label: "Instagram", href: "#", icon: "IG" },
-  { label: "YouTube", href: "#", icon: "YT" },
-  { label: "LinkedIn", href: "#", icon: "LI" },
-  { label: "Twitter", href: "#", icon: "TW" },
+  { 
+    label: "Instagram", 
+    href: "https://www.instagram.com/22ndavenuetalentmanagement/", 
+    icon: <Instagram size={18} strokeWidth={1.5} /> 
+  },
+  { 
+    label: "LinkedIn", 
+    href: "https://www.linkedin.com/in/twenty-second-avenue-talent-management-company/", 
+    icon: <Linkedin size={18} strokeWidth={1.5} /> 
+  },
 ];
 
 export function Footer() {
-  const { openModal } = useContactModal();
-
   return (
     <footer className={styles.footer} id="site-footer">
-      {/* Top CTA Strip */}
-      <div className={styles.ctaStrip}>
-        <div className={styles.ctaInner}>
-          <h2 className={styles.ctaHeading}>
-            Ready to make <span className={styles.ctaAccent}>magic</span>?
-          </h2>
-          <p className={styles.ctaSub}>
-            Let&apos;s turn your vision into an unforgettable moment.
-          </p>
-          <button onClick={openModal} className={styles.ctaButton} id="footer-cta">
-            Start a Conversation
-          </button>
-        </div>
-      </div>
+      <div className={styles.container}>
+        {/* Top Separator Line */}
+        <div className={styles.topDivider}></div>
 
-      {/* Main Footer Grid */}
-      <div className={styles.main}>
-        <div className={styles.grid}>
-          {/* Brand Column */}
+        {/* Top Row: Brand & Contact Info */}
+        <div className={styles.topRow}>
+          {/* Brand Info (Left) */}
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
               <img
@@ -59,9 +36,7 @@ export function Footer() {
               />
             </Link>
             <p className={styles.tagline}>
-              Where Talent Meets The Spotlight. We are a creative talent
-              management agency bridging artists, brands, and unforgettable
-              experiences.
+              Where Talent Meets The Spotlight.
             </p>
             <div className={styles.socialRow}>
               {socials.map((s) => (
@@ -79,63 +54,30 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className={styles.col}>
-            <h3 className={styles.colTitle}>Navigate</h3>
-            <ul className={styles.linkList}>
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className={styles.link}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <button onClick={openModal} className={`${styles.link} ${styles.linkBtn}`}>
-                  Let&apos;s Connect
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div className={styles.col}>
-            <h3 className={styles.colTitle}>Services</h3>
-            <ul className={styles.linkList}>
-              {services.map((s) => (
-                <li key={s}>
-                  <span className={styles.serviceItem}>{s}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div className={styles.col}>
+          {/* Contact (Right) */}
+          <div className={styles.contact}>
             <h3 className={styles.colTitle}>Get in Touch</h3>
-            <div className={styles.contactInfo}>
-              <a href="mailto:hello@22ndavenue.com" className={styles.link}>
-                hello@22ndavenue.com
-              </a>
-              <p className={styles.contactText}>Mumbai, India</p>
-            </div>
+            <a href="mailto:experiences@22ndavenue.co.in" className={styles.email}>
+              experiences@22ndavenue.co.in
+            </a>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className={styles.bottom}>
-        <div className={styles.bottomInner}>
+        {/* Divider Line */}
+        <div className={styles.divider}></div>
+
+        {/* Bottom Row: Copyright & Policy Links */}
+        <div className={styles.bottomRow}>
           <p className={styles.copyright}>
-            © {new Date().getFullYear()} 22nd Avenue Creative Talent Management. All
-            rights reserved.
+            © {new Date().getFullYear()} 22nd Avenue Talent Management Pvt.Ltd. All rights reserved.
           </p>
           <div className={styles.bottomLinks}>
             <a href="#" className={styles.bottomLink}>
               Privacy Policy
             </a>
+            <span className={styles.slash}>/</span>
             <a href="#" className={styles.bottomLink}>
-              Terms
+              Terms & Conditions
             </a>
           </div>
         </div>
@@ -143,4 +85,3 @@ export function Footer() {
     </footer>
   );
 }
-
