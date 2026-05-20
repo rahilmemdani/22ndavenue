@@ -31,15 +31,15 @@
 
 .subcopy {
   font-family: var(--font-body);
-  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  margin: 1rem auto 0;
-  letter-spacing: 0.15em;
-  max-width: 600px;
+  margin: 1.2rem auto 0;
+  letter-spacing: 0.02em;
+  max-width: 650px;
   line-height: 1.6;
-  text-transform: uppercase;
-  font-weight: 500;
+  text-transform: none;
+  font-weight: 400;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 

@@ -107,7 +107,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
             OUR GLOBAL <span className={styles.goldText}>FOOTPRINT</span>
           </h2>
           <p className={styles.subcopy}>
-            INTERNATIONAL ARTIST SHOWS<br />SUCCESSFULLY EXECUTED
+            A curated showcase of world-class productions and international artist shows successfully executed across key global destinations.
           </p>
         </ScrollReveal>
 
