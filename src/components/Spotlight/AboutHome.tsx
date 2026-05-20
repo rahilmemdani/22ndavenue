@@ -7,10 +7,6 @@ import styles from "./AboutHome.module.css";
 
 import type { StaticImageData } from "next/image";
 
-import AdityaMehra from "../../../public/assets/hero/Director photos/Aditya Mehra.png";
-import DaryllSheldon from "../../../public/assets/hero/Director photos/Daryl Sheldon.png";
-import ManojGoplani from "../../../public/assets/hero/Director photos/Manoj Gopalani.png";
-
 import { PortableText } from "@portabletext/react";
 
 interface Founder {
@@ -30,17 +26,17 @@ const DEFAULT_FOUNDERS: Founder[] = [
   {
     name: "Aditya Mehra",
     title: "Director",
-    image: AdityaMehra,
+    image: "",
   },
   {
     name: "Daryl Sheldon",
     title: "Director",
-    image: DaryllSheldon,
+    image: "",
   },
   {
     name: "Manoj Gopalani",
     title: "Director",
-    image: ManojGoplani,
+    image: "",
   },
 ];
 
@@ -92,7 +88,7 @@ export function AboutHome({ data }: AboutHomeProps) {
               direction="up"
               className={styles.imageReveal}
             >
-              <div 
+              <div
                 className={styles.imageFrame}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
@@ -147,8 +143,8 @@ export function AboutHome({ data }: AboutHomeProps) {
 
                 {data?.story ? (
                   <div className={styles.portableTextWrapper}>
-                    <PortableText 
-                      value={data.story} 
+                    <PortableText
+                      value={data.story}
                       components={{
                         marks: {
                           textColor: ({ children, value }: any) => {
