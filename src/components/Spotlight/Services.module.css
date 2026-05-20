@@ -186,7 +186,8 @@
     /* Exactly 2 cards in 1 frame */
     flex: 0 0 calc(50% - 1rem);
     padding: 0;
-    min-width: calc(50% - 1rem); /* Force rigid width */
+    min-width: calc(50% - 1rem);
+    /* Force rigid width */
   }
 
   .servicesCarousel {
@@ -491,8 +492,15 @@
 }
 
 @keyframes modalSlideUp {
-  from { opacity: 0; transform: translateY(30px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @media (min-width: 768px) {
@@ -761,7 +769,7 @@
   border-radius: 50%;
   background: rgba(228, 192, 87, 0.95);
   color: #000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -786,6 +794,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -881,6 +890,7 @@
     transform: scale(0.92);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;

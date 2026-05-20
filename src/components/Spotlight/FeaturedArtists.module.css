@@ -72,7 +72,7 @@
     pointer-events: none;
     z-index: 30;
   }
-  
+
   .controlsDesktop .arrowBtn {
     pointer-events: auto;
     margin: 0;
@@ -151,7 +151,8 @@
 
 @media (min-width: 768px) {
   .carouselContainer {
-    padding: 0 5rem; /* Creating dedicated space for arrows so they never overlap images */
+    padding: 0 5rem;
+    /* Creating dedicated space for arrows so they never overlap images */
   }
 }
 
@@ -206,7 +207,7 @@
 .artistCard:hover {
   transform: translateY(-8px);
   border-color: #E4C057;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 .imageWrapper {
@@ -233,7 +234,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
   padding: 2rem 1rem 1rem;
 }
 
