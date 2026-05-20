@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./AboutHome.module.css";
 
 import type { StaticImageData } from "next/image";
@@ -134,36 +133,6 @@ export function AboutHome({ data }: AboutHomeProps) {
                     <p className={styles.founderRole}>
                       {founders[currentSlide]?.title}
                     </p>
-                  </div>
-
-                  <div className={styles.navControls}>
-                    <button
-                      onClick={prevSlide}
-                      className={styles.arrowBtn}
-                      aria-label="Previous"
-                    >
-                      <ArrowLeft size={16} />
-                    </button>
-
-                    <div className={styles.slideCounter}>
-                      <span className={styles.currentNum}>
-                        0{currentSlide + 1}
-                      </span>
-
-                      <span className={styles.dividerSlash}>/</span>
-
-                      <span className={styles.totalNum}>
-                        0{founders.length}
-                      </span>
-                    </div>
-
-                    <button
-                      onClick={nextSlide}
-                      className={styles.arrowBtn}
-                      aria-label="Next"
-                    >
-                      <ArrowRight size={16} />
-                    </button>
                   </div>
                 </div>
               </div>

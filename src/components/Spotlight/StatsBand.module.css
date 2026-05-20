@@ -97,7 +97,7 @@
 .statLabel {
   font-family: var(--font-body);
   font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: #E4C057;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.18em;
