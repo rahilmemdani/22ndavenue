@@ -1,5 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
+async function fetchDriveFile(id: string, userAgent: string, confirmToken?: string): Promise<Response> {
+  const url = confirmToken
+    ? `https://drive.google.com/uc?export=download&confirm=${confirmToken}&id=${id}`
+    : `https://drive.google.com/uc?export=download&id=${id}`;
+
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      "User-Agent": userAgent,
+    },
+  });
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
@@ -7,15 +20,8 @@ export async function GET(request: NextRequest) {
     return new NextResponse("Missing file ID", { status: 400 });
   }
 
-  const driveUrl = `https://drive.google.com/uc?export=download&id=${id}`;
-
   try {
-    const driveResponse = await fetch(driveUrl, {
-      method: "GET",
-      headers: {
-        "User-Agent": request.headers.get("user-agent") || "",
-      },
-    });
+    let driveResponse = await fetchDriveFile(id, request.headers.get("user-agent") || "");
 
     if (!driveResponse.ok) {
       return new NextResponse(`Drive error: ${driveResponse.statusText}`, {
@@ -23,18 +29,36 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const contentType = driveResponse.headers.get("content-type") || "video/mp4";
-    const contentLength = driveResponse.headers.get("content-length");
+    let contentType = driveResponse.headers.get("content-type") || "video/mp4";
+    let contentLength = driveResponse.headers.get("content-length");
 
     // Check if Google Drive returned a virus scan warning page or error page (HTML)
     if (contentType.includes("text/html")) {
-      console.error(
-        `Google Drive proxy error for ID ${id}: Returned HTML page instead of video. This happens if the file is private, too large (>100MB), or rate-limited.`
-      );
-      return new NextResponse(
-        "Google Drive permissions error or file too large. Make sure link sharing is set to 'Anyone with the link can view'.",
-        { status: 403 }
-      );
+      const html = await driveResponse.text();
+      // Try to parse confirmation token from the HTML warning page
+      const confirmMatch = html.match(/confirm=([a-zA-Z0-9_-]+)/) || html.match(/name="confirm"\s+value="([a-zA-Z0-9_-]+)"/);
+      
+      if (confirmMatch && confirmMatch[1]) {
+        const confirmToken = confirmMatch[1];
+        driveResponse = await fetchDriveFile(id, request.headers.get("user-agent") || "", confirmToken);
+        
+        if (!driveResponse.ok) {
+          return new NextResponse(`Drive error after confirmation: ${driveResponse.statusText}`, {
+            status: driveResponse.status,
+          });
+        }
+        
+        contentType = driveResponse.headers.get("content-type") || "video/mp4";
+        contentLength = driveResponse.headers.get("content-length");
+      } else {
+        console.error(
+          `Google Drive proxy error for ID ${id}: Returned HTML page instead of video. This happens if the file is private or rate-limited.`
+        );
+        return new NextResponse(
+          "Google Drive permissions error. Make sure link sharing is set to 'Anyone with the link can view'.",
+          { status: 403 }
+        );
+      }
     }
 
     const headers = new Headers();
@@ -76,3 +100,4 @@ export async function GET(request: NextRequest) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
+
