@@ -13,6 +13,8 @@ interface TransformationHeroProps {
   };
 }
 
+import { getDirectVideoUrl } from "@/utils/video";
+
 const TransformationHero = ({ data }: TransformationHeroProps) => {
   const [isSplit, setIsSplit] = useState(false);
   const [isMuted, setIsMuted] = useState(true); // Auto-play requires mute initially
@@ -116,7 +118,8 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
     }
   };
 
-  const videoSrc = (isMobile && data?.mobileVideoUrl ? data.mobileVideoUrl : data?.desktopVideoUrl) || "/assets/hero/Intro AV.mp4";
+  const rawVideoUrl = (isMobile && data?.mobileVideoUrl ? data.mobileVideoUrl : data?.desktopVideoUrl) || "/assets/hero/Intro AV.mp4";
+  const videoSrc = getDirectVideoUrl(rawVideoUrl);
 
   return (
     <section ref={containerRef} className={`${styles.heroContainer} ${isSplit ? styles.split : ""}`}>

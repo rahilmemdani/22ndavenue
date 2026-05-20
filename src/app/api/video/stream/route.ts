@@ -1,4 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { existsSync, createReadStream, createWriteStream, promises as fs } from "fs";
+import { join } from "path";
+import { Readable } from "stream";
+import { pipeline } from "stream/promises";
+
+const CACHE_DIR = join(process.cwd(), ".video-cache");
 
 async function fetchDriveFile(id: string, userAgent: string, confirmToken?: string): Promise<Response> {
   const url = confirmToken
@@ -21,6 +27,56 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Ensure cache directory exists
+    await fs.mkdir(CACHE_DIR, { recursive: true });
+
+    const filePath = join(CACHE_DIR, id);
+    const metaPath = join(CACHE_DIR, `${id}.json`);
+    const tempPath = join(CACHE_DIR, `${id}.tmp`);
+
+    // 1. Serve from cache if available
+    if (existsSync(filePath) && existsSync(metaPath)) {
+      const meta = JSON.parse(await fs.readFile(metaPath, "utf-8"));
+      const contentType = meta.contentType || "video/mp4";
+      const total = meta.contentLength;
+
+      const headers = new Headers();
+      headers.set("Content-Type", contentType);
+      headers.set("Accept-Ranges", "bytes");
+      headers.set("Cache-Control", "public, max-age=31536000, immutable");
+
+      const rangeHeader = request.headers.get("range");
+      if (rangeHeader && total) {
+        const parts = rangeHeader.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : total - 1;
+        const chunksize = end - start + 1;
+
+        headers.set("Content-Range", `bytes ${start}-${end}/${total}`);
+        headers.set("Content-Length", chunksize.toString());
+
+        const nodeStream = createReadStream(filePath, { start, end });
+        // @ts-ignore
+        const webStream = Readable.toWeb(nodeStream);
+
+        return new NextResponse(webStream as any, {
+          status: 206,
+          headers,
+        });
+      }
+
+      headers.set("Content-Length", total.toString());
+      const nodeStream = createReadStream(filePath);
+      // @ts-ignore
+      const webStream = Readable.toWeb(nodeStream);
+
+      return new NextResponse(webStream as any, {
+        status: 200,
+        headers,
+      });
+    }
+
+    // 2. Fetch from Google Drive and write to cache
     let driveResponse = await fetchDriveFile(id, request.headers.get("user-agent") || "");
 
     if (!driveResponse.ok) {
@@ -30,12 +86,10 @@ export async function GET(request: NextRequest) {
     }
 
     let contentType = driveResponse.headers.get("content-type") || "video/mp4";
-    let contentLength = driveResponse.headers.get("content-length");
 
-    // Check if Google Drive returned a virus scan warning page or error page (HTML)
+    // Handle Google Drive virus warning page if encountered
     if (contentType.includes("text/html")) {
       const html = await driveResponse.text();
-      // Try to parse confirmation token from the HTML warning page
       const confirmMatch = html.match(/confirm=([a-zA-Z0-9_-]+)/) || html.match(/name="confirm"\s+value="([a-zA-Z0-9_-]+)"/);
       
       if (confirmMatch && confirmMatch[1]) {
@@ -49,55 +103,87 @@ export async function GET(request: NextRequest) {
         }
         
         contentType = driveResponse.headers.get("content-type") || "video/mp4";
-        contentLength = driveResponse.headers.get("content-length");
       } else {
         console.error(
-          `Google Drive proxy error for ID ${id}: Returned HTML page instead of video. This happens if the file is private or rate-limited.`
+          `Google Drive proxy error for ID ${id}: Returned HTML page instead of video.`
         );
         return new NextResponse(
-          "Google Drive permissions error. Make sure link sharing is set to 'Anyone with the link can view'.",
+          "Google Drive permissions error or file not found.",
           { status: 403 }
         );
       }
     }
 
+    const responseStream = driveResponse.body;
+    if (!responseStream) {
+      return new NextResponse("Empty response body from Google Drive", { status: 500 });
+    }
+
+    // Write stream to temp path using pipeline
+    // @ts-ignore
+    const nodeReadable = Readable.fromWeb(responseStream);
+    const writeStream = createWriteStream(tempPath);
+    
+    await pipeline(nodeReadable, writeStream);
+
+    // Get the length of the written file
+    const stats = await fs.stat(tempPath);
+    const contentLength = stats.size;
+
+    // Save metadata
+    await fs.writeFile(
+      metaPath,
+      JSON.stringify({ contentType, contentLength }),
+      "utf-8"
+    );
+
+    // Rename to final path
+    await fs.rename(tempPath, filePath);
+
+    // Serve the newly cached file
     const headers = new Headers();
     headers.set("Content-Type", contentType);
     headers.set("Accept-Ranges", "bytes");
-    headers.set("Cache-Control", "public, max-age=3600");
+    headers.set("Cache-Control", "public, max-age=31536000, immutable");
 
     const rangeHeader = request.headers.get("range");
-    if (rangeHeader && contentLength) {
+    if (rangeHeader) {
       const parts = rangeHeader.replace(/bytes=/, "").split("-");
       const start = parseInt(parts[0], 10);
-      const total = parseInt(contentLength, 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : total - 1;
+      const end = parts[1] ? parseInt(parts[1], 10) : contentLength - 1;
       const chunksize = end - start + 1;
 
-      headers.set("Content-Range", `bytes ${start}-${end}/${total}`);
+      headers.set("Content-Range", `bytes ${start}-${end}/${contentLength}`);
       headers.set("Content-Length", chunksize.toString());
 
-      // Slicing buffer for partial content response
-      const arrayBuffer = await driveResponse.arrayBuffer();
-      const slicedBuffer = arrayBuffer.slice(start, end + 1);
+      const nodeStream = createReadStream(filePath, { start, end });
+      // @ts-ignore
+      const webStream = Readable.toWeb(nodeStream);
 
-      return new NextResponse(slicedBuffer, {
+      return new NextResponse(webStream as any, {
         status: 206,
         headers,
       });
     }
 
-    if (contentLength) {
-      headers.set("Content-Length", contentLength);
-    }
+    headers.set("Content-Length", contentLength.toString());
+    const nodeStream = createReadStream(filePath);
+    // @ts-ignore
+    const webStream = Readable.toWeb(nodeStream);
 
-    return new NextResponse(driveResponse.body, {
+    return new NextResponse(webStream as any, {
       status: 200,
       headers,
     });
   } catch (error: any) {
     console.error("Google Drive proxy error:", error);
+    // Clean up temp file on error
+    try {
+      const tempPath = join(CACHE_DIR, `${id}.tmp`);
+      if (existsSync(tempPath)) {
+        await fs.unlink(tempPath);
+      }
+    } catch (_) {}
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
-
