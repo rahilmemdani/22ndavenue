@@ -20,9 +20,8 @@ import {
   footprintQuery
 } from "@/sanity/queries";
 
-// Force fresh data on every request (Instant Sanity updates)
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: serve from cache, revalidate in background every 60 seconds
+export const revalidate = 60;
 
 export default async function HomePage() {
   // Initialize with null so we can check if fetch succeeded

@@ -21,7 +21,11 @@ export function GlobalFootprint({ data }: GlobalFootprintProps) {
           <img 
             src={data?.image || "/assets/hero/Global map.png"} 
             alt="Global Footprint Map" 
-            className={styles.mapImage} 
+            className={styles.mapImage}
+            loading="lazy"
+            decoding="async"
+            width={1400}
+            height={700}
           />
         </ScrollReveal>
       </div>

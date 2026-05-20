@@ -10,7 +10,7 @@ export const aboutQuery = groq`*[_type == "about"] | order(_updatedAt desc)[0] {
   "directors": directors[] {
     name,
     title,
-    "image": image.asset->url
+    "image": image.asset->url + "?w=800&h=1000&fit=crop&auto=format&q=80&fm=webp"
   },
   story
 }`
@@ -29,7 +29,7 @@ export const momentsQuery = groq`*[_type == "moments"] | order(_updatedAt desc)[
     "tiles": tiles[] {
       title,
       subtitle,
-      "image": placeholderImage.asset->url,
+      "image": placeholderImage.asset->url + "?w=1200&h=800&fit=crop&auto=format&q=80&fm=webp",
       "video": video.asset->url
     }
   }
@@ -39,7 +39,7 @@ export const testimonialsQuery = groq`*[_type == "testimonials"] | order(_update
   "buzzList": buzzList[] {
     authorName,
     authorTitle,
-    "authorImage": authorImage.asset->url,
+    "authorImage": authorImage.asset->url + "?w=400&h=400&fit=crop&auto=format&q=80&fm=webp",
     hasVideo,
     videoUrl,
     text
@@ -50,17 +50,17 @@ export const servicesQuery = groq`*[_type == "services"] | order(_updatedAt desc
   "servicesList": servicesList[] {
     title,
     description,
-    "image": image.asset->url,
+    "image": image.asset->url + "?w=900&h=600&fit=crop&auto=format&q=80&fm=webp",
     shape,
     "gallery": gallery[] {
       type,
-      "image": image.asset->url,
+      "image": image.asset->url + "?w=1200&auto=format&q=80&fm=webp",
       videoUrl,
-      "thumbnail": thumbnail.asset->url
+      "thumbnail": thumbnail.asset->url + "?w=800&h=450&fit=crop&auto=format&q=80&fm=webp"
     }
   }
 }`
 
 export const footprintQuery = groq`*[_type == "footprint"] | order(_updatedAt desc)[0] {
-  "image": image.asset->url
+  "image": image.asset->url + "?w=1400&auto=format&q=75&fm=webp"
 }`

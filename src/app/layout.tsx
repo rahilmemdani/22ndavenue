@@ -80,6 +80,13 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${inter.variable} ${spaceGrotesk.variable}`}
     >
+      <head>
+        {/* Preconnect to critical image origins for faster first requests */}
+        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+      </head>
       <body>
         <ContactModalProvider>
           <Navbar />
