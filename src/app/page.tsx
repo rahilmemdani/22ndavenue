@@ -20,8 +20,8 @@ import {
   footprintQuery
 } from "@/sanity/queries";
 
-// ISR: serve from cache, revalidate in background every 60 seconds
-export const revalidate = 60;
+// Revalidate page on every request to ensure data is loaded as soon as it's changed
+export const revalidate = 0;
 
 export default async function HomePage() {
   // Initialize with null so we can check if fetch succeeded

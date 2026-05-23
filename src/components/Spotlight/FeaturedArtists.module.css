@@ -84,8 +84,8 @@
 }
 
 .arrowBtn {
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   outline: none;
   border-radius: 50%;
   width: 40px;
@@ -93,7 +93,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.95);
   cursor: pointer;
   transition: color 0.35s ease, background-color 0.35s ease;
 }

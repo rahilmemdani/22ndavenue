@@ -52,13 +52,15 @@
 .carouselContainer {
   position: relative;
   width: 100%;
-  max-width: 950px; /* Snug around the 4 pills */
+  max-width: 950px;
+  /* Snug around the 4 pills */
   margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .carouselContainer {
-    padding: 0; /* Removing the wide 5rem padding */
+    padding: 0;
+    /* Removing the wide 5rem padding */
   }
 }
 
@@ -79,15 +81,15 @@
     pointer-events: none;
     z-index: 30;
   }
-  
+
   .controlsDesktop .arrowBtn {
     pointer-events: auto;
   }
 }
 
 .arrowBtn {
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   outline: none;
   border-radius: 50%;
   width: 40px;
@@ -95,7 +97,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.95);
   cursor: pointer;
   transition: color 0.35s ease, background-color 0.35s ease;
   flex-shrink: 0;
