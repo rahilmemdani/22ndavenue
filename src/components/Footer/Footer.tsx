@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
+import { useContactModal } from "@/components/ui/ContactModalContext";
 import styles from "./Footer.module.css";
 
 const socials = [
@@ -18,12 +19,29 @@ const socials = [
 ];
 
 export function Footer() {
+  const { openModal } = useContactModal();
+
   return (
     <footer className={styles.footer} id="site-footer">
       {/* Subtle warm ambient glow in background */}
       <div className={styles.ambientGlow}></div>
 
       <div className={styles.container}>
+        {/* CTA section */}
+        <div className={styles.ctaStrip}>
+          <div className={styles.ctaInner}>
+            <h2 className={styles.ctaHeading}>
+              Ready to make <span className={styles.ctaAccent}>magic</span>?
+            </h2>
+            <p className={styles.ctaSub}>
+              Let&apos;s turn your vision into an unforgettable moment.
+            </p>
+            <button onClick={openModal} className={styles.ctaButton} id="footer-cta">
+              Start a Conversation
+            </button>
+          </div>
+        </div>
+
         {/* Top Separator Line */}
         <div className={styles.topDivider}></div>
 
