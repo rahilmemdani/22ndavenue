@@ -40,13 +40,13 @@ export default async function HomePage() {
     try {
       console.log(`Attempting to fetch data for project: ${projectId}`);
       const results = await Promise.all([
-        client.fetch(heroQuery),
-        client.fetch(aboutQuery),
-        client.fetch(collabsQuery),
-        client.fetch(momentsQuery),
-        client.fetch(testimonialsQuery),
-        client.fetch(servicesQuery),
-        client.fetch(footprintQuery)
+        client.fetch(heroQuery, {}, { next: { revalidate: 0 } }),
+        client.fetch(aboutQuery, {}, { next: { revalidate: 0 } }),
+        client.fetch(collabsQuery, {}, { next: { revalidate: 0 } }),
+        client.fetch(momentsQuery, {}, { next: { revalidate: 0 } }),
+        client.fetch(testimonialsQuery, {}, { next: { revalidate: 0 } }),
+        client.fetch(servicesQuery, {}, { next: { revalidate: 0 } }),
+        client.fetch(footprintQuery, {}, { next: { revalidate: 0 } })
       ]);
 
       [
