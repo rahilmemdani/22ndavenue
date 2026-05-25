@@ -27,6 +27,7 @@
   letter-spacing: 0.1em;
   margin: 0;
   text-align: center;
+  line-height: 1.1;
 }
 
 .subcopy {
@@ -34,10 +35,10 @@
   font-size: clamp(0.95rem, 1.2vw, 1.1rem);
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  margin: 1.2rem auto 0;
+  margin: 0.3rem auto 0;
   letter-spacing: 0.02em;
   max-width: 650px;
-  line-height: 1.6;
+  line-height: 1.4;
   text-transform: none;
   font-weight: 400;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);

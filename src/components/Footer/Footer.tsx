@@ -12,7 +12,7 @@ const socials = [
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/twenty-second-avenue-talent-management-company/",
+    href: "https://www.linkedin.com/in/twenty-second-avenue-talent-management-company",
     icon: <Linkedin size={18} strokeWidth={1.5} />
   },
 ];

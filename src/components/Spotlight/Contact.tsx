@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import styles from "./Contact.module.css";
+import { Mail, Instagram, Linkedin } from "lucide-react";
 
 type ContactType = "Artists" | "Careers" | "Business";
 
@@ -95,19 +96,32 @@ export function Contact() {
               Whether you&apos;re an artist looking for management, a brand seeking collaboration, or a talent looking to join our team.
             </p>
 
-            <div className={styles.contactDetails}>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Email us</span>
-                <a href="mailto:experiences@22ndavenue.co.in" className={styles.detailValue}>experiences@22ndavenue.co.in</a>
-              </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Visit us</span>
-                <span className={styles.detailValue}>Mumbai, India</span>
-              </div>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Follow</span>
-                <a href="#" className={styles.detailValue}>@22ndavenue_mgmt</a>
-              </div>
+            <div className={styles.socialIconRow}>
+              <a
+                href="mailto:experiences@22ndavenue.co.in"
+                aria-label="Email"
+                className={styles.socialIconCircle}
+              >
+                <Mail size={20} />
+              </a>
+              <a
+                href="https://www.instagram.com/22ndavenuetalentmanagement/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className={styles.socialIconCircle}
+              >
+                <Instagram size={20} />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/twenty-second-avenue-talent-management-company"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className={styles.socialIconCircle}
+              >
+                <Linkedin size={20} />
+              </a>
             </div>
           </ScrollReveal>
         </div>

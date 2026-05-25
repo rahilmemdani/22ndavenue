@@ -352,3 +352,22 @@
     padding: 1rem 1.25rem 1.5rem;
   }
 }
+
+.socialIconCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.socialIconCircle:hover {
+  background: rgba(228, 192, 87, 0.1);
+  border-color: #E4C057;
+  color: #E4C057;
+}

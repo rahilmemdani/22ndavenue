@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X } from "lucide-react";
+import { X, Mail, Instagram, Linkedin } from "lucide-react";
 import { useContactModal } from "@/components/ui/ContactModalContext";
 import styles from "./ContactModal.module.css";
 
@@ -46,7 +46,7 @@ export function ContactModal() {
     const nameInput = (form.elements.namedItem("name") as HTMLInputElement)?.value;
     const emailInput = (form.elements.namedItem("email") as HTMLInputElement)?.value;
     const messageInput = (form.elements.namedItem("message") as HTMLTextAreaElement)?.value;
-    
+
     let positionStr = "";
     let noteStr = messageInput;
 
@@ -187,10 +187,10 @@ export function ContactModal() {
                 <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
                   <label className={styles.label}>Upload Resume / CV</label>
                   <div className={styles.fileInputWrapper}>
-                    <input 
-                      type="file" 
-                      className={styles.fileInput} 
-                      accept=".pdf,.doc,.docx" 
+                    <input
+                      type="file"
+                      className={styles.fileInput}
+                      accept=".pdf,.doc,.docx"
                       onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
                     />
                   </div>
@@ -223,18 +223,31 @@ export function ContactModal() {
 
         {/* Contact Info Bar */}
         <div className={styles.contactBar}>
-          <div className={styles.contactItem}>
-            <span className={styles.contactLabel}>Email</span>
-            <a href="mailto:experiences@22ndavenue.co.in" className={styles.contactValue}>experiences@22ndavenue.co.in</a>
-          </div>
-          <div className={styles.contactItem}>
-            <span className={styles.contactLabel}>Location</span>
-            <span className={styles.contactValue}>Mumbai, India</span>
-          </div>
-          <div className={styles.contactItem}>
-            <span className={styles.contactLabel}>Follow</span>
-            <a href="#" className={styles.contactValue}>@22ndavenue_mgmt</a>
-          </div>
+          <a
+            href="mailto:experiences@22ndavenue.co.in"
+            aria-label="Email"
+            className={styles.socialIconCircle}
+          >
+            <Mail size={20} />
+          </a>
+          <a
+            href="https://www.instagram.com/22ndavenuetalentmanagement/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className={styles.socialIconCircle}
+          >
+            <Instagram size={20} />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/twenty-second-avenue-talent-management-company"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className={styles.socialIconCircle}
+          >
+            <Linkedin size={20} />
+          </a>
         </div>
       </div>
     </div>
