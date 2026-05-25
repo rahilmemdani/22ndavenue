@@ -4,43 +4,11 @@
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Play, Film } from "lucide-react";
 import styles from "./Services.module.css";
+import { getDirectVideoUrl, getDriveEmbedUrl, extractDriveId } from "@/utils/video";
 
-// ─── Lazy Video Tile ──────────────────────────────────────────────────────────
-// In the gallery grid, video tiles show a thumbnail poster if available,
-// or the video's first frame (via preload="metadata") if no thumbnail exists.
-// Clicking opens the lightbox — the correct place to play video.
-// Zero full-video bytes loaded until the user explicitly clicks.
-function VideoTilePoster({ src, poster, className }: { src: string; poster?: string; className?: string }) {
-  if (poster) {
-    return (
-      <img
-        src={poster}
-        alt=""
-        className={className}
-        loading="lazy"
-        decoding="async"
-      />
-    );
-  }
-
-  // No thumbnail — show video's first frame via preload="metadata"
-  // Browser fetches only a tiny metadata chunk, renders frame 0 visually
-  return (
-    <video
-      src={src}
-      className={className}
-      muted
-      playsInline
-      preload="metadata"
-      style={{ pointerEvents: "none" }}
-    />
-  );
-}
-// ─────────────────────────────────────────────────────────────────────────────
-
-
+// ─── Types ────────────────────────────────────────────────────────────────────
 interface GalleryMedia {
   type: "image" | "video";
   url: string;
@@ -54,6 +22,7 @@ interface ServicesProps {
       description: string;
       image: string;
       shape: string;
+      bulkVideoUrls?: string;
       gallery: {
         type: string;
         image?: string;
@@ -64,139 +33,279 @@ interface ServicesProps {
   };
 }
 
+// ─── Default fallback services ────────────────────────────────────────────────
 const DEFAULT_SERVICES = [
   {
     title: "LIVE EVENTS",
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
     shape: "shapeArch",
-    num: "01",
     gallery: [
-      { type: "image", url: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=800" },
-      { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800" },
-      { type: "image", url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800" },
-      { type: "image", url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=800" },
-      { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1540039155732-68ee23e15b51?q=80&w=800" },
-      { type: "image", url: "https://images.unsplash.com/photo-1470229722913-7c090be5c560?q=80&w=800" },
-    ]
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=800" },
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800" },
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800" },
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=800" },
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1470229722913-7c090be5c560?q=80&w=800" },
+    ],
   },
   {
     title: "BRAND COLLABS",
     image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop",
     shape: "shapeArch",
-    num: "02",
     gallery: [
-      { type: "image", url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800" },
-      { type: "image", url: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800" },
-      { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=800" },
-      { type: "image", url: "https://images.unsplash.com/photo-1520333789090-1afc82db536a?q=80&w=800" },
-      { type: "image", url: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800" },
-      { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4", thumbnail: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800" },
-    ]
-  }
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800" },
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800" },
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1520333789090-1afc82db536a?q=80&w=800" },
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800" },
+      { type: "image" as const, url: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800" },
+    ],
+  },
 ];
 
-// ─── Scroll lock helpers (iOS-safe, no-jump) ─────────────────────────────────
+// ─── Scroll lock helpers ──────────────────────────────────────────────────────
 function lockScroll() {
   if (document.body.dataset.scrollLocked) return;
   document.body.dataset.scrollLocked = "1";
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
 }
-
 function unlockScroll() {
   if (!document.body.dataset.scrollLocked) return;
   document.documentElement.style.overflow = "";
   document.body.style.overflow = "";
   delete document.body.dataset.scrollLocked;
 }
-import { getDirectVideoUrl } from "@/utils/video";
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Parse bulk video URLs ────────────────────────────────────────────────────
+function parseBulkVideoUrls(raw: string): GalleryMedia[] {
+  return raw
+    .split(/[\n,]+/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .map((url) => {
+      const driveId = extractDriveId(url);
+      return {
+        type: "video" as const,
+        url: getDirectVideoUrl(url),
+        thumbnail: driveId ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w800` : undefined,
+      };
+    });
+}
 
+// ─── Gallery Tile ─────────────────────────────────────────────────────────────
+function GalleryTile({
+  item,
+  index,
+  serviceTitle,
+  onClick,
+}: {
+  item: GalleryMedia;
+  index: number;
+  serviceTitle: string;
+  onClick: () => void;
+}) {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const thumbSrc = item.type === "video" ? item.thumbnail : item.url;
+  const hasThumbnail = !!thumbSrc;
+
+  return (
+    <div
+      className={styles.galleryTile}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && onClick()}
+      aria-label={`Open ${serviceTitle} item ${index + 1}`}
+    >
+      {/* Skeleton shimmer */}
+      <div className={`${styles.tileSkeleton} ${imgLoaded || !hasThumbnail ? styles.tileSkeletonHidden : ""}`} />
+
+      {hasThumbnail ? (
+        <img
+          src={thumbSrc}
+          alt={`${serviceTitle} ${index + 1}`}
+          className={`${styles.tileMedia} ${imgLoaded ? styles.tileMediaLoaded : ""}`}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setImgLoaded(true)}
+          onError={() => setImgLoaded(true)}
+          referrerPolicy="no-referrer"
+        />
+      ) : (
+        /* Placeholder for videos with no thumbnail */
+        <div className={`${styles.tilePlaceholder} ${styles.tileMediaLoaded}`}>
+          <Film size={28} className={styles.tilePlaceholderIcon} />
+          <span className={styles.tilePlaceholderText}>Video</span>
+        </div>
+      )}
+
+      {/* Hover overlay */}
+      <div className={styles.tileOverlay}>
+        {item.type === "video" ? (
+          <div className={styles.playBtn}>
+            <Play size={18} fill="currentColor" />
+          </div>
+        ) : (
+          <div className={styles.expandDot} />
+        )}
+      </div>
+
+      {/* Persistent video badge (always visible, not just on hover) */}
+      {item.type === "video" && (
+        <div className={styles.videoBadge}>
+          <Play size={10} fill="currentColor" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Lightbox Video — uses Drive iframe embed (instant, no proxy wait) ────────
+function LightboxVideo({ driveId, streamUrl, poster }: { driveId?: string; streamUrl: string; poster?: string }) {
+  // For Google Drive videos (which have a driveId), load the iframe player directly to avoid double-clicking.
+  const [mode, setMode] = useState<"poster" | "iframe" | "html5">(driveId ? "iframe" : (poster ? "poster" : "iframe"));
+  const [iframeReady, setIframeReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // If we have a driveId, use the embed iframe — it loads much faster
+  const embedUrl = driveId ? getDriveEmbedUrl(driveId) : null;
+
+  const handlePlay = () => {
+    if (embedUrl) {
+      setMode("iframe");
+    } else {
+      setMode("html5");
+      setTimeout(() => {
+        videoRef.current?.play().catch(() => {});
+      }, 100);
+    }
+  };
+
+  if (mode === "poster" && poster) {
+    return (
+      <div className={styles.lbVideoWrap}>
+        <img src={poster} alt="" className={styles.lbMedia} referrerPolicy="no-referrer" />
+        <button className={styles.lbPlayOverlay} onClick={handlePlay} aria-label="Play video">
+          <div className={styles.lbPlayBtn}>
+            <Play size={32} fill="currentColor" />
+          </div>
+          <span className={styles.lbPlayLabel}>Tap to play</span>
+        </button>
+      </div>
+    );
+  }
+
+  if (mode === "iframe" && embedUrl) {
+    return (
+      <div className={styles.lbVideoWrap}>
+        {!iframeReady && (
+          <div className={styles.lbSpinner}>
+            <div className={styles.lbSpinnerRing} />
+            <span className={styles.lbSpinnerText}>Loading…</span>
+          </div>
+        )}
+        <iframe
+          src={embedUrl}
+          className={`${styles.lbIframe} ${iframeReady ? styles.lbIframeReady : ""}`}
+          allow="autoplay; fullscreen"
+          allowFullScreen
+          onLoad={() => setIframeReady(true)}
+          title="Video"
+        />
+      </div>
+    );
+  }
+
+  // html5 fallback
+  return (
+    <div className={styles.lbVideoWrap}>
+      <video
+        ref={videoRef}
+        src={streamUrl}
+        className={styles.lbMedia}
+        controls
+        playsInline
+        autoPlay
+        preload="auto"
+        poster={poster}
+      />
+    </div>
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 export function Services({ data }: ServicesProps) {
   const services = data?.servicesList?.length
-    ? data.servicesList.map(s => {
-      const defaultService = DEFAULT_SERVICES.find(
-        ds => ds.title.toUpperCase() === s.title.toUpperCase()
-      );
+    ? data.servicesList.map((s) => {
+        const defaultService = DEFAULT_SERVICES.find(
+          (ds) => ds.title.toUpperCase() === s.title.toUpperCase()
+        );
 
-      // Build gallery from Sanity, filter out items with no URL
-      const sanityGallery = (s.gallery || [])
-        .map(g => ({
-          type: g.type as "image" | "video",
-          url: (g.type === "video" ? getDirectVideoUrl(g.videoUrl) : g.image) || "",
-          thumbnail: g.thumbnail
-        }))
-        .filter(g => g.url.length > 0);
+        // Build gallery from Sanity individual items
+        const sanityGallery: GalleryMedia[] = (s.gallery || [])
+          .map((g) => {
+            const driveId = g.type === "video" ? extractDriveId(g.videoUrl) : undefined;
+            return {
+              type: g.type as "image" | "video",
+              url: (g.type === "video" ? getDirectVideoUrl(g.videoUrl) : g.image) || "",
+              thumbnail: g.thumbnail || (driveId ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w800` : undefined),
+            };
+          })
+          .filter((g) => g.url.length > 0);
 
-      // Fall back to the matching default gallery if Sanity has none
-      const gallery = sanityGallery.length > 0
-        ? sanityGallery
-        : (defaultService?.gallery || []);
+        // Parse bulk video URLs and append them
+        const bulkItems: GalleryMedia[] = s.bulkVideoUrls
+          ? parseBulkVideoUrls(s.bulkVideoUrls)
+          : [];
 
-      return {
-        ...s,
-        image: s.image || defaultService?.image || "",
-        shape: s.shape || "shapeDiamond",
-        gallery,
-      };
-    })
+        // Prioritize bulk items if they are provided; otherwise use individual gallery items
+        const combined = bulkItems.length > 0 ? bulkItems : sanityGallery;
+        const gallery = combined.length > 0 ? combined : (defaultService?.gallery || []);
+
+        return {
+          ...s,
+          image: s.image || defaultService?.image || "",
+          shape: s.shape || "shapeDiamond",
+          gallery,
+        };
+      })
     : DEFAULT_SERVICES;
 
   const carouselRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
   const [mobileCardIndex, setMobileCardIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
-  
+
   const showArrows = services.length > 2;
 
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
-    if (selectedService) {
-      lockScroll();
-    } else {
+    if (selectedService) lockScroll();
+    else {
       unlockScroll();
       setLightboxIndex(null);
     }
     return () => { unlockScroll(); };
   }, [selectedService]);
 
-  // Handle video playback safely
-  useEffect(() => {
-    if (lightboxIndex !== null && selectedService?.gallery[lightboxIndex].type === 'video' && videoRef.current) {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Automatic playback failed or was interrupted, ignore the error
-        });
-      }
-    }
-  }, [lightboxIndex, selectedService]);
-
   const handleCarouselScroll = useCallback(() => {
     const el = carouselRef.current;
     if (!el) return;
-    const scrollLeft = el.scrollLeft;
     const itemWidth = el.scrollWidth / services.length;
-    const index = Math.round(scrollLeft / itemWidth);
-    setMobileCardIndex(Math.min(index, services.length - 1));
+    setMobileCardIndex(Math.min(Math.round(el.scrollLeft / itemWidth), services.length - 1));
   }, [services.length]);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = (dir: "left" | "right") => {
     const el = carouselRef.current;
     if (!el) return;
-    const scrollAmount = el.clientWidth; 
-    el.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: "smooth" });
+    el.scrollBy({ left: dir === "left" ? -el.clientWidth : el.clientWidth, behavior: "smooth" });
   };
 
   const scrollToCard = (index: number) => {
     const el = carouselRef.current;
     if (!el) return;
-    const itemWidth = el.scrollWidth / services.length;
-    el.scrollTo({ left: itemWidth * index, behavior: "smooth" });
+    el.scrollTo({ left: (el.scrollWidth / services.length) * index, behavior: "smooth" });
   };
 
   const lightboxPrev = () => {
@@ -223,22 +332,6 @@ export function Services({ data }: ServicesProps) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxIndex, selectedService]);
 
-  const getMasonryLayout = (totalItems: number) => {
-    const patterns = ["triple", "duo", "hero", "duo", "triple"];
-    const result: { start: number; count: number; type: string }[] = [];
-    let idx = 0;
-    let patIdx = 0;
-    while (idx < totalItems) {
-      const pat = patterns[patIdx % patterns.length];
-      let count = pat === "triple" ? 3 : pat === "duo" ? 2 : 1;
-      count = Math.min(count, totalItems - idx);
-      result.push({ start: idx, count, type: pat });
-      idx += count;
-      patIdx++;
-    }
-    return result;
-  };
-
   const modalPortal = mounted && selectedService ? createPortal(
     <div
       className={styles.modalOverlay}
@@ -248,9 +341,15 @@ export function Services({ data }: ServicesProps) {
       aria-label={`${selectedService.title} gallery`}
     >
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        {/* Gold hairline */}
         <div className={styles.modalAccentLine} />
+
+        {/* Top bar */}
         <div className={styles.modalTopBar}>
           <div className={styles.modalTopBarLeft}>
+            <div className={styles.modalBadge}>
+              <Play size={12} fill="#E4C057" color="#E4C057" />
+            </div>
             <div>
               <h3 className={styles.modalServiceName}>{selectedService.title}</h3>
               <span className={styles.modalCount}>{selectedService.gallery.length} items in collection</span>
@@ -265,104 +364,100 @@ export function Services({ data }: ServicesProps) {
           </button>
         </div>
 
+        {/* Gallery */}
         <div className={styles.galleryScroll}>
           <div className={styles.masonryGrid}>
-            {selectedService.gallery.map((item, globalIdx) => (
-              <div
-                key={globalIdx}
-                className={styles.galleryTile}
-                onClick={() => setLightboxIndex(globalIdx)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === "Enter" && setLightboxIndex(globalIdx)}
-              >
-                {item.type === "image" ? (
-                  <img
-                    src={item.url}
-                    alt={`${selectedService.title} ${globalIdx + 1}`}
-                    className={styles.tileMedia}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  /* Show poster thumbnail in grid — click opens lightbox to play */
-                  <VideoTilePoster
-                    src={item.url}
-                    poster={item.thumbnail}
-                    className={styles.tileMedia}
-                  />
-                )}
-                <div className={styles.tileHover}></div>
-                {item.type === "video" && (
-                  <div className={styles.videoIndicator}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
-                  </div>
-                )}
-              </div>
+            {(selectedService.gallery as GalleryMedia[]).map((item, idx) => (
+              <GalleryTile
+                key={idx}
+                item={item}
+                index={idx}
+                serviceTitle={selectedService.title}
+                onClick={() => setLightboxIndex(idx)}
+              />
             ))}
           </div>
         </div>
       </div>
 
-      {lightboxIndex !== null && (
-        <div
-          className={styles.lightbox}
-          onClick={(e) => {
-            e.stopPropagation();
-            setLightboxIndex(null);
-          }}
-        >
-          <button
-            className={styles.lbClose}
-            onClick={(e) => {
-              e.stopPropagation();
-              setLightboxIndex(null);
-            }}
-            aria-label="Close"
+      {/* Lightbox */}
+      {lightboxIndex !== null && (() => {
+        const item = selectedService.gallery[lightboxIndex] as GalleryMedia;
+        const driveId = item.type === "video" ? extractDriveId(item.url) : undefined;
+        return (
+          <div
+            className={styles.lightbox}
+            onClick={(e) => { e.stopPropagation(); setLightboxIndex(null); }}
           >
-            <X size={20} />
-          </button>
-          <div className={styles.lbCounter}>
-            {lightboxIndex + 1} / {selectedService.gallery.length}
+            <button
+              className={styles.lbClose}
+              onClick={(e) => { e.stopPropagation(); setLightboxIndex(null); }}
+              aria-label="Close"
+            >
+              <X size={20} />
+            </button>
+            <div className={styles.lbCounter}>
+              {lightboxIndex + 1} / {selectedService.gallery.length}
+            </div>
+            <button
+              className={`${styles.lbNav} ${styles.lbPrev}`}
+              onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
+              aria-label="Previous"
+            >
+              <ChevronLeft size={26} />
+            </button>
+
+            <div className={styles.lbMediaWrap} onClick={(e) => e.stopPropagation()}>
+              {item.type === "image" ? (
+                <img src={item.url} alt="" className={styles.lbMedia} referrerPolicy="no-referrer" />
+              ) : (
+                <LightboxVideo
+                  key={`${lightboxIndex}-${item.url}`}
+                  driveId={driveId}
+                  streamUrl={item.url}
+                  poster={item.thumbnail}
+                />
+              )}
+            </div>
+
+            <button
+              className={`${styles.lbNav} ${styles.lbNext}`}
+              onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
+              aria-label="Next"
+            >
+              <ChevronRight size={26} />
+            </button>
+
+            {/* Thumbnail strip */}
+            <div className={styles.lbStrip} onClick={(e) => e.stopPropagation()}>
+              {(selectedService.gallery as GalleryMedia[]).map((stripItem, idx) => {
+                const thumb = stripItem.type === "video" ? stripItem.thumbnail : stripItem.url;
+                return (
+                  <button
+                    key={idx}
+                    className={`${styles.lbStripItem} ${lightboxIndex === idx ? styles.lbStripItemActive : ""}`}
+                    onClick={() => setLightboxIndex(idx)}
+                    aria-label={`Go to item ${idx + 1}`}
+                  >
+                    {thumb ? (
+                      <img src={thumb} alt="" className={styles.lbStripThumb} referrerPolicy="no-referrer" />
+                    ) : (
+                      <div className={styles.lbStripBlank}>
+                        <Film size={12} />
+                      </div>
+                    )}
+                    {stripItem.type === "video" && (
+                      <div className={styles.lbStripPlay}>
+                        <Play size={8} fill="currentColor" />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          <button
-            className={`${styles.lbNav} ${styles.lbPrev}`}
-            onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
-            aria-label="Previous"
-          >
-            <ChevronLeft size={26} />
-          </button>
-          <div className={styles.lbMediaWrap} onClick={(e) => e.stopPropagation()}>
-            {selectedService.gallery[lightboxIndex].type === "image" ? (
-              <img
-                src={selectedService.gallery[lightboxIndex].url}
-                alt=""
-                className={styles.lbMedia}
-              />
-            ) : (
-              <video
-                ref={videoRef}
-                src={selectedService.gallery[lightboxIndex].url}
-                className={styles.lbMedia}
-                controls
-                playsInline
-                autoPlay
-                preload="auto"
-                poster={selectedService.gallery[lightboxIndex].thumbnail}
-              />
-            )}
-          </div>
-          <button
-            className={`${styles.lbNav} ${styles.lbNext}`}
-            onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
-            aria-label="Next"
-          >
-            <ChevronRight size={26} />
-          </button>
-        </div>
-      )}
+        );
+      })()}
     </div>,
     document.body
   ) : null;
@@ -390,7 +485,7 @@ export function Services({ data }: ServicesProps) {
           {showArrows && (
             <button
               className={`${styles.desktopArrow} ${styles.desktopArrowLeft}`}
-              onClick={() => scroll('left')}
+              onClick={() => scroll("left")}
               aria-label="Previous"
             >
               <ChevronLeft size={20} />
@@ -422,9 +517,6 @@ export function Services({ data }: ServicesProps) {
                               <polyline points="7 7 17 7 17 17"></polyline>
                             </svg>
                           </h3>
-                          {/* {service.description && (
-                            <p className={styles.serviceDesc}>{service.description}</p>
-                          )} */}
                         </div>
                       </div>
                     </div>
@@ -437,7 +529,7 @@ export function Services({ data }: ServicesProps) {
           {showArrows && (
             <button
               className={`${styles.desktopArrow} ${styles.desktopArrowRight}`}
-              onClick={() => scroll('right')}
+              onClick={() => scroll("right")}
               aria-label="Next"
             >
               <ChevronRight size={20} />

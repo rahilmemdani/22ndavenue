@@ -672,90 +672,161 @@
 .galleryTile {
   position: relative;
   overflow: hidden;
-  border-radius: 0.75rem;
+  border-radius: 0.85rem;
   cursor: pointer;
   background: #111;
   border: 1px solid rgba(255, 255, 255, 0.05);
   break-inside: avoid;
   margin-bottom: 0.75rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.galleryTile:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(228, 192, 87, 0.15);
+}
+
+/* Skeleton shimmer while image loads */
+.tileSkeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: skelShimmer 1.5s infinite;
+  border-radius: inherit;
+  z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+.tileSkeletonHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes skelShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .tileMedia {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.tileMediaLoaded {
+  opacity: 1;
 }
 
 .galleryTile:hover .tileMedia {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
-/* Expand icon on hover */
-.tileHover {
+/* Hover overlay */
+.tileOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: all 0.35s ease;
+  z-index: 3;
 }
 
-.galleryTile:hover .tileHover {
+.galleryTile:hover .tileOverlay {
   opacity: 1;
+  background: rgba(0, 0, 0, 0.38);
 }
 
-.hoverCircle {
+/* Gold play button for videos */
+.playBtn {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-  transform: scale(0.85);
-  color: #fff;
-}
-
-.galleryTile:hover .hoverCircle {
-  transform: scale(1.1);
   background: #E4C057;
-  border-color: #E4C057;
   color: #000;
-}
-
-.galleryTile:hover .hoverCircle svg {
-  color: #000;
-  fill: currentColor;
-}
-
-/* Video play badge */
-.videoIndicator {
-  position: absolute;
-  bottom: 0.75rem;
-  left: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: scale(0.85);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  box-shadow: 0 8px 24px rgba(228, 192, 87, 0.45);
+}
+
+.galleryTile:hover .playBtn {
+  transform: scale(1.1);
+  box-shadow: 0 12px 32px rgba(228, 192, 87, 0.7);
+}
+
+/* Tiny white dot for images */
+.expandDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+/* Placeholder block for videos with no thumbnail */
+.tilePlaceholder {
+  width: 100%;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #161616 0%, #1e1a0e 100%);
+  position: relative;
+  z-index: 2;
+}
+
+.tilePlaceholderIcon {
+  color: rgba(228, 192, 87, 0.45);
+}
+
+.tilePlaceholderText {
+  font-family: var(--font-accent);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(228, 192, 87, 0.35);
+}
+
+/* Persistent gold video badge (bottom-left, always visible) */
+.videoBadge {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.6rem;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(228, 192, 87, 0.9);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* Badge on modal top bar */
+.modalBadge {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(228, 192, 87, 0.95);
-  color: #000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.galleryTile:hover .videoIndicator {
-  opacity: 1;
+  background: rgba(228, 192, 87, 0.15);
+  border: 1px solid rgba(228, 192, 87, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 
@@ -864,7 +935,7 @@
 /* Media wrapper */
 .lbMediaWrap {
   width: 90%;
-  height: 80%;
+  height: 70%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -888,8 +959,206 @@
   max-height: 100%;
   object-fit: contain;
   box-shadow: 0 40px 120px rgba(0, 0, 0, 0.65);
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Video lightbox: poster shows immediately, video fades in on top ── */
+.lbVideoWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lbPoster {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  transition: opacity 0.5s ease;
+}
+
+.lbPosterHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lbVideo {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.lbVideoReady {
+  opacity: 1;
+}
+
+/* Play overlay on poster (tap to play) */
+.lbPlayOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  border: none;
+  z-index: 5;
+  transition: background 0.3s ease;
+}
+
+.lbPlayOverlay:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.lbPlayBtn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #E4C057;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  box-shadow: 0 8px 32px rgba(228, 192, 87, 0.5);
+  padding-left: 4px; /* visual optical center for play icon */
+}
+
+.lbPlayOverlay:hover .lbPlayBtn {
+  transform: scale(1.1);
+  box-shadow: 0 12px 40px rgba(228, 192, 87, 0.75);
+}
+
+.lbPlayLabel {
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Google Drive iframe embed */
+.lbIframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.lbIframeReady {
+  opacity: 1;
+}
+
+/* Gold spinner while video/iframe loads */
+.lbSpinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.lbSpinnerRing {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid rgba(228, 192, 87, 0.2);
+  border-top-color: #E4C057;
+  animation: spin 0.8s linear infinite;
+}
+
+.lbSpinnerText {
+  font-family: var(--font-accent);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Thumbnail strip at bottom of lightbox ── */
+.lbStrip {
+  position: absolute;
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 90vw;
+  overflow-x: auto;
+  scrollbar-width: none;
+  z-index: 10;
+}
+
+.lbStrip::-webkit-scrollbar { display: none; }
+
+.lbStripItem {
+  position: relative;
+  width: 52px;
+  height: 40px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.25s ease;
+  padding: 0;
+  background: #222;
+}
+
+.lbStripItem:hover {
+  border-color: rgba(228, 192, 87, 0.5);
+}
+
+.lbStripItemActive {
+  border-color: #E4C057;
+  box-shadow: 0 0 0 2px rgba(228, 192, 87, 0.25);
+}
+
+.lbStripThumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lbStripBlank {
+  width: 100%;
+  height: 100%;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(228, 192, 87, 0.4);
+}
+
+.lbStripPlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: #E4C057;
 }
 
 @media (max-width: 768px) {
@@ -899,5 +1168,17 @@
 
   .marquee {
     animation: marquee 12s linear infinite;
+  }
+
+  .lbMediaWrap {
+    width: 100%;
+    height: 60%;
+  }
+
+  .lbPrev { left: 0.75rem; }
+  .lbNext { right: 0.75rem; }
+
+  .lbStrip {
+    bottom: max(5.5rem, env(safe-area-inset-bottom));
   }
 }
