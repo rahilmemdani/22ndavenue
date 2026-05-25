@@ -121,13 +121,15 @@ export function Navbar() {
 
   const startHideTimer = useCallback(() => {
     if (window.innerWidth < 1024 || !isTransparentPage) return; // Never hide on non-hero pages
+    if (isScrolled) return; // 3-second rule doesn't apply when the menu is capsule (scrolled)
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     hideTimerRef.current = setTimeout(() => {
       if (!isHovered) {
         setIsHidden(true);
+        setIsForceOpenAtTop(false); // Revert to minimal menu button at the top
       }
     }, 3000);
-  }, [isHovered, isTransparentPage]);
+  }, [isHovered, isTransparentPage, isScrolled]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastYRef.current;
@@ -233,7 +235,7 @@ export function Navbar() {
     <div className={styles.navSystemWrapper}>
       <motion.div
         className={styles.smartScrollWrapper}
-        animate={{ y: isHidden ? "-200px" : "0px" }}
+        animate={{ y: (isHidden && isScrolled) ? "-200px" : "0px" }}
         transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
       >
         {/* DESKTOP MINIMAL NAV (HERO ONLY) */}
