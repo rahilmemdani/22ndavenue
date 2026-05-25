@@ -6,6 +6,21 @@ import { createPortal } from "react-dom";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ChevronLeft, ChevronRight, Play, X, Quote } from "lucide-react";
 import styles from "./Testimonials.module.css";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/sanity/client";
+
+const builder = imageUrlBuilder(client);
+
+function getImageUrl(imageSource: any) {
+  if (!imageSource) return "";
+  if (typeof imageSource === "string") return imageSource;
+  try {
+    return builder.image(imageSource).width(400).height(500).fit("crop").auto("format").url();
+  } catch (err) {
+    console.error("Error building image URL:", err);
+    return "";
+  }
+}
 
 interface Testimonial {
   name: string;
@@ -20,7 +35,7 @@ interface TestimonialsProps {
     buzzList: {
       authorName: string;
       authorTitle: string;
-      authorImage: string;
+      authorImage: any;
       hasVideo: boolean;
       videoUrl?: string;
       text?: string;
@@ -63,7 +78,7 @@ export function Testimonials({ data }: TestimonialsProps) {
     ? data.buzzList.map(item => ({
         name: item.authorName || "Anonymous",
         role: item.authorTitle || "",
-        image: item.authorImage || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600",
+        image: getImageUrl(item.authorImage) || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600",
         quote: !item.hasVideo ? (item.text || "No testimonial text provided.") : undefined,
         video: item.hasVideo ? getDirectVideoUrl(item.videoUrl) : undefined,
       }))

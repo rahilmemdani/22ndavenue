@@ -39,7 +39,7 @@ export const testimonialsQuery = groq`*[_type == "testimonials"] | order(_update
   "buzzList": buzzList[] {
     authorName,
     authorTitle,
-    "authorImage": authorImage.asset->url + "?w=400&h=400&fit=crop&auto=format&q=80&fm=webp",
+    authorImage,
     hasVideo,
     "videoUrl": coalesce(videoUrl, videoFile.asset->url),
     text
