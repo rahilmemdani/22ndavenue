@@ -971,6 +971,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden; /* Crop the top bar of the Google Drive iframe */
+  border-radius: 10px;
 }
 
 .lbPoster {
@@ -1043,8 +1045,11 @@
 
 /* Google Drive iframe embed */
 .lbIframe {
+  position: absolute;
+  top: -60px; /* Push the top bar containing the external arrow out of the container boundary */
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% + 60px); /* Stretch the height to align the bottom controls perfectly */
   border: none;
   border-radius: 10px;
   opacity: 0;
