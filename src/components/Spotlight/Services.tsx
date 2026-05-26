@@ -159,16 +159,47 @@ function GalleryTile({
   );
 }
 
-// ─── Lightbox Video — uses Drive iframe embed (instant, no proxy wait) ────────
+// ─── Lightbox Video — uses Drive iframe embed on desktop, native HTML5 playsInline on mobile ────────
 function LightboxVideo({ driveId, streamUrl, poster }: { driveId?: string; streamUrl: string; poster?: string }) {
-  // For Google Drive videos (which have a driveId), load the iframe player directly to avoid double-clicking.
-  const [mode, setMode] = useState<"poster" | "iframe" | "html5">(driveId ? "iframe" : (poster ? "poster" : "iframe"));
+  const [isMobile, setIsMobile] = useState(false);
   const [iframeReady, setIframeReady] = useState(false);
+  const [mode, setMode] = useState<"poster" | "iframe" | "html5">(driveId ? "iframe" : (poster ? "poster" : "iframe"));
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // If we have a driveId, use the embed iframe — it loads much faster
-  const embedUrl = driveId ? getDriveEmbedUrl(driveId) : null;
+  useEffect(() => {
+    // Detect mobile phone/tablet devices
+    setIsMobile(/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent));
+  }, []);
 
+  useEffect(() => {
+    if (isMobile && videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.log("Autoplay failed:", err);
+      });
+    }
+  }, [isMobile, streamUrl]);
+
+  // If it's a mobile device, strictly use the native HTML5 player with playsInline
+  // to avoid Google Drive app hijack or native fullscreen popups
+  if (isMobile) {
+    return (
+      <div className={styles.lbVideoWrap}>
+        <video
+          ref={videoRef}
+          src={streamUrl}
+          className={styles.lbMedia}
+          controls
+          playsInline
+          autoPlay
+          preload="auto"
+          poster={poster}
+        />
+      </div>
+    );
+  }
+
+  // On desktop, use the Google Drive iframe embed
+  const embedUrl = driveId ? getDriveEmbedUrl(driveId) : null;
   const handlePlay = () => {
     if (embedUrl) {
       setMode("iframe");
@@ -215,7 +246,7 @@ function LightboxVideo({ driveId, streamUrl, poster }: { driveId?: string; strea
     );
   }
 
-  // html5 fallback
+  // Fallback for non-Drive videos on desktop
   return (
     <div className={styles.lbVideoWrap}>
       <video

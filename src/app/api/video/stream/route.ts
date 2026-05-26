@@ -6,16 +6,20 @@ import { pipeline } from "stream/promises";
 
 const CACHE_DIR = join(process.cwd(), ".video-cache");
 
-async function fetchDriveFile(id: string, userAgent: string, confirmToken?: string): Promise<Response> {
+async function fetchDriveFile(id: string, userAgent: string, confirmToken?: string, rangeHeader?: string | null): Promise<Response> {
   const url = confirmToken
     ? `https://drive.google.com/uc?export=download&confirm=${confirmToken}&id=${id}`
     : `https://drive.google.com/uc?export=download&id=${id}`;
 
+  const headers = new Headers();
+  headers.set("User-Agent", userAgent);
+  if (rangeHeader) {
+    headers.set("Range", rangeHeader);
+  }
+
   return fetch(url, {
     method: "GET",
-    headers: {
-      "User-Agent": userAgent,
-    },
+    headers,
   });
 }
 
@@ -76,8 +80,14 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 2. Fetch from Google Drive and write to cache
-    let driveResponse = await fetchDriveFile(id, request.headers.get("user-agent") || "");
+    // 2. Fetch from Google Drive with range header if present
+    const rangeHeader = request.headers.get("range");
+    let driveResponse = await fetchDriveFile(
+      id,
+      request.headers.get("user-agent") || "",
+      undefined,
+      rangeHeader
+    );
 
     if (!driveResponse.ok) {
       return new NextResponse(`Drive error: ${driveResponse.statusText}`, {
@@ -94,7 +104,12 @@ export async function GET(request: NextRequest) {
       
       if (confirmMatch && confirmMatch[1]) {
         const confirmToken = confirmMatch[1];
-        driveResponse = await fetchDriveFile(id, request.headers.get("user-agent") || "", confirmToken);
+        driveResponse = await fetchDriveFile(
+          id,
+          request.headers.get("user-agent") || "",
+          confirmToken,
+          rangeHeader
+        );
         
         if (!driveResponse.ok) {
           return new NextResponse(`Drive error after confirmation: ${driveResponse.statusText}`, {
@@ -119,60 +134,47 @@ export async function GET(request: NextRequest) {
       return new NextResponse("Empty response body from Google Drive", { status: 500 });
     }
 
-    // Write stream to temp path using pipeline
-    // @ts-ignore
-    const nodeReadable = Readable.fromWeb(responseStream);
-    const writeStream = createWriteStream(tempPath);
-    
-    await pipeline(nodeReadable, writeStream);
-
-    // Get the length of the written file
-    const stats = await fs.stat(tempPath);
-    const contentLength = stats.size;
-
-    // Save metadata
-    await fs.writeFile(
-      metaPath,
-      JSON.stringify({ contentType, contentLength }),
-      "utf-8"
-    );
-
-    // Rename to final path
-    await fs.rename(tempPath, filePath);
-
-    // Serve the newly cached file
+    // Set headers to match Google Drive response
     const headers = new Headers();
     headers.set("Content-Type", contentType);
     headers.set("Accept-Ranges", "bytes");
-    headers.set("Cache-Control", "public, max-age=31536000, immutable");
 
-    const rangeHeader = request.headers.get("range");
-    if (rangeHeader) {
-      const parts = rangeHeader.replace(/bytes=/, "").split("-");
-      const start = parseInt(parts[0], 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : contentLength - 1;
-      const chunksize = end - start + 1;
+    const driveContentRange = driveResponse.headers.get("content-range");
+    const driveContentLength = driveResponse.headers.get("content-length");
+    if (driveContentRange) headers.set("Content-Range", driveContentRange);
+    if (driveContentLength) headers.set("Content-Length", driveContentLength);
 
-      headers.set("Content-Range", `bytes ${start}-${end}/${contentLength}`);
-      headers.set("Content-Length", chunksize.toString());
-
-      const nodeStream = createReadStream(filePath, { start, end });
-      // @ts-ignore
-      const webStream = Readable.toWeb(nodeStream);
-
-      return new NextResponse(webStream as any, {
-        status: 206,
-        headers,
-      });
+    // Trigger full caching in the background if it's not a range request or it's starting from 0
+    if (!existsSync(filePath) && (!rangeHeader || rangeHeader === "bytes=0-")) {
+      (async () => {
+        try {
+          const fullResponse = await fetchDriveFile(id, "Mozilla/5.0 Cache Worker");
+          if (fullResponse.ok && fullResponse.body) {
+            // @ts-ignore
+            const nodeReadable = Readable.fromWeb(fullResponse.body);
+            const writeStream = createWriteStream(tempPath);
+            await pipeline(nodeReadable, writeStream);
+            const stats = await fs.stat(tempPath);
+            const contentLength = stats.size;
+            await fs.writeFile(
+              metaPath,
+              JSON.stringify({ contentType, contentLength }),
+              "utf-8"
+            );
+            await fs.rename(tempPath, filePath);
+            console.log(`Successfully cached video ID ${id} in background.`);
+          }
+        } catch (err) {
+          console.error(`Background caching failed for ID ${id}:`, err);
+          try {
+            if (existsSync(tempPath)) await fs.unlink(tempPath);
+          } catch (_) {}
+        }
+      })();
     }
 
-    headers.set("Content-Length", contentLength.toString());
-    const nodeStream = createReadStream(filePath);
-    // @ts-ignore
-    const webStream = Readable.toWeb(nodeStream);
-
-    return new NextResponse(webStream as any, {
-      status: 200,
+    return new NextResponse(responseStream as any, {
+      status: driveResponse.status,
       headers,
     });
   } catch (error: any) {
