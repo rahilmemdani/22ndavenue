@@ -118,7 +118,6 @@ export function Footer() {
             <a href="mailto:experiences@22ndavenue.co.in" className={styles.email}>
               experiences@22ndavenue.co.in
             </a>
-            <p className={styles.location}>Mumbai, India</p>
           </div>
         </div>
 
@@ -148,7 +147,7 @@ export function Footer() {
                     </span>
                   )}
                 </div>
-                
+
                 <div className={styles.cityRow}>
                   <h4 className={styles.officeCity}>{office.city}</h4>
                   <ArrowUpRight size={12} className={styles.cityArrow} />
