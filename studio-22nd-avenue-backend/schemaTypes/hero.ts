@@ -6,16 +6,16 @@ export const hero = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'desktopVideo',
-      title: 'Desktop Background Video',
-      type: 'file',
-      options: { accept: 'video/mp4,video/*' },
+      name: 'desktopVideoUrl',
+      title: 'Desktop Background Video URL (Google Drive / Cloudflare)',
+      type: 'url',
+      description: 'Paste a Google Drive sharing link or Cloudflare direct video link.',
     }),
     defineField({
-      name: 'mobileVideo',
-      title: 'Mobile Background Video (Optional)',
-      type: 'file',
-      options: { accept: 'video/mp4,video/*' },
+      name: 'mobileVideoUrl',
+      title: 'Mobile Background Video URL (Optional - Google Drive / Cloudflare)',
+      type: 'url',
+      description: 'Paste a Google Drive sharing link or Cloudflare direct video link optimized for mobile.',
     }),
     defineField({
       name: 'fallbackImage',

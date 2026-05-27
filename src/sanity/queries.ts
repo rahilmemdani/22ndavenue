@@ -1,8 +1,8 @@
 import { groq } from 'next-sanity'
 
 export const heroQuery = groq`*[_type == "hero"] | order(_updatedAt desc)[0] {
-  "desktopVideoUrl": desktopVideo.asset->url,
-  "mobileVideoUrl": mobileVideo.asset->url,
+  "desktopVideoUrl": coalesce(desktopVideoUrl, desktopVideo.asset->url),
+  "mobileVideoUrl": coalesce(mobileVideoUrl, mobileVideo.asset->url),
   "fallbackImage": fallbackImage.asset->url
 }`
 

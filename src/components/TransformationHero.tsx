@@ -22,6 +22,9 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
 
+  const rawVideoUrl = (isMobile && data?.mobileVideoUrl ? data.mobileVideoUrl : data?.desktopVideoUrl) || "/assets/hero/Intro AV.mp4";
+  const videoSrc = getDirectVideoUrl(rawVideoUrl);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
@@ -35,6 +38,32 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
       videoRef.current.play().catch(err => console.log("Play prevented:", err));
     }
   }, [isSplit]);
+
+  // Aggressive autoplay immediately on load to pre-buffer the video
+  useEffect(() => {
+    if (!videoRef.current || !videoSrc) return;
+    const video = videoRef.current;
+
+    const handlePlay = () => {
+      video.play().catch((err) => {
+        console.warn("⚠️ Autoplay blocked, retrying...", err);
+        setTimeout(() => {
+          if (videoRef.current) {
+            videoRef.current.play().catch((e) => console.error("❌ Hero autoplay failed:", e));
+          }
+        }, 150);
+      });
+    };
+
+    video.addEventListener("canplay", handlePlay);
+    if (video.readyState >= 3) {
+      handlePlay();
+    }
+
+    return () => {
+      video.removeEventListener("canplay", handlePlay);
+    };
+  }, [videoSrc]);
 
   useEffect(() => {
     // Prevent browser from restoring previous scroll position on reload
@@ -118,9 +147,6 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
     }
   };
 
-  const rawVideoUrl = (isMobile && data?.mobileVideoUrl ? data.mobileVideoUrl : data?.desktopVideoUrl) || "/assets/hero/Intro AV.mp4";
-  const videoSrc = getDirectVideoUrl(rawVideoUrl);
-
   return (
     <section ref={containerRef} className={`${styles.heroContainer} ${isSplit ? styles.split : ""}`}>
 
@@ -148,6 +174,7 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
           style={{ visibility: isVideoVisible ? 'visible' : 'hidden' }}
         >
           <video
+            key={videoSrc}
             ref={videoRef}
             src={videoSrc}
             poster={data?.fallbackImage}
