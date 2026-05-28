@@ -93,7 +93,7 @@ export function Contact() {
               Let&apos;s <span className={styles.gold}>Talk</span>
             </h2>
             <p className={styles.description}>
-              Whether you&apos;re an artist looking for management, a brand seeking collaboration, or a talent looking to join our team.
+              We’d love to know how we can collaborate, create, or grow together
             </p>
 
             <div className={styles.socialIconRow}>

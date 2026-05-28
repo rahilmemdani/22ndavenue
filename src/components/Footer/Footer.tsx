@@ -94,7 +94,7 @@ export function Footer() {
               />
             </Link>
             <p className={styles.tagline}>
-              Where Talent Meets <span className={styles.goldText}>The Spotlight</span>.
+              Leading entertainment curators, <br /> crafting impact through <span className={styles.goldText}>artist-led experiences</span>.
             </p>
             <div className={styles.socialRow}>
               {socials.map((s) => (

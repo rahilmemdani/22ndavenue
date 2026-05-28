@@ -133,7 +133,7 @@ export function ContactModal() {
               Let&apos;s <span className={styles.gold}>Talk</span>
             </h2>
             <p className={styles.subtitle}>
-              Whether you&apos;re an artist, brand, or talent — we&apos;d love to hear from you.
+              We’d love to know how we can collaborate, create, or grow together
             </p>
           </div>
           <button
