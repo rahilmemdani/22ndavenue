@@ -29,8 +29,14 @@ export const momentsQuery = groq`*[_type == "moments"] | order(_updatedAt desc)[
     "tiles": tiles[] {
       title,
       subtitle,
-      "image": placeholderImage.asset->url + "?w=1200&h=800&fit=crop&auto=format&q=80&fm=webp",
-      "video": videoUrl
+      "imageUrl": imageUrl,
+      "imageAsset": placeholderImage.asset->url,
+      "mobileImageUrl": mobileImageUrl,
+      "mobileImageAsset": mobileImage.asset->url,
+      "videoUrl": videoUrl,
+      "videoAsset": video.asset->url,
+      "mobileVideoUrl": mobileVideoUrl,
+      "mobileVideoAsset": mobileVideo.asset->url
     }
   }
 }`

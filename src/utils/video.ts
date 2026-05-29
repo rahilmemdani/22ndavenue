@@ -57,3 +57,17 @@ export function getDirectVideoUrl(url?: string): string {
 export function getDriveEmbedUrl(fileId: string): string {
   return `https://drive.google.com/file/d/${fileId}/preview`;
 }
+
+/** Returns a direct image URL for use in HTML5 <img>, supporting Google Drive */
+export function getDirectImageUrl(url?: string): string {
+  if (!url) return "";
+  const trimmed = url.trim();
+
+  if (trimmed.includes("drive.google.com")) {
+    const fileId = extractDriveId(trimmed);
+    if (fileId) {
+      return `https://drive.google.com/uc?export=view&id=${fileId}`;
+    }
+  }
+  return trimmed;
+}

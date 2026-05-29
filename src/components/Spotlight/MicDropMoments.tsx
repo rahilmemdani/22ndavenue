@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "./MicDropMoments.module.css";
@@ -13,14 +13,40 @@ interface MicDropMomentsProps {
       tiles: {
         title?: string;
         subtitle?: string;
+        imageUrl?: string;
+        imageAsset?: string;
+        mobileImageUrl?: string;
+        mobileImageAsset?: string;
+        videoUrl?: string;
+        videoAsset?: string;
+        mobileVideoUrl?: string;
+        mobileVideoAsset?: string;
         image?: string;
+        mobileImage?: string;
         video?: string;
+        mobileVideo?: string;
       }[];
     }[];
   };
 }
 
-const DEFAULT_CATEGORIES = [
+interface ShowcaseTile {
+  id: string;
+  title: string;
+  subtitle: string;
+  verticalText: string;
+  image: string;
+  mobileImage?: string;
+  video?: string;
+  mobileVideo?: string;
+}
+
+interface ShowcaseCategory {
+  name: string;
+  tiles: ShowcaseTile[];
+}
+
+const DEFAULT_CATEGORIES: ShowcaseCategory[] = [
   {
     name: "Corporate Events",
     tiles: [
@@ -134,22 +160,52 @@ const DEFAULT_CATEGORIES = [
   }
 ];
 
-import { getDirectVideoUrl } from "@/utils/video";
+import { getDirectVideoUrl, getDirectImageUrl } from "@/utils/video";
 
 export function MicDropMoments({ data }: MicDropMomentsProps) {
-  let showcaseCategories = DEFAULT_CATEGORIES;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  let showcaseCategories: ShowcaseCategory[] = DEFAULT_CATEGORIES;
 
   if (data?.categories && data.categories.length > 0) {
     showcaseCategories = data.categories.map((cat) => ({
       name: cat.categoryName || "Unnamed Category",
-      tiles: (cat.tiles || []).map((t, index) => ({
-        id: `${t.title || "Moment"}-${index}`,
-        title: t.title || "",
-        subtitle: t.subtitle || "",
-        verticalText: `${t.title || ''} ${t.subtitle || ''}`.trim() || "Moment",
-        image: t.image || "",
-        video: getDirectVideoUrl(t.video),
-      })),
+      tiles: (cat.tiles || []).map((t, index) => {
+        // Resolve desktop & mobile images (prioritize Drive/external URL, fallback to Sanity Asset)
+        let resolvedImage = t.imageUrl ? getDirectImageUrl(t.imageUrl) : "";
+        if (!resolvedImage && t.imageAsset) {
+          resolvedImage = t.imageAsset + "?w=1200&h=800&fit=crop&auto=format&q=80&fm=webp";
+        }
+
+        let resolvedMobileImage = t.mobileImageUrl ? getDirectImageUrl(t.mobileImageUrl) : "";
+        if (!resolvedMobileImage && t.mobileImageAsset) {
+          resolvedMobileImage = t.mobileImageAsset + "?w=800&h=1200&fit=crop&auto=format&q=80&fm=webp";
+        }
+
+        // Resolve videos (prioritize Drive/external URL, fallback to Sanity Asset)
+        const resolvedVideo = getDirectVideoUrl(t.videoUrl || t.videoAsset || t.video);
+        const resolvedMobileVideo = getDirectVideoUrl(t.mobileVideoUrl || t.mobileVideoAsset || t.mobileVideo);
+
+        return {
+          id: `${t.title || "Moment"}-${index}`,
+          title: t.title || "",
+          subtitle: t.subtitle || "",
+          verticalText: `${t.title || ''} ${t.subtitle || ''}`.trim() || "Moment",
+          image: resolvedImage || t.image || "",
+          mobileImage: resolvedMobileImage || t.mobileImage || resolvedImage || t.image || "",
+          video: resolvedVideo,
+          mobileVideo: resolvedMobileVideo || resolvedVideo,
+        };
+      }),
     }));
   }
 
@@ -217,13 +273,14 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
                   {/* Background Image & Video */}
                   <div className={styles.bgImageContainer}>
                     <img
-                      src={tile.image}
+                      src={isMobile ? tile.mobileImage : tile.image}
                       alt={tile.title}
                       className={styles.bgImage}
                     />
-                    {activeIndex === index && tile.video && (
+                    {activeIndex === index && (isMobile ? tile.mobileVideo : tile.video) && (
                       <video
-                        src={tile.video}
+                        key={isMobile ? `mobile-${tile.mobileVideo}` : `desktop-${tile.video}`}
+                        src={isMobile ? tile.mobileVideo : tile.video}
                         className={styles.bgVideo}
                         autoPlay
                         loop
@@ -240,7 +297,12 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
                       {/* Numbering removed */}
                     </div>
 
-                    {isActive ? null : (
+                    {isActive ? (
+                      <div className={styles.activeBottomArea}>
+                        <h3 className={styles.cardTitle}>{tile.title}</h3>
+                        <p className={styles.cardSubtitle}>{tile.subtitle}</p>
+                      </div>
+                    ) : (
                       <div className={styles.inactiveBottomArea}>
                         <span className={styles.verticalText}>{tile.verticalText}</span>
                       </div>
