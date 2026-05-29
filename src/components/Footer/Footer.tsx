@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Linkedin, ArrowUpRight } from "lucide-react";
+import { Instagram, Linkedin, ArrowUpRight, Mail, MapPin } from "lucide-react";
 import { useContactModal } from "@/components/ui/ContactModalContext";
 import styles from "./Footer.module.css";
 
 const socials = [
+  {
+    label: "Email",
+    href: "mailto:experiences@22ndavenue.co.in",
+    icon: <Mail size={18} strokeWidth={1.5} />
+  },
   {
     label: "Instagram",
     href: "https://www.instagram.com/22ndavenuetalentmanagement/",
@@ -82,8 +87,8 @@ export function Footer() {
         {/* Top Separator Line */}
         <div className={styles.topDivider}></div>
 
-        {/* Top Row: Brand & Contact Info */}
-        <div className={styles.topRow}>
+        {/* Main Content Grid (Brand Left, Address Columns Right) */}
+        <div className={styles.footerContent}>
           {/* Brand Info (Left) */}
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
@@ -96,14 +101,15 @@ export function Footer() {
             <p className={styles.tagline}>
               Leading entertainment curators, <br /> crafting impact through <span className={styles.goldText}>artist-led experiences</span>.
             </p>
+            
             <div className={styles.socialRow}>
               {socials.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   className={styles.socialIcon}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={s.label !== "Email" ? "_blank" : undefined}
+                  rel={s.label !== "Email" ? "noopener noreferrer" : undefined}
                   aria-label={s.label}
                 >
                   {s.icon}
@@ -112,59 +118,88 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Contact (Right) */}
-          <div className={styles.contact}>
-            <span className={styles.contactLabel}>LET&apos;S CREATE MAGIC</span>
-            <a href="mailto:experiences@22ndavenue.co.in" className={styles.email}>
-              experiences@22ndavenue.co.in
-            </a>
-          </div>
-        </div>
-
-        {/* Structured Address Grid (Integrated & Cohesive) */}
-        <div className={styles.divider}></div>
-
-        <div className={styles.addressBlock}>
-          <div className={styles.addressHeader}>
-            <span className={styles.addressHeaderLabel}>Our Presence</span>
-            <span className={styles.addressHeaderLine}></span>
-          </div>
-
-          <div className={styles.addressGrid}>
-            {offices.map((office) => (
+          <div className={styles.addressBlock}>
+            <div className={styles.addressHeader}>
+              <span className={styles.addressHeaderLabel}>OUR PRESENCE</span>
+              <span className={styles.addressHeaderLine}></span>
+            </div>
+            <div className={styles.addressGrid}>
+              {/* Column 1: India (Mumbai) */}
               <a
-                key={office.city}
-                href={office.mapLink}
+                href={offices[0].mapLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${styles.addressCol} ${office.isHQ ? styles.addressColHQ : ""}`}
+                className={`${styles.addressCol} ${styles.colIndia} ${styles.addressColHQ}`}
+                title={`View address for ${offices[0].city}: ${offices[0].address}`}
               >
                 <div className={styles.addressMeta}>
-                  <span className={styles.officeRegion}>{office.region}</span>
-                  {office.tag && (
-                    <span className={office.city === "Mumbai" ? styles.badgeHQ : styles.badgeAPAC}>
-                      {office.tag}
-                    </span>
-                  )}
+                  <span className={styles.officeRegion}>{offices[0].region}</span>
+                  <span className={styles.badgeHQ}>{offices[0].tag}</span>
                 </div>
-
                 <div className={styles.cityRow}>
-                  <h4 className={styles.officeCity}>{office.city}</h4>
-                  <ArrowUpRight size={12} className={styles.cityArrow} />
+                  <MapPin size={13} className={styles.mapIcon} />
+                  <h4 className={styles.officeCity}>{offices[0].city}</h4>
+                  <ArrowUpRight size={11} className={styles.cityArrow} />
                 </div>
-
-                <p className={styles.addressText}>{office.address}</p>
               </a>
-            ))}
+
+              {/* Divider 1 */}
+              <div className={`${styles.verticalDivider} ${styles.dividerOne}`}></div>
+
+              {/* Column 2: Australia (Sydney, Melbourne, Gold Coast) */}
+              {offices.slice(1, 4).map((office, idx) => (
+                <a
+                  key={office.city}
+                  href={office.mapLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${styles.addressCol} ${styles.colAus} ${
+                    idx === 0 ? styles.ausSydney : idx === 1 ? styles.ausMelb : styles.ausGoldCoast
+                  }`}
+                  title={`View address for ${office.city}: ${office.address}`}
+                >
+                  <div className={styles.addressMeta}>
+                    <span className={styles.officeRegion}>{office.region}</span>
+                    {office.tag && <span className={styles.badgeAPAC}>{office.tag}</span>}
+                  </div>
+                  <div className={styles.cityRow}>
+                    <MapPin size={13} className={styles.mapIcon} />
+                    <h4 className={styles.officeCity}>{office.city}</h4>
+                    <ArrowUpRight size={11} className={styles.cityArrow} />
+                  </div>
+                </a>
+              ))}
+
+              {/* Divider 2 */}
+              <div className={`${styles.verticalDivider} ${styles.dividerTwo}`}></div>
+
+              {/* Column 3: New Zealand (Auckland) */}
+              <a
+                href={offices[4].mapLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.addressCol} ${styles.colNZ}`}
+                title={`View address for ${offices[4].city}: ${offices[4].address}`}
+              >
+                <div className={styles.addressMeta}>
+                  <span className={styles.officeRegion}>{offices[4].region}</span>
+                </div>
+                <div className={styles.cityRow}>
+                  <MapPin size={13} className={styles.mapIcon} />
+                  <h4 className={styles.officeCity}>{offices[4].city}</h4>
+                  <ArrowUpRight size={11} className={styles.cityArrow} />
+                </div>
+              </a>
+            </div>
           </div>
         </div>
 
         <div className={styles.divider}></div>
 
-        {/* Bottom Row: Copyright & Policy Links */}
+        {/* Bottom Row: Copyright */}
         <div className={styles.bottomRow}>
           <p className={styles.copyright}>
-            © {new Date().getFullYear()} 22nd Avenue Talent Management Pvt.Ltd. All rights reserved.
+            © {new Date().getFullYear()} 22nd Avenue Talent Management Pvt. Ltd. All rights reserved.
           </p>
         </div>
       </div>
