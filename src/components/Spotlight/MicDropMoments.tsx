@@ -221,7 +221,7 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
                       alt={tile.title}
                       className={styles.bgImage}
                     />
-                    {hoveredIndex === index && tile.video && (
+                    {activeIndex === index && tile.video && (
                       <video
                         src={tile.video}
                         className={styles.bgVideo}
