@@ -141,6 +141,7 @@ export function Footer() {
                   <h4 className={styles.officeCity}>{offices[0].city}</h4>
                   <ArrowUpRight size={11} className={styles.cityArrow} />
                 </div>
+                <p className={styles.officeAddress}>{offices[0].address}</p>
               </a>
 
               {/* Divider 1 */}
@@ -167,6 +168,7 @@ export function Footer() {
                     <h4 className={styles.officeCity}>{office.city}</h4>
                     <ArrowUpRight size={11} className={styles.cityArrow} />
                   </div>
+                  <p className={styles.officeAddress}>{office.address}</p>
                 </a>
               ))}
 
@@ -189,6 +191,7 @@ export function Footer() {
                   <h4 className={styles.officeCity}>{offices[4].city}</h4>
                   <ArrowUpRight size={11} className={styles.cityArrow} />
                 </div>
+                <p className={styles.officeAddress}>{offices[4].address}</p>
               </a>
             </div>
           </div>
