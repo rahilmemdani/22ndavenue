@@ -91,17 +91,21 @@ export function Footer() {
         <div className={styles.footerContent}>
           {/* Brand Info (Left) */}
           <div className={styles.brand}>
-            <Link href="/" className={styles.logo}>
-              <img
-                src="/assets/hero/logo.png"
-                alt="22nd Avenue Logo"
-                className={styles.footerLogo}
-              />
-            </Link>
-            <p className={styles.tagline}>
-              Leading entertainment curators, <br /> crafting impact through <span className={styles.goldText}>artist-led experiences</span>.
-            </p>
-            
+            {/* Top group: logo + tagline stay together */}
+            <div className={styles.brandTop}>
+              <Link href="/" className={styles.logo}>
+                <img
+                  src="/assets/hero/logo.png"
+                  alt="22nd Avenue Logo"
+                  className={styles.footerLogo}
+                />
+              </Link>
+              <p className={styles.tagline}>
+                Leading entertainment curators, <br /> crafting impact through <span className={styles.goldText}>artist-led experiences</span>.
+              </p>
+            </div>
+
+            {/* Social icons anchored to bottom */}
             <div className={styles.socialRow}>
               {socials.map((s) => (
                 <a
@@ -123,76 +127,79 @@ export function Footer() {
               <span className={styles.addressHeaderLabel}>OUR PRESENCE</span>
               <span className={styles.addressHeaderLine}></span>
             </div>
+
             <div className={styles.addressGrid}>
-              {/* Column 1: India (Mumbai) */}
-              <a
-                href={offices[0].mapLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${styles.addressCol} ${styles.colIndia} ${styles.addressColHQ}`}
-                title={`View address for ${offices[0].city}: ${offices[0].address}`}
-              >
-                <div className={styles.addressMeta}>
-                  <span className={styles.officeRegion}>{offices[0].region}</span>
-                  <span className={styles.badgeHQ}>{offices[0].tag}</span>
+              {/* ── INDIA ── */}
+              <div className={styles.countryCol}>
+                <div className={styles.countryHeader}>
+                  <span className={styles.officeRegion}>INDIA</span>
+                  <span className={styles.badgeHQ}>Global HQ</span>
                 </div>
-                <div className={styles.cityRow}>
-                  <MapPin size={13} className={styles.mapIcon} />
-                  <h4 className={styles.officeCity}>{offices[0].city}</h4>
-                  <ArrowUpRight size={11} className={styles.cityArrow} />
-                </div>
-                <p className={styles.officeAddress}>{offices[0].address}</p>
-              </a>
-
-              {/* Divider 1 */}
-              <div className={`${styles.verticalDivider} ${styles.dividerOne}`}></div>
-
-              {/* Column 2: Australia (Sydney, Melbourne, Gold Coast) */}
-              {offices.slice(1, 4).map((office, idx) => (
                 <a
-                  key={office.city}
-                  href={office.mapLink}
+                  href={offices[0].mapLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${styles.addressCol} ${styles.colAus} ${
-                    idx === 0 ? styles.ausSydney : idx === 1 ? styles.ausMelb : styles.ausGoldCoast
-                  }`}
-                  title={`View address for ${office.city}: ${office.address}`}
+                  className={styles.addressCol}
+                  title={`View ${offices[0].city} office`}
                 >
-                  <div className={styles.addressMeta}>
-                    <span className={styles.officeRegion}>{office.region}</span>
-                    {office.tag && <span className={styles.badgeAPAC}>{office.tag}</span>}
-                  </div>
                   <div className={styles.cityRow}>
-                    <MapPin size={13} className={styles.mapIcon} />
-                    <h4 className={styles.officeCity}>{office.city}</h4>
+                    <MapPin size={12} className={styles.mapIcon} />
+                    <h4 className={styles.officeCity}>{offices[0].city}</h4>
                     <ArrowUpRight size={11} className={styles.cityArrow} />
                   </div>
-                  <p className={styles.officeAddress}>{office.address}</p>
+                  <p className={styles.officeAddress}>{offices[0].address}</p>
                 </a>
-              ))}
+              </div>
 
-              {/* Divider 2 */}
-              <div className={`${styles.verticalDivider} ${styles.dividerTwo}`}></div>
+              <div className={styles.verticalDivider} />
 
-              {/* Column 3: New Zealand (Auckland) */}
-              <a
-                href={offices[4].mapLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${styles.addressCol} ${styles.colNZ}`}
-                title={`View address for ${offices[4].city}: ${offices[4].address}`}
-              >
-                <div className={styles.addressMeta}>
-                  <span className={styles.officeRegion}>{offices[4].region}</span>
+              {/* ── AUSTRALIA ── */}
+              <div className={styles.countryCol}>
+                <div className={styles.countryHeader}>
+                  <span className={styles.officeRegion}>AUSTRALIA</span>
+                  <span className={styles.badgeAPAC}>APAC HQ</span>
                 </div>
-                <div className={styles.cityRow}>
-                  <MapPin size={13} className={styles.mapIcon} />
-                  <h4 className={styles.officeCity}>{offices[4].city}</h4>
-                  <ArrowUpRight size={11} className={styles.cityArrow} />
+                {offices.slice(1, 4).map((office) => (
+                  <a
+                    key={office.city}
+                    href={office.mapLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.addressCol}
+                    title={`View ${office.city} office`}
+                  >
+                    <div className={styles.cityRow}>
+                      <MapPin size={12} className={styles.mapIcon} />
+                      <h4 className={styles.officeCity}>{office.city}</h4>
+                      <ArrowUpRight size={11} className={styles.cityArrow} />
+                    </div>
+                    <p className={styles.officeAddress}>{office.address}</p>
+                  </a>
+                ))}
+              </div>
+
+              <div className={styles.verticalDivider} />
+
+              {/* ── NEW ZEALAND ── */}
+              <div className={styles.countryCol}>
+                <div className={styles.countryHeader}>
+                  <span className={styles.officeRegion}>NEW ZEALAND</span>
                 </div>
-                <p className={styles.officeAddress}>{offices[4].address}</p>
-              </a>
+                <a
+                  href={offices[4].mapLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.addressCol}
+                  title={`View ${offices[4].city} office`}
+                >
+                  <div className={styles.cityRow}>
+                    <MapPin size={12} className={styles.mapIcon} />
+                    <h4 className={styles.officeCity}>{offices[4].city}</h4>
+                    <ArrowUpRight size={11} className={styles.cityArrow} />
+                  </div>
+                  <p className={styles.officeAddress}>{offices[4].address}</p>
+                </a>
+              </div>
             </div>
           </div>
         </div>
