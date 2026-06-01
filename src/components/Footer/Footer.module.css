@@ -449,86 +449,155 @@
   }
 }
 
+/* ─── Phone ─── */
 @media (max-width: 768px) {
   .footer {
     padding: 4rem 0 2.5rem;
   }
 
   .container {
-    gap: 2.5rem;
+    padding: 0 6%;
+    gap: 2rem;
   }
 
+  /* Single column, everything centered */
   .footerContent {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
     align-items: center;
     text-align: center;
   }
 
+  /* Brand: centered, no desktop shift */
   .brand {
     align-items: center;
+    padding-top: 0;
+    height: auto;
+    justify-content: flex-start;
+    gap: 1rem;
+    width: 100%;
   }
 
+  /* Logo centered */
+  .logo {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .brandTop {
+    align-items: center;
+    width: 100%;
+  }
+
+  .socialRow {
+    justify-content: center;
+  }
+
+  /* Address block: full width */
   .addressBlock {
     max-width: 100%;
     width: 100%;
+    height: auto;
     margin: 0 auto;
     justify-self: center;
-    align-items: center;
   }
 
   .addressHeader {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .addressHeaderLine {
-    display: none;
+    display: block;
   }
 
-  /* 2-2-1 structure for tablet/phone view */
-  .addressGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1.5rem;
-    width: 100%;
-  }
-
-  .addressCol {
-    align-items: center;
-    text-align: center;
-  }
-
-  .cityRow {
-    justify-content: center;
-  }
-
-  .addressMeta {
-    justify-content: center;
-  }
-
+  /* Hide vertical dividers between desktop columns */
   .verticalDivider {
     display: none;
   }
 
-  /* Hide full address text on mobile */
+  /* Stack country columns vertically */
+  .addressGrid {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  /* Each country section */
+  .countryCol {
+    padding: 0;
+    flex-direction: column;
+    gap: 0;
+    border-bottom: none;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+  }
+
+  /* Full-width separator line ABOVE each country (except first) */
+  .countryCol:not(:first-child)::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin-bottom: 0;
+  }
+
+  .countryCol:last-child {
+    border-bottom: none;
+  }
+
+  /* Country header row */
+  .countryHeader {
+    flex-direction: row;
+    border-bottom: none;
+    border-right: none;
+    border-top: none;
+    padding: 0.9rem 0 0.7rem;
+    margin-bottom: 0;
+    min-width: unset;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .countryCol:first-child .countryHeader {
+    padding-top: 0;
+  }
+
+  /* Cities group */
+  .citiesGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  .addressCol {
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.2rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+    width: 100%;
+  }
+
+  .citiesGroup .addressCol:last-child {
+    border-bottom: none;
+    padding-bottom: 0.4rem;
+  }
+
+  .cityRow {
+    justify-content: flex-start;
+  }
+
+  /* Show address on phone — smaller font */
   .officeAddress {
-    display: none;
-  }
-
-  /* Reset grid coordinates */
-  .colIndia,
-  .colAus,
-  .colNZ,
-  .ausSydney,
-  .ausMelb,
-  .ausGoldCoast {
-    grid-column: auto;
-    grid-row: auto;
-    align-self: auto;
-  }
-
-  /* Auckland spans full width and centers at bottom */
-  .colNZ {
-    grid-column: span 2;
+    display: block;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.55;
+    margin: 0;
   }
 
   .bottomRow {
@@ -539,7 +608,7 @@
   }
 
   .ctaStrip {
-    padding: 1rem 0 2.5rem;
+    padding: 1rem 0 2rem;
   }
 
   .ctaButton {
@@ -548,6 +617,7 @@
   }
 }
 
+/* ─── Small phone ─── */
 @media (max-width: 480px) {
   .footer {
     padding: 3.5rem 0 2rem;
@@ -555,11 +625,7 @@
 
   .container {
     padding: 0 5%;
-    gap: 2rem;
-  }
-
-  .addressGrid {
-    gap: 1.8rem 1.2rem;
+    gap: 1.8rem;
   }
 
   .footerLogo {
@@ -568,6 +634,10 @@
 
   .tagline {
     font-size: 0.82rem;
+  }
+
+  .officeAddress {
+    font-size: 0.62rem;
   }
 
   .copyright {
