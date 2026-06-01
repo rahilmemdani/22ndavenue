@@ -62,6 +62,7 @@
   justify-content: space-between;
   gap: 1.1rem;
   height: 100%;
+  padding-top: 2.1rem;
 }
 
 /* Groups logo + tagline so they stay at the top as a unit */
