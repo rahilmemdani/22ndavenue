@@ -23,5 +23,6 @@
     backface-visibility: hidden;
     position: relative;
     top: auto;
+    will-change: auto;
   }
 }

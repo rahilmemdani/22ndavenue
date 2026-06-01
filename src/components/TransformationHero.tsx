@@ -117,21 +117,26 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
     const handleScroll = () => {
       const heroHeight = window.innerHeight;
       const pauseAt = heroHeight * 0.8;
+      const isPast = window.scrollY > pauseAt;
 
-      if (window.scrollY > pauseAt) {
-        setIsVideoVisible(false); // Hide completely to stop bleeding
-        if (videoRef.current && !videoRef.current.paused) {
-          videoRef.current.pause();
-          videoRef.current.muted = true;
-          setIsMuted(true);
+      setIsVideoVisible(prev => {
+        if (isPast && prev) {
+          // Scrolled past: Pause video and hide
+          if (videoRef.current && !videoRef.current.paused) {
+            videoRef.current.pause();
+            videoRef.current.muted = true;
+            setIsMuted(true);
+          }
+          return false;
+        } else if (!isPast && !prev) {
+          // Scrolled back up: Resume video and show
+          if (videoRef.current && videoRef.current.paused && isSplit) {
+            videoRef.current.play().catch(() => {});
+          }
+          return true;
         }
-      } else {
-        setIsVideoVisible(true); // Show when scrolled back up
-        // Scroll back up — resume if animation is done
-        if (videoRef.current && videoRef.current.paused && isSplit) {
-          videoRef.current.play().catch(() => {});
-        }
-      }
+        return prev;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -171,7 +176,7 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
       <div className={styles.rightPanel}>
         <div 
           className={styles.videoContainer}
-          style={{ visibility: isVideoVisible ? 'visible' : 'hidden' }}
+          style={{ display: isVideoVisible ? 'block' : 'none' }}
         >
           <video
             key={videoSrc}
