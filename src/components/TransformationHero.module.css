@@ -304,6 +304,13 @@
 }
 
 @media (max-width: 768px) {
+  .videoControls {
+    bottom: 5rem;
+    left: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
   /* Disable heavy ambient animations and filters on mobile for better scroll performance */
   .leftPanel::before,
   .ambientOrb2 {
