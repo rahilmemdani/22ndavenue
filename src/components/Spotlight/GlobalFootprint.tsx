@@ -14,10 +14,10 @@ interface Location {
 const locations: Location[] = [
   { name: "Spain", x: 17.8, y: 36.2, description: "International Live Concerts & Arena Shows" },
   { name: "Puerto Rico", x: 27, y: 51, description: "Artist Bookings & Regional Collaborations" },
-  { name: "Abu Dhabi", x: 50.1, y: 36.3, description: "Mega Festivals & Large Scale Productions" },
+  { name: "United Arab Emirates", x: 50.1, y: 36.3, description: "Mega Festivals & Large Scale Productions" },
   { name: "Doha", x: 55.6, y: 50.1, description: "High-End Corporate Events & Launch Parties" },
   { name: "Qatar", x: 58, y: 48.9, description: "Stadium Concerts & International Festivals" },
-  { name: "AlUla", x: 58.5, y: 42.2, description: "Exclusive Cultural Events & Heritage Shows" },
+  { name: "Kingdom of Saudi Arabia", x: 58.5, y: 42.2, description: "Exclusive Cultural Events & Heritage Shows" },
   { name: "Bahrain", x: 57.5, y: 54.1, description: "Elite Showcases & Luxury Concert Series" },
   { name: "India", x: 64.7, y: 54.5, description: "Global HQ & Nationwide Event Production Hub" },
   { name: "Singapore", x: 72.8, y: 65.8, description: "Asia-Pacific Tours & Brand Collaborations" },
