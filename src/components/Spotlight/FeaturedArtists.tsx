@@ -82,6 +82,33 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
     allArtists.slice(i * ITEMS_PER_SLIDE, (i + 1) * ITEMS_PER_SLIDE)
   );
 
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
   return (
     <section ref={sectionRef} className={styles.section} id="featured-artists">
       <div className={styles.wrapper}>
@@ -97,7 +124,12 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
 
         <ScrollReveal delay={200} direction="up" className={styles.carouselReveal}>
           <div className={styles.carouselContainer}>
-            <div className={styles.carouselViewport}>
+            <div 
+              className={styles.carouselViewport}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <div 
                 className={styles.carouselTrack}
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
