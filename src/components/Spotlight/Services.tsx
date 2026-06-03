@@ -8,6 +8,17 @@ import { X, ChevronLeft, ChevronRight, Play, Film } from "lucide-react";
 import styles from "./Services.module.css";
 import { getDirectVideoUrl, getDriveEmbedUrl, extractDriveId } from "@/utils/video";
 
+function getOptimizedUrl(url: string, width = 800) {
+  if (!url) return "";
+  if (url.includes("cdn.sanity.io") || url.includes("images.unsplash.com")) {
+    const separator = url.includes("?") ? "&" : "?";
+    // Avoid appending if already appended
+    if (url.includes(`w=${width}`)) return url;
+    return `${url}${separator}w=${width}&q=80&auto=format`;
+  }
+  return url;
+}
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface GalleryMedia {
   type: "image" | "video";
@@ -104,7 +115,7 @@ function GalleryTile({
   onClick: () => void;
 }) {
   const [imgLoaded, setImgLoaded] = useState(false);
-  const thumbSrc = item.type === "video" ? item.thumbnail : item.url;
+  const thumbSrc = item.type === "video" ? item.thumbnail : getOptimizedUrl(item.url, 600);
   const hasThumbnail = !!thumbSrc;
 
   return (
@@ -460,7 +471,7 @@ export function Services({ data }: ServicesProps) {
 
             <div className={styles.lbMediaWrap} onClick={(e) => e.stopPropagation()}>
               {item.type === "image" ? (
-                <img src={item.url} alt="" className={styles.lbMedia} referrerPolicy="no-referrer" />
+                <img src={getOptimizedUrl(item.url, 1600)} alt="" className={styles.lbMedia} referrerPolicy="no-referrer" />
               ) : (
                 <LightboxVideo
                   key={`${lightboxIndex}-${item.url}`}
@@ -482,7 +493,7 @@ export function Services({ data }: ServicesProps) {
             {/* Thumbnail strip */}
             <div className={styles.lbStrip} onClick={(e) => e.stopPropagation()}>
               {(selectedService.gallery as GalleryMedia[]).map((stripItem, idx) => {
-                const thumb = stripItem.type === "video" ? stripItem.thumbnail : stripItem.url;
+                const thumb = stripItem.type === "video" ? stripItem.thumbnail : getOptimizedUrl(stripItem.url, 200);
                 return (
                   <button
                     key={idx}
