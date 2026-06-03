@@ -295,12 +295,24 @@
   transition-delay: 1.5s;
 }
 
-/* Mobile Responsiveness */
+/* Mobile Responsiveness & Performance */
 @media (max-width: 1024px) {
   .splashText {
     gap: 0.25rem;
     font-size: clamp(3.75rem, 15vw, 5.8rem);
   }
+}
 
-
+@media (max-width: 768px) {
+  /* Disable heavy ambient animations and filters on mobile for better scroll performance */
+  .leftPanel::before,
+  .ambientOrb2 {
+    animation: none;
+    display: none;
+  }
+  
+  .heroContainer.split .leftPanel {
+    filter: none;
+    display: none; /* fully hide the panel once split is done to save memory */
+  }
 }

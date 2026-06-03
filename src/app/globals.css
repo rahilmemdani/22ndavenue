@@ -179,6 +179,15 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Disable smooth scroll on mobile — it causes jank with sticky/composited layers */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -190,6 +199,7 @@ body {
   max-width: 100%;
   width: 100%;
   min-height: 100vh;
+  overscroll-behavior-y: none;
 }
 
 a {

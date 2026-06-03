@@ -106,42 +106,45 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
 
   const [isVideoVisible, setIsVideoVisible] = useState(true);
 
-  // Pause/resume video based on scroll position.
-  // The hero section is inside a position:sticky wrapper so getBoundingClientRect()
-  // always stays at y=0. Instead we compare window.scrollY directly against the
-  // hero's natural height (one viewport height). When the user scrolls more than
-  // 80% of the viewport, we pause the video and hide it to prevent any iOS bleed.
+  // Use IntersectionObserver instead of scroll listener to prevent mobile scroll jank
   useEffect(() => {
-    if (!videoRef.current) return;
+    if (!videoRef.current || !containerRef.current) return;
 
-    const handleScroll = () => {
-      const heroHeight = window.innerHeight;
-      const pauseAt = heroHeight * 0.8;
-      const isPast = window.scrollY > pauseAt;
+    // Create an observer that triggers when less than 20% of the hero is visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        const isPast = !entry.isIntersecting;
 
-      setIsVideoVisible(prev => {
-        if (isPast && prev) {
-          // Scrolled past: Pause video and hide
-          if (videoRef.current && !videoRef.current.paused) {
-            videoRef.current.pause();
-            videoRef.current.muted = true;
-            setIsMuted(true);
+        setIsVideoVisible((prev) => {
+          if (isPast && prev) {
+            // Hero is mostly out of view: Pause video and hide
+            if (videoRef.current && !videoRef.current.paused) {
+              videoRef.current.pause();
+              videoRef.current.muted = true;
+              setIsMuted(true);
+            }
+            return false;
+          } else if (!isPast && !prev) {
+            // Hero is back in view: Resume video and show
+            if (videoRef.current && videoRef.current.paused && isSplit) {
+              videoRef.current.play().catch(() => {});
+            }
+            return true;
           }
-          return false;
-        } else if (!isPast && !prev) {
-          // Scrolled back up: Resume video and show
-          if (videoRef.current && videoRef.current.paused && isSplit) {
-            videoRef.current.play().catch(() => {});
-          }
-          return true;
-        }
-        return prev;
-      });
+          return prev;
+        });
+      },
+      {
+        threshold: 0.2 // Trigger when 20% of the hero is visible
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // check immediately on mount
-    return () => window.removeEventListener("scroll", handleScroll);
   }, [isSplit]);
 
   const toggleMute = (e: React.MouseEvent) => {
