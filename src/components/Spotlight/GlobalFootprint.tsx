@@ -19,7 +19,7 @@ const locations: Location[] = [
   { name: "Qatar", x: 52.4, y: 49.9, description: "Stadium Concerts & International Festivals" },
   { name: "AlUla", x: 56.5, y: 45.2, description: "Exclusive Cultural Events & Heritage Shows" },
   { name: "Bahrain", x: 56.5, y: 51.1, description: "Elite Showcases & Luxury Concert Series" },
-  { name: "India", x: 67.4, y: 51.5, description: "Global HQ & Nationwide Event Production Hub" },
+  { name: "India", x: 65.4, y: 53.5, description: "Global HQ & Nationwide Event Production Hub" },
   { name: "Singapore", x: 72.8, y: 67.8, description: "Asia-Pacific Tours & Brand Collaborations" },
   { name: "Australia", x: 77.7, y: 80.2, description: "Multi-City Arena & Stadium Tours" },
 ];
