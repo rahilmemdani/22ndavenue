@@ -97,7 +97,7 @@ export function Showrunners({ data }: ShowrunnersProps) {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 600) setVisibleCount(1);
+      if (window.innerWidth < 600) setVisibleCount(2);
       else if (window.innerWidth < 900) setVisibleCount(2);
       else setVisibleCount(3);
     };

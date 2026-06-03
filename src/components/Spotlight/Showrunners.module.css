@@ -152,7 +152,8 @@
 /* ===== NAME — overlapping the portrait bottom edge ===== */
 .nameBlock {
   position: relative;
-  margin-top: -1.8rem; /* subtle overlap — just the very bottom edge of the circle */
+  margin-top: -1.8rem;
+  /* subtle overlap — just the very bottom edge of the circle */
   z-index: 10;
   padding-left: 0.25rem;
 }
@@ -166,7 +167,7 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
   line-height: 1.1;
-  text-shadow: 0 3px 14px rgba(0, 0, 0, 1), 0 1px 4px rgba(0,0,0,0.9);
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 1), 0 1px 4px rgba(0, 0, 0, 0.9);
 }
 
 .lastName {
@@ -238,6 +239,7 @@
     pointer-events: none;
     z-index: 30;
   }
+
   .controlsDesktop .arrowBtn {
     pointer-events: auto;
   }
@@ -322,8 +324,13 @@
 }
 
 @keyframes fadeInModal {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modalContent {
@@ -334,7 +341,7 @@
   border: 1px solid rgba(228, 192, 87, 0.18);
   border-radius: 2rem;
   padding: 3.5rem;
-  box-shadow: 0 50px 120px rgba(0,0,0,0.9);
+  box-shadow: 0 50px 120px rgba(0, 0, 0, 0.9);
   display: flex;
   gap: 3rem;
   align-items: center;
@@ -342,8 +349,15 @@
 }
 
 @keyframes modalPop {
-  from { opacity: 0; transform: translateY(20px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modalClose {
@@ -353,9 +367,9 @@
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -381,7 +395,7 @@
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid #E4C057;
-  box-shadow: 0 10px 35px rgba(228,192,87,0.18);
+  box-shadow: 0 10px 35px rgba(228, 192, 87, 0.18);
 }
 
 .modalImage {
@@ -391,9 +405,13 @@
   object-position: center top;
 }
 
-.modalRight { flex-grow: 1; }
+.modalRight {
+  flex-grow: 1;
+}
 
-.modalHeader { margin-bottom: 1.5rem; }
+.modalHeader {
+  margin-bottom: 1.5rem;
+}
 
 .modalName {
   font-family: var(--font-display);
@@ -422,7 +440,7 @@
 
 .modalBody {
   width: 100%;
-  border-top: 1px solid rgba(255,255,255,0.07);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
   padding-top: 1.5rem;
 }
 
@@ -430,7 +448,7 @@
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.8;
-  color: rgba(255,255,255,0.78);
+  color: rgba(255, 255, 255, 0.78);
   margin: 0;
   font-weight: 300;
   font-style: italic;
@@ -446,7 +464,10 @@
     padding: 4.5rem 2rem 3rem;
     max-width: 440px;
   }
-  .modalName { font-size: 1.9rem; }
+
+  .modalName {
+    font-size: 1.9rem;
+  }
 }
 
 /* ===== MOBILE ===== */
@@ -460,31 +481,31 @@
   }
 
   .cardsRow {
-    gap: 3rem;
+    gap: 1.5rem;
     padding: 1rem 0 0.5rem;
     justify-content: center;
   }
 
   .card {
-    width: 160px;
+    width: 145px;
   }
 
   .portraitArea {
-    width: 160px;
-    height: 160px;
+    width: 145px;
+    height: 145px;
   }
 
   .firstName,
   .lastName {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
   }
 
   .nameBlock {
-    margin-top: -1.4rem;
+    margin-top: -1.2rem;
   }
 
   .role {
-    font-size: 0.68rem;
+    font-size: 0.62rem;
   }
 
   .modalContent {
@@ -497,6 +518,11 @@
     height: 130px;
   }
 
-  .modalName { font-size: 1.6rem; }
-  .fullBio { font-size: 0.92rem; }
+  .modalName {
+    font-size: 1.6rem;
+  }
+
+  .fullBio {
+    font-size: 0.92rem;
+  }
 }
