@@ -76,12 +76,12 @@ export function Testimonials({ data }: TestimonialsProps) {
   // Map data with fallback to ensure we don't skip items
   const testimonials: Testimonial[] = (data?.buzzList && data.buzzList.length > 0)
     ? data.buzzList.map(item => ({
-        name: item.authorName || "Anonymous",
-        role: item.authorTitle || "",
-        image: getImageUrl(item.authorImage) || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600",
-        quote: !item.hasVideo ? (item.text || "No testimonial text provided.") : undefined,
-        video: item.hasVideo ? getDirectVideoUrl(item.videoUrl) : undefined,
-      }))
+      name: item.authorName || "Anonymous",
+      role: item.authorTitle || "",
+      image: getImageUrl(item.authorImage) || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600",
+      quote: !item.hasVideo ? (item.text || "No testimonial text provided.") : undefined,
+      video: item.hasVideo ? getDirectVideoUrl(item.videoUrl) : undefined,
+    }))
     : DEFAULT_TESTIMONIALS;
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -108,9 +108,9 @@ export function Testimonials({ data }: TestimonialsProps) {
     // Listener for exiting fullscreen
     const handleFullscreenChange = () => {
       if (!active) return;
-      const isFullscreen = document.fullscreenElement === video || 
-                           (document as any).webkitFullscreenElement === video || 
-                           (video as any).webkitDisplayingFullscreen;
+      const isFullscreen = document.fullscreenElement === video ||
+        (document as any).webkitFullscreenElement === video ||
+        (video as any).webkitDisplayingFullscreen;
       if (!isFullscreen) {
         setVideoModal(null);
       }
@@ -152,8 +152,8 @@ export function Testimonials({ data }: TestimonialsProps) {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      // On mobile, show ALL pills for smooth horizontal scroll; on desktop, paginate 4 at a time
-      setVisibleCount(mobile ? 9999 : 4);
+      // On mobile, paginate 2 at a time; on desktop, paginate 4 at a time
+      setVisibleCount(mobile ? 2 : 4);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -215,62 +215,62 @@ export function Testimonials({ data }: TestimonialsProps) {
         <div className={styles.carouselContainer}>
           {/* Pills Container */}
           <div className={`${styles.pillsContainer} ${isAnimating ? styles.fadeOut : styles.fadeIn}`}>
-          {visibleTestimonials.map((t, i) => {
-            const isDown = i % 2 !== 0;
-            const isVideo = !!t.video;
-            const isText = !!t.quote;
+            {visibleTestimonials.map((t, i) => {
+              const isDown = i % 2 !== 0;
+              const isVideo = !!t.video;
+              const isText = !!t.quote;
 
-            return (
-              <div
-                key={`${t.name}-${i}`}
-                className={`${styles.pillWrapper} ${!isMobile && isDown ? styles.pillDown : styles.pillUp}`}
-              >
+              return (
                 <div
-                  className={styles.pill}
-                  onClick={() => isVideo && t.video && setVideoModal(t.video)}
+                  key={`${t.name}-${i}`}
+                  className={`${styles.pillWrapper} ${!isMobile && isDown ? styles.pillDown : styles.pillUp}`}
                 >
-                  <div className={styles.mediaArea}>
-                    <img src={t.image} alt={t.name} className={styles.pillImage} />
+                  <div
+                    className={styles.pill}
+                    onClick={() => isVideo && t.video && setVideoModal(t.video)}
+                  >
+                    <div className={styles.mediaArea}>
+                      <img src={t.image} alt={t.name} className={styles.pillImage} />
 
-                    {isVideo && (
-                      <div className={styles.playBadge}>
-                        <Play size={18} fill="white" stroke="white" />
-                      </div>
-                    )}
+                      {isVideo && (
+                        <div className={styles.playBadge}>
+                          <Play size={18} fill="white" stroke="white" />
+                        </div>
+                      )}
 
-                    {isText && t.quote && (
-                      <div className={styles.quoteOverlay}>
-                        <Quote size={18} className={styles.quoteIcon} />
-                        <p className={styles.quoteText}>
-                          {t.quote.length > 80 ? (
-                            <>
-                              {t.quote.substring(0, 80)}...
-                              <span
-                                className={styles.readMore}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setTextModal({ name: t.name, role: t.role, quote: t.quote! });
-                                }}
-                              >
-                                Read More
-                              </span>
-                            </>
-                          ) : (
-                            t.quote
-                          )}
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                      {isText && t.quote && (
+                        <div className={styles.quoteOverlay}>
+                          <Quote size={18} className={styles.quoteIcon} />
+                          <p className={styles.quoteText}>
+                            {t.quote.length > 80 ? (
+                              <>
+                                {t.quote.substring(0, 80)}...
+                                <span
+                                  className={styles.readMore}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setTextModal({ name: t.name, role: t.role, quote: t.quote! });
+                                  }}
+                                >
+                                  Read More
+                                </span>
+                              </>
+                            ) : (
+                              t.quote
+                            )}
+                          </p>
+                        </div>
+                      )}
+                    </div>
 
-                  <div className={styles.pillInfo}>
-                    <h4 className={styles.pillName}>{t.name}</h4>
-                    <p className={styles.pillRole}>{t.role}</p>
+                    <div className={styles.pillInfo}>
+                      <h4 className={styles.pillName}>{t.name}</h4>
+                      <p className={styles.pillRole}>{t.role}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
           </div>
 
           {/* Desktop Nav Controls Only */}
@@ -285,6 +285,28 @@ export function Testimonials({ data }: TestimonialsProps) {
             </div>
           )}
         </div>
+
+        {/* Mobile Nav Controls Only */}
+        {totalPages > 1 && (
+          <div className={styles.controlsMobile}>
+            <button onClick={prev} className={styles.arrowBtn} aria-label="Previous">
+              <ChevronLeft size={22} strokeWidth={1.5} />
+            </button>
+
+            <div className={styles.indicators}>
+              {Array.from({ length: totalPages }).map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`${styles.indicator} ${currentPage === idx ? styles.activeIndicator : ""}`}
+                />
+              ))}
+            </div>
+
+            <button onClick={next} className={styles.arrowBtn} aria-label="Next">
+              <ChevronRight size={22} strokeWidth={1.5} />
+            </button>
+          </div>
+        )}
 
       </div>
 

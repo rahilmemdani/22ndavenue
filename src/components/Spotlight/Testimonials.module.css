@@ -87,6 +87,42 @@
   }
 }
 
+.controlsMobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: -1.5rem; /* Pulled up significantly per user request */
+  position: relative;
+  z-index: 20;
+}
+
+@media (min-width: 768px) {
+  .controlsMobile {
+    display: none;
+  }
+}
+
+.indicators {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.activeIndicator {
+  width: 20px;
+  border-radius: 4px;
+  background-color: #E4C057;
+}
+
 .arrowBtn {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -477,7 +513,7 @@
 
 @media (max-width: 768px) {
   .section {
-    padding: 2rem 0 0;
+    padding: 2rem 0 3rem;
     height: auto;
     min-height: auto;
     overflow: visible;
@@ -489,16 +525,10 @@
   }
 
   .pillsContainer {
-    gap: 0.75rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0.5rem 4% 0.5rem;
-    justify-content: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 1rem 3.5rem;
+    justify-content: center;
     flex-wrap: nowrap;
-    touch-action: pan-x;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
   }
 
   .pillsContainer::-webkit-scrollbar {
@@ -506,19 +536,12 @@
   }
 
   .pillWrapper {
-    flex: 0 0 42%;
-    max-width: 160px;
-    scroll-snap-align: start;
-    touch-action: pan-x;
-  }
-
-  .pillDown {
-    transform: none;
+    flex: 0 0 calc(50% - 0.5rem);
+    max-width: 180px;
   }
 
   .pill {
     border-radius: 80px;
-    touch-action: pan-x;
   }
 
   .pillName {
