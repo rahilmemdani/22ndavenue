@@ -200,39 +200,32 @@
 }
 
 /* SVG Map Pin Icon */
-  .svgPin {
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    /* Shift up so the tip of the pin is exactly at the center (the coordinate) */
-    transform: translateY(-10px);
-    transform-origin: bottom center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
-    opacity: 0.9;
-  }
+.svgPin {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  /* Shift up so the tip of the pin is exactly at the center (the coordinate) */
+  transform: translateY(-14px);
+  transform-origin: bottom center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+  opacity: 0.9;
+}
 
-  .svgPinActive {
-    transform: translateY(-16px) scale(1.2);
-    filter: drop-shadow(0 8px 12px rgba(228, 192, 87, 0.6));
-    opacity: 1;
-  }
+.svgPinActive {
+  transform: translateY(-20px) scale(1.2);
+  filter: drop-shadow(0 8px 12px rgba(228, 192, 87, 0.6));
+  opacity: 1;
+}
 
-  .svgPinHub {
-    width: 34px;
-    height: 34px;
-    transform: translateY(-12px);
-  }
-
-  .svgPinHub.svgPinActive {
-    transform: translateY(-18px) scale(1.2);
-  }
-
-
-
-
-
-
+.svgPinHub {
+  width: 44px;
+  height: 44px;
+  transform: translateY(-16px);
+}
+.svgPinHub.svgPinActive {
+  transform: translateY(-22px) scale(1.2);
+}
   /* Glowing Radar Wave Rings */
   .radarRing {
     position: absolute;

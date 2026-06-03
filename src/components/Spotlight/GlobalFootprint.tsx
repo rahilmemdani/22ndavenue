@@ -69,7 +69,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
   useEffect(() => {
     if (mapScrollRef.current && window.innerWidth < 768) {
       const scrollContainer = mapScrollRef.current;
-      const scrollTarget = scrollContainer.scrollWidth * 0.25;
+      const scrollTarget = scrollContainer.scrollWidth * 0.12;
       scrollContainer.scrollLeft = scrollTarget;
     }
   }, []);
@@ -209,7 +209,6 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
                   {/* Tooltip Popup (Glassmorphic) */}
                   <div className={`${styles.tooltip} ${isActive ? styles.tooltipVisible : ""}`}>
                     <div className={styles.tooltipHeader}>
-                      <span className={styles.tooltipIcon}>🌍</span>
                       <h4 className={styles.tooltipTitle}>{loc.name}</h4>
                     </div>
                     <div className={styles.tooltipArrow} />
