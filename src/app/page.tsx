@@ -98,9 +98,9 @@ export default async function HomePage() {
         <Services data={servicesData} />
       </div>
 
-      <StackedCard zIndex={6}>
+      <div style={{ position: 'relative', zIndex: 6, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
         <GlobalFootprint data={footprintData} />
-      </StackedCard>
+      </div>
 
       <div style={{ position: 'relative', zIndex: 7, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
         <Showrunners data={showrunnersData} />
