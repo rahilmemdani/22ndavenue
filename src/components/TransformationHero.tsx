@@ -181,11 +181,14 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
       </div>
 
       {/* Right Panel: Showcase Reel */}
-      <div className={styles.rightPanel}>
-        <div 
-          className={styles.videoContainer}
-          style={{ display: isVideoVisible ? 'block' : 'none' }}
-        >
+      <div 
+        className={styles.rightPanel} 
+        style={{ 
+          opacity: isVideoVisible ? undefined : 0, 
+          pointerEvents: isVideoVisible ? 'auto' : 'none' 
+        }}
+      >
+        <div className={styles.videoContainer}>
           <video
             key={videoSrc}
             ref={videoRef}
