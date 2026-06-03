@@ -71,3 +71,14 @@ export const servicesQuery = groq`*[_type == "services"] | order(_updatedAt desc
 export const footprintQuery = groq`*[_type == "footprint"] | order(_updatedAt desc)[0] {
   "image": image.asset->url + "?w=1400&auto=format&q=75&fm=webp"
 }`
+
+export const showrunnersQuery = groq`*[_type == "showrunners"] | order(_updatedAt desc)[0] {
+  title,
+  subCopy,
+  "teamList": teamList[] {
+    name,
+    role,
+    image,
+    bio
+  }
+}`

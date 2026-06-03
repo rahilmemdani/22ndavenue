@@ -7,6 +7,7 @@ import { FeaturedArtists } from "@/components/Spotlight/FeaturedArtists";
 import { MicDropMoments } from "@/components/Spotlight/MicDropMoments";
 import { Testimonials } from "@/components/Spotlight/Testimonials";
 import { GlobalFootprint } from "@/components/Spotlight/GlobalFootprint";
+import { Showrunners } from "@/components/Spotlight/Showrunners";
 import { StackedCard } from "@/components/ui/StackedCard";
 
 import { client } from "@/sanity/client";
@@ -17,7 +18,8 @@ import {
   momentsQuery,
   testimonialsQuery,
   servicesQuery,
-  footprintQuery
+  footprintQuery,
+  showrunnersQuery
 } from "@/sanity/queries";
 
 // Revalidate page on every request to ensure data is loaded as soon as it's changed
@@ -32,6 +34,7 @@ export default async function HomePage() {
   let testimonialsData = null;
   let servicesData = null;
   let footprintData = null;
+  let showrunnersData = null;
 
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 
@@ -46,7 +49,8 @@ export default async function HomePage() {
         client.fetch(momentsQuery, {}, { next: { revalidate: 0 } }),
         client.fetch(testimonialsQuery, {}, { next: { revalidate: 0 } }),
         client.fetch(servicesQuery, {}, { next: { revalidate: 0 } }),
-        client.fetch(footprintQuery, {}, { next: { revalidate: 0 } })
+        client.fetch(footprintQuery, {}, { next: { revalidate: 0 } }),
+        client.fetch(showrunnersQuery, {}, { next: { revalidate: 0 } })
       ]);
 
       [
@@ -56,7 +60,8 @@ export default async function HomePage() {
         momentsData,
         testimonialsData,
         servicesData,
-        footprintData
+        footprintData,
+        showrunnersData
       ] = results;
       
       console.log("Sanity fetch successful!");
@@ -96,6 +101,10 @@ export default async function HomePage() {
       <StackedCard zIndex={6}>
         <GlobalFootprint data={footprintData} />
       </StackedCard>
+
+      <div style={{ position: 'relative', zIndex: 7, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
+        <Showrunners data={showrunnersData} />
+      </div>
     </main>
   );
 }

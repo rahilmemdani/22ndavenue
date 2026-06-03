@@ -1,0 +1,502 @@
+/* ===== THE SHOWRUNNERS ===== */
+
+.section {
+  position: relative;
+  background-color: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0 4rem;
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1300px;
+  padding: 0 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  z-index: 10;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.goldText {
+  color: #E4C057;
+  font-style: italic;
+}
+
+.subCopy {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ===== CAROUSEL WRAPPER ===== */
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ===== CARDS ROW ===== */
+.cardsRow {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 6rem;
+  width: 100%;
+  padding: 1.5rem 0 1rem;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.fadeIn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fadeOut {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* ===== INDIVIDUAL CARD ===== */
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  cursor: default;
+  width: 260px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* ===== PORTRAIT ===== */
+.portraitArea {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  flex-shrink: 0;
+}
+
+/* Outer decorative ring */
+.portraitArea::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(228, 192, 87, 0.1);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+.card:hover .portraitArea::before {
+  inset: -12px;
+  border-color: rgba(228, 192, 87, 0.4);
+  box-shadow: 0 0 35px rgba(228, 192, 87, 0.1);
+}
+
+.imageWrapper {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #111;
+  border: 2.5px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+  transition: border-color 0.4s ease;
+}
+
+.card:hover .imageWrapper {
+  border-color: rgba(228, 192, 87, 0.4);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(100%) brightness(0.88);
+  transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card:hover .image {
+  filter: grayscale(0%) brightness(1.05);
+  transform: scale(1.06);
+}
+
+/* ===== NAME — overlapping the portrait bottom edge ===== */
+.nameBlock {
+  position: relative;
+  margin-top: -1.8rem; /* subtle overlap — just the very bottom edge of the circle */
+  z-index: 10;
+  padding-left: 0.25rem;
+}
+
+.firstName {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 1), 0 1px 4px rgba(0,0,0,0.9);
+}
+
+.lastName {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: #E4C057;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.9);
+}
+
+/* ===== ROLE & BIO HINT ===== */
+.roleBlock {
+  margin-top: 0.6rem;
+  padding-left: 0.25rem;
+}
+
+.role {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.04em;
+  margin: 0;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.card:hover .role {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.bioHint {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  color: #E4C057;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 0.35rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-weight: 600;
+}
+
+.card:hover .bioHint {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+/* ===== DESKTOP NAV (arrows outside carousel) ===== */
+.controlsDesktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .controlsDesktop {
+    position: absolute;
+    top: 38%;
+    transform: translateY(-50%);
+    left: -3.5rem;
+    right: -3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 30;
+  }
+  .controlsDesktop .arrowBtn {
+    pointer-events: auto;
+  }
+}
+
+/* ===== MOBILE NAV ===== */
+.controlsMobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 20;
+  margin-top: -2rem;
+}
+
+@media (min-width: 768px) {
+  .controlsMobile {
+    display: none;
+  }
+}
+
+.indicators {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.activeIndicator {
+  width: 20px;
+  border-radius: 4px;
+  background-color: #E4C057;
+}
+
+.arrowBtn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  outline: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.arrowBtn:hover {
+  color: #E4C057;
+  background: rgba(228, 192, 87, 0.08);
+  border-color: rgba(228, 192, 87, 0.4);
+}
+
+.arrowBtn:active {
+  color: rgba(228, 192, 87, 0.7);
+}
+
+/* ===== MODAL ===== */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 3, 3, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeInModal 0.3s ease forwards;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  background: linear-gradient(135deg, #111 0%, #0a0a0a 100%);
+  border: 1px solid rgba(228, 192, 87, 0.18);
+  border-radius: 2rem;
+  padding: 3.5rem;
+  box-shadow: 0 50px 120px rgba(0,0,0,0.9);
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  animation: modalPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modalClose {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 100;
+}
+
+.modalClose:hover {
+  background: #E4C057;
+  border-color: #E4C057;
+  color: #000;
+  transform: rotate(90deg);
+}
+
+.modalLeft {
+  flex-shrink: 0;
+}
+
+.modalImageWrapper {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #E4C057;
+  box-shadow: 0 10px 35px rgba(228,192,87,0.18);
+}
+
+.modalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.modalRight { flex-grow: 1; }
+
+.modalHeader { margin-bottom: 1.5rem; }
+
+.modalName {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.05;
+}
+
+.modalNameGold {
+  color: #E4C057;
+}
+
+.modalRole {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: #E4C057;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-top: 0.55rem;
+  font-weight: 600;
+}
+
+.modalBody {
+  width: 100%;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 1.5rem;
+}
+
+.fullBio {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.78);
+  margin: 0;
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 900px) {
+  .modalContent {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    padding: 4.5rem 2rem 3rem;
+    max-width: 440px;
+  }
+  .modalName { font-size: 1.9rem; }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .section {
+    padding: 4rem 0 3rem;
+  }
+
+  .container {
+    gap: 2rem;
+  }
+
+  .cardsRow {
+    gap: 3rem;
+    padding: 1rem 0 0.5rem;
+    justify-content: center;
+  }
+
+  .card {
+    width: 160px;
+  }
+
+  .portraitArea {
+    width: 160px;
+    height: 160px;
+  }
+
+  .firstName,
+  .lastName {
+    font-size: 1.35rem;
+  }
+
+  .nameBlock {
+    margin-top: -1.4rem;
+  }
+
+  .role {
+    font-size: 0.68rem;
+  }
+
+  .modalContent {
+    padding: 4rem 1.5rem 2.5rem;
+    border-radius: 1.5rem;
+  }
+
+  .modalImageWrapper {
+    width: 130px;
+    height: 130px;
+  }
+
+  .modalName { font-size: 1.6rem; }
+  .fullBio { font-size: 0.92rem; }
+}

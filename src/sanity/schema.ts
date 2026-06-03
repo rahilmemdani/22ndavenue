@@ -7,7 +7,8 @@ import { moments } from './schemas/moments'
 import { testimonials } from './schemas/testimonials'
 import { services } from './schemas/services'
 import { footprint } from './schemas/footprint'
+import { showrunners } from './schemas/showrunners'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [hero, about, collabs, moments, testimonials, services, footprint],
+  types: [hero, about, collabs, moments, testimonials, services, footprint, showrunners],
 }
