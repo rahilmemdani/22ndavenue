@@ -148,11 +148,11 @@ async def apply(
         user_msg["Subject"] = f"Thank you for contacting 22nd Avenue, {name.split(' ')[0]}!"
 
         if is_business:
-            ack_message = "Thank you for reaching out. We have received your business enquiry. Our brand partnerships team will review the details and get back to you shortly."
+            ack_message = "Thank you for reaching out to us. We acknowledge receipt of your query and are currently reviewing the details. We appreciate your patience and will get back to you with an update as soon as possible."
         elif is_artist:
-            ack_message = "Thank you for sharing your profile with us. We have received your artist submission. Our talent management team reviews all profiles and will reach out if there is a potential collaboration."
+            ack_message = "Thank you for reaching out to us. We acknowledge receipt of your query and are currently reviewing the details. We appreciate your patience and will get back to you with an update as soon as possible."
         else:  # Career
-            ack_message = f"Thank you for applying. We have received your application for <strong>{position.replace('Career Application: ', '')}</strong>. Our recruiting team will review your credentials and get back to you if your profile matches our requirements."
+            ack_message = f"Thank you for reaching out to us. We acknowledge receipt of your query and are currently reviewing the details. We appreciate your patience and will get back to you with an update as soon as possible."
 
         user_html = f"""
         <html>
