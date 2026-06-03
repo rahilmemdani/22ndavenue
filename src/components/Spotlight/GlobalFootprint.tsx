@@ -38,7 +38,8 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setHasEntered(true);
-          observer.disconnect();
+        } else {
+          setHasEntered(false);
         }
       },
       { threshold: 0.15 }
