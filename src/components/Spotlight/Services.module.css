@@ -665,7 +665,12 @@
 
 @media (max-width: 600px) {
   .masonryGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Beautified mobile pattern: 1 large, 2 small */
+  .masonryGrid > .galleryTile:nth-child(3n + 1) {
+    grid-column: span 2;
   }
 }
 
@@ -837,7 +842,7 @@
   color: rgba(228, 192, 87, 0.35);
 }
 
-/* Persistent gold video badge (bottom-left, always visible) */
+/* Persistent gold video badge (bottom-left, always visible on mobile) */
 .videoBadge {
   position: absolute;
   bottom: 0.6rem;
@@ -852,6 +857,12 @@
   justify-content: center;
   z-index: 4;
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+@media (min-width: 1024px) {
+  .videoBadge {
+    display: none;
+  }
 }
 
 /* Badge on modal top bar */
