@@ -106,44 +106,49 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
 
   const [isVideoVisible, setIsVideoVisible] = useState(true);
 
-  // Use IntersectionObserver instead of scroll listener to prevent mobile scroll jank
+  // Use scroll listener with requestAnimationFrame to hide video when scrolled past
   useEffect(() => {
-    if (!videoRef.current || !containerRef.current) return;
+    if (!videoRef.current) return;
 
-    // Create an observer that triggers when less than 20% of the hero is visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        const isPast = !entry.isIntersecting;
+    let ticking = false;
 
-        setIsVideoVisible((prev) => {
-          if (isPast && prev) {
-            // Hero is mostly out of view: Pause video and hide
-            if (videoRef.current && !videoRef.current.paused) {
-              videoRef.current.pause();
-              videoRef.current.muted = true;
-              setIsMuted(true);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          // If we've scrolled past 80% of the viewport height, hide the video
+          const threshold = window.innerHeight * 0.8;
+          const isPast = window.scrollY > threshold;
+
+          setIsVideoVisible((prev) => {
+            if (isPast && prev) {
+              // Hero is mostly out of view: Pause video and hide
+              if (videoRef.current && !videoRef.current.paused) {
+                videoRef.current.pause();
+                videoRef.current.muted = true;
+                setIsMuted(true);
+              }
+              return false;
+            } else if (!isPast && !prev) {
+              // Hero is back in view: Resume video and show
+              if (videoRef.current && videoRef.current.paused && isSplit) {
+                videoRef.current.play().catch(() => {});
+              }
+              return true;
             }
-            return false;
-          } else if (!isPast && !prev) {
-            // Hero is back in view: Resume video and show
-            if (videoRef.current && videoRef.current.paused && isSplit) {
-              videoRef.current.play().catch(() => {});
-            }
-            return true;
-          }
-          return prev;
+            return prev;
+          });
+          
+          ticking = false;
         });
-      },
-      {
-        threshold: 0.2 // Trigger when 20% of the hero is visible
+        ticking = true;
       }
-    );
+    };
 
-    observer.observe(containerRef.current);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Trigger check immediately
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [isSplit]);
 
