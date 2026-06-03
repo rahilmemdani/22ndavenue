@@ -231,6 +231,35 @@
   background: rgba(5, 5, 5, 0.2);
 }
 
+/* ===== MUTE BUTTON ===== */
+
+.muteBtn {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.muteBtn:hover {
+  background: rgba(228, 192, 87, 0.8);
+  border-color: #E4C057;
+  color: #000;
+  transform: scale(1.05);
+}
+
 /* ===== CARD CONTENT ===== */
 
 .cardContent {

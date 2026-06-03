@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import styles from "./MicDropMoments.module.css";
 
 interface MicDropMomentsProps {
@@ -213,6 +213,46 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isSliding, setIsSliding] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Mute video if category or slide changes
+  useEffect(() => {
+    setIsMuted(true);
+  }, [activeIndex, activeCategoryIndex]);
+
+  // Pause and mute video if scrolled out of view
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!videoRef.current) return;
+
+          if (!entry.isIntersecting) {
+            // Scrolled out of view (less than 30% visible)
+            if (!videoRef.current.paused) {
+              videoRef.current.pause();
+              videoRef.current.muted = true;
+              setIsMuted(true);
+            }
+          } else {
+            // Scrolled into view
+            if (videoRef.current.paused) {
+              videoRef.current.play().catch(() => {});
+            }
+          }
+        });
+      },
+      { threshold: 0.3 } // Triggers when 30% of the section is visible
+    );
+
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [activeIndex, activeCategoryIndex]);
 
   const currentCategory = showcaseCategories[activeCategoryIndex] || showcaseCategories[0];
 
@@ -241,7 +281,7 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
   if (!currentCategory) return null;
 
   return (
-    <section className={styles.section} id="showcase-section">
+    <section className={styles.section} id="showcase-section" ref={sectionRef}>
       <div className={styles.container}>
 
         {/* Header Row: Title Only */}
@@ -278,15 +318,31 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
                       className={styles.bgImage}
                     />
                     {activeIndex === index && (isMobile ? tile.mobileVideo : tile.video) && (
-                      <video
-                        key={isMobile ? `mobile-${tile.mobileVideo}` : `desktop-${tile.video}`}
-                        src={isMobile ? tile.mobileVideo : tile.video}
-                        className={styles.bgVideo}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                      />
+                      <>
+                        <video
+                          ref={videoRef}
+                          key={isMobile ? `mobile-${tile.mobileVideo}` : `desktop-${tile.video}`}
+                          src={isMobile ? tile.mobileVideo : tile.video}
+                          className={styles.bgVideo}
+                          autoPlay
+                          loop
+                          muted={isMuted}
+                          playsInline
+                        />
+                        <button 
+                          className={styles.muteBtn} 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (videoRef.current) {
+                              videoRef.current.muted = !isMuted;
+                              setIsMuted(!isMuted);
+                            }
+                          }}
+                          aria-label={isMuted ? "Unmute video" : "Mute video"}
+                        >
+                          {isMuted ? <VolumeX size={20} strokeWidth={1.5} /> : <Volume2 size={20} strokeWidth={1.5} />}
+                        </button>
+                      </>
                     )}
                     <div className={styles.overlay}></div>
                   </div>
