@@ -28,7 +28,7 @@ const offices = [
     city: "Mumbai",
     region: "India",
     tag: "Global HQ",
-    address: "22nd Avenue Talent Management Pvt. Ltd, 16th Floor, Aston Building, Sundervan Complex, Andheri West, Mumbai 400053",
+    address: "16th Floor, Aston Building, Sundervan Complex, Andheri West, Mumbai 400053",
     mapLink: "https://www.google.com/maps/search/?api=1&query=22nd+Avenue+Talent+Management+Aston+Building+Andheri+West+Mumbai",
     isHQ: true,
   },
@@ -157,7 +157,6 @@ export function Footer() {
               <div className={styles.countryCol}>
                 <div className={styles.countryHeader}>
                   <span className={styles.officeRegion}>AUSTRALIA</span>
-                  <span className={styles.badgeAPAC}>APAC HQ</span>
                 </div>
                 {offices.slice(1, 4).map((office) => (
                   <a
