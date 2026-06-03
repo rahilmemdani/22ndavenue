@@ -12,16 +12,16 @@ interface Location {
 }
 
 const locations: Location[] = [
-  { name: "Spain", x: 15.3, y: 31.0, description: "International Live Concerts & Arena Shows" },
-  { name: "Puerto Rico", x: 26.2, y: 45.0, description: "Artist Bookings & Regional Collaborations" },
-  { name: "Abu Dhabi", x: 53.0, y: 33.0, description: "Mega Festivals & Large Scale Productions" },
-  { name: "AlUla", x: 62.0, y: 38.0, description: "Exclusive Cultural Events & Heritage Shows" },
-  { name: "Doha", x: 56.0, y: 44.0, description: "High-End Corporate Events & Launch Parties" },
-  { name: "Qatar", x: 59.0, y: 41.0, description: "Stadium Concerts & International Festivals" },
-  { name: "Bahrain", x: 60.0, y: 48.0, description: "Elite Showcases & Luxury Concert Series" },
-  { name: "India", x: 71.0, y: 44.0, description: "Global HQ & Nationwide Event Production Hub" },
-  { name: "Singapore", x: 76.0, y: 58.0, description: "Asia-Pacific Tours & Brand Collaborations" },
-  { name: "Australia", x: 83.0, y: 73.0, description: "Multi-City Arena & Stadium Tours" },
+  { name: "Spain", x: 17.8, y: 36.2, description: "International Live Concerts & Arena Shows" },
+  { name: "Puerto Rico", x: 22.2, y: 52.9, description: "Artist Bookings & Regional Collaborations" },
+  { name: "Abu Dhabi", x: 50.1, y: 39.3, description: "Mega Festivals & Large Scale Productions" },
+  { name: "Doha", x: 50.6, y: 50.1, description: "High-End Corporate Events & Launch Parties" },
+  { name: "Qatar", x: 52.4, y: 49.9, description: "Stadium Concerts & International Festivals" },
+  { name: "AlUla", x: 56.5, y: 45.2, description: "Exclusive Cultural Events & Heritage Shows" },
+  { name: "Bahrain", x: 56.5, y: 51.1, description: "Elite Showcases & Luxury Concert Series" },
+  { name: "India", x: 67.4, y: 51.5, description: "Global HQ & Nationwide Event Production Hub" },
+  { name: "Singapore", x: 72.8, y: 67.8, description: "Asia-Pacific Tours & Brand Collaborations" },
+  { name: "Australia", x: 77.7, y: 80.2, description: "Multi-City Arena & Stadium Tours" },
 ];
 
 export function GlobalFootprint({ data }: { data?: { image: string } }) {
@@ -68,7 +68,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
   useEffect(() => {
     if (mapScrollRef.current && window.innerWidth < 768) {
       const scrollContainer = mapScrollRef.current;
-      const scrollTarget = scrollContainer.scrollWidth * 0.45;
+      const scrollTarget = scrollContainer.scrollWidth * 0.25;
       scrollContainer.scrollLeft = scrollTarget;
     }
   }, []);
@@ -180,7 +180,8 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
                   style={{
                     left: `${loc.x}%`,
                     top: `${loc.y}%`,
-                    animationDelay: `${idx * 0.18}s`
+                    animationDelay: `${idx * 0.18}s`,
+                    zIndex: isActive ? 100 : (isHub ? 10 : 5)
                   }}
                   onMouseEnter={() => setHoveredIndex(idx)}
                   onMouseLeave={() => setHoveredIndex(null)}
@@ -189,8 +190,20 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
                   {/* Glowing Radar Ring */}
                   <span className={`${styles.radarRing} ${isActualActive ? styles.pulseRadar : ""}`} />
 
-                  {/* Central glowing indicator dot */}
-                  <span className={`${styles.pinDot} ${isActive ? styles.pinDotActive : ""} ${isHub ? styles.hubDot : ""}`} />
+                  {/* Interactive Map Pin Icon */}
+                  <svg 
+                    viewBox="0 0 24 24" 
+                    className={`${styles.svgPin} ${isActive ? styles.svgPinActive : ""} ${isHub ? styles.svgPinHub : ""}`}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path 
+                      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" 
+                      fill="url(#goldGradient)" 
+                      stroke="rgba(255,255,255,0.8)" 
+                      strokeWidth="0.5"
+                    />
+                    <circle cx="12" cy="9" r="3.5" fill="#ffffff" />
+                  </svg>
 
                   {/* Tooltip Popup (Glassmorphic) */}
                   <div className={`${styles.tooltip} ${isActive ? styles.tooltipVisible : ""}`}>

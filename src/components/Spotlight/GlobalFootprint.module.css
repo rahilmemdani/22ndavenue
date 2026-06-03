@@ -199,155 +199,164 @@
   }
 }
 
-/* Central Indicator Dot */
-.pinDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #E4C057;
-  border: 1.5px solid #000;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 8px rgba(228, 192, 87, 0.6);
-}
-
-.pinDotActive {
-  background-color: #fff;
-  transform: scale(1.4);
-  box-shadow: 0 0 15px #fff, 0 0 25px #E4C057;
-}
-
-.hubDot {
-  width: 10px;
-  height: 10px;
-  background-color: #ff3b30;
-  border: 1.5px solid #fff;
-  box-shadow: 0 0 12px #ff3b30;
-}
-
-/* Glowing Radar Wave Rings */
-.radarRing {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(228, 192, 87, 0.4);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.pulseRadar {
-  animation: radarWave 2s infinite cubic-bezier(0.2, 0.6, 0.4, 1);
-}
-
-@keyframes radarWave {
-  0% {
-    transform: scale(0.6);
+/* SVG Map Pin Icon */
+  .svgPin {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    /* Shift up so the tip of the pin is exactly at the center (the coordinate) */
+    transform: translateY(-10px);
+    transform-origin: bottom center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
     opacity: 0.9;
   }
 
-  100% {
-    transform: scale(2.8);
-    opacity: 0;
-  }
-}
-
-/* Glassmorphic Tooltip Card */
-.tooltip {
-  position: absolute;
-  bottom: 45px;
-  left: 50%;
-  width: max-content;
-  min-width: 120px;
-  background: linear-gradient(135deg, rgba(16, 16, 16, 0.9) 0%, rgba(8, 8, 8, 0.95) 100%);
-  backdrop-filter: blur(14px) saturate(180%);
-  -webkit-backdrop-filter: blur(14px) saturate(180%);
-  border: 1.5px solid rgba(228, 192, 87, 0.45);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.08);
-  padding: 0.5rem 0.8rem;
-  border-radius: 10px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-  z-index: 100;
-  transform: translateX(-50%) translateY(15px) scale(0.9);
-}
-
-.tooltipVisible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  animation: springTooltip 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
-}
-
-@keyframes springTooltip {
-  to {
-    transform: translateX(-50%) translateY(0) scale(1);
+  .svgPinActive {
+    transform: translateY(-16px) scale(1.2);
+    filter: drop-shadow(0 8px 12px rgba(228, 192, 87, 0.6));
     opacity: 1;
   }
-}
 
-.tooltipHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 0;
-}
-
-.tooltipIcon {
-  font-size: 0.85rem;
-}
-
-.tooltipTitle {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #fff;
-  margin: 0;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.tooltipText {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.75);
-  line-height: 1.45;
-  margin: 0;
-}
-
-.tooltipArrow {
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  width: 10px;
-  height: 10px;
-  background: rgba(8, 8, 8, 0.95);
-  border-right: 1.5px solid rgba(228, 192, 87, 0.45);
-  border-bottom: 1.5px solid rgba(228, 192, 87, 0.45);
-}
-
-/* Media Queries for Mobile Responsiveness */
-@media (max-width: 768px) {
-  .section {
-    padding: 3rem 0 4rem;
+  .svgPinHub {
+    width: 34px;
+    height: 34px;
+    transform: translateY(-12px);
   }
 
-  .swipeHint {
-    display: inline-block;
+  .svgPinHub.svgPinActive {
+    transform: translateY(-18px) scale(1.2);
   }
 
+
+
+
+
+
+  /* Glowing Radar Wave Rings */
+  .radarRing {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(228, 192, 87, 0.4);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pulseRadar {
+    animation: radarWave 2s infinite cubic-bezier(0.2, 0.6, 0.4, 1);
+  }
+
+  @keyframes radarWave {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.9;
+    }
+
+    100% {
+      transform: scale(2.8);
+      opacity: 0;
+    }
+  }
+
+  /* Glassmorphic Tooltip Card */
   .tooltip {
-    width: 180px;
-    padding: 0.8rem;
+    position: absolute;
+    bottom: 45px;
+    left: 50%;
+    width: max-content;
+    min-width: 120px;
+    background: linear-gradient(135deg, rgba(16, 16, 16, 0.9) 0%, rgba(8, 8, 8, 0.95) 100%);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border: 1.5px solid rgba(228, 192, 87, 0.45);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    padding: 0.5rem 0.8rem;
+    border-radius: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 100;
+    transform: translateX(-50%) translateY(15px) scale(0.9);
   }
 
-  .tooltipTitle {
+  .tooltipVisible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    animation: springTooltip 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+  }
+
+  @keyframes springTooltip {
+    to {
+      transform: translateX(-50%) translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  .tooltipHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+  }
+
+  .tooltipIcon {
     font-size: 0.85rem;
   }
 
-  .tooltipText {
-    font-size: 0.7rem;
+  .tooltipTitle {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
-}
+
+  .tooltipText {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .tooltipArrow {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: rgba(8, 8, 8, 0.95);
+    border-right: 1.5px solid rgba(228, 192, 87, 0.45);
+    border-bottom: 1.5px solid rgba(228, 192, 87, 0.45);
+  }
+
+  /* Media Queries for Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .section {
+      padding: 3rem 0 4rem;
+    }
+
+    .swipeHint {
+      display: inline-block;
+    }
+
+    .tooltip {
+      width: 180px;
+      padding: 0.8rem;
+    }
+
+    .tooltipTitle {
+      font-size: 0.85rem;
+    }
+
+    .tooltipText {
+      font-size: 0.7rem;
+    }
+  }
