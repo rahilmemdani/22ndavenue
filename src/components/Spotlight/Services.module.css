@@ -667,6 +667,41 @@
   }
 }
 
+.seeMoreWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+  width: 100%;
+}
+
+.seeMoreBtn {
+  background: transparent;
+  border: 1px solid rgba(228, 192, 87, 0.5);
+  color: #E4C057;
+  padding: 0.8rem 2.5rem;
+  border-radius: 99px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.seeMoreBtn:hover {
+  background: rgba(228, 192, 87, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(228, 192, 87, 0.2);
+}
+
+.seeMoreBtn:active {
+  transform: translateY(0);
+}
+
 /* ===== GALLERY TILE ===== */
 
 .galleryTile {

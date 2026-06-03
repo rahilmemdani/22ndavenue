@@ -303,6 +303,7 @@ export function Services({ data }: ServicesProps) {
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
+  const [visibleCount, setVisibleCount] = useState(3);
   const [mobileCardIndex, setMobileCardIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -312,8 +313,10 @@ export function Services({ data }: ServicesProps) {
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
-    if (selectedService) lockScroll();
-    else {
+    if (selectedService) {
+      lockScroll();
+      setVisibleCount(3); // Reset to 3 items when opening a new modal
+    } else {
       unlockScroll();
       setLightboxIndex(null);
     }
@@ -398,7 +401,7 @@ export function Services({ data }: ServicesProps) {
         {/* Gallery */}
         <div className={styles.galleryScroll}>
           <div className={styles.masonryGrid}>
-            {(selectedService.gallery as GalleryMedia[]).map((item, idx) => (
+            {(selectedService.gallery.slice(0, visibleCount)).map((item, idx) => (
               <GalleryTile
                 key={idx}
                 item={item}
@@ -408,6 +411,23 @@ export function Services({ data }: ServicesProps) {
               />
             ))}
           </div>
+
+          {selectedService.gallery.length > 3 && (
+            <div className={styles.seeMoreWrapper}>
+              <button 
+                className={styles.seeMoreBtn} 
+                onClick={() => {
+                  if (visibleCount >= selectedService.gallery.length) {
+                    setVisibleCount(3);
+                  } else {
+                    setVisibleCount(prev => prev + 3);
+                  }
+                }}
+              >
+                {visibleCount >= selectedService.gallery.length ? "SHOW LESS" : "LOAD MORE"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
