@@ -371,3 +371,72 @@
   border-color: #E4C057;
   color: #E4C057;
 }
+
+.asterisk {
+  color: #E4C057;
+  margin-left: 0.2rem;
+  font-weight: bold;
+}
+
+.optional {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.85em;
+  margin-left: 0.4rem;
+  text-transform: none;
+}
+
+/* Success block */
+.successBlock {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  animation: fadeIn 0.4s ease;
+}
+
+.successTitle {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: #E4C057;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.successText {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 500px;
+  margin-bottom: 2rem;
+}
+
+.resetBtn {
+  background: transparent;
+  border: 1px solid rgba(228, 192, 87, 0.3);
+  color: #E4C057;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.resetBtn:hover {
+  background: #E4C057;
+  color: #000;
+  border-color: #E4C057;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

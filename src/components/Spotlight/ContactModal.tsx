@@ -28,6 +28,12 @@ export function ContactModal() {
     };
   }, [isOpen]);
 
+  const handleTabChange = (type: ContactType) => {
+    setActiveType(type);
+    setResumeFile(null);
+    setIsSubmitted(false);
+  };
+
   // Close with animation
   const handleClose = useCallback(() => {
     setIsClosing(true);
@@ -90,9 +96,6 @@ export function ContactModal() {
         setIsSubmitted(true);
         form.reset();
         setResumeFile(null);
-        setTimeout(() => {
-          handleClose();
-        }, 2000);
       } else {
         const result = await response.json().catch(() => ({}));
         alert(result.detail?.error || result.error || "Submission failed.");
@@ -153,72 +156,96 @@ export function ContactModal() {
               <button
                 key={type}
                 className={`${styles.typeBtn} ${activeType === type ? styles.typeBtnActive : ""}`}
-                onClick={() => setActiveType(type)}
+                onClick={() => handleTabChange(type)}
               >
                 {type}
               </button>
             ))}
           </div>
 
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>Full Name</label>
-              <input type="text" name="name" className={styles.input} placeholder="John Doe" required />
+          {isSubmitted ? (
+            <div className={styles.successBlock}>
+              <h3 className={styles.successTitle}>Thank you for reaching out to us.</h3>
+              <p className={styles.successText}>
+                We acknowledge receipt of your query and are currently reviewing the details. We appreciate your patience and will get back to you with an update as soon as possible.
+              </p>
+              <button
+                onClick={() => setIsSubmitted(false)}
+                className={styles.resetBtn}
+              >
+                Send another message
+              </button>
             </div>
-
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>Email Address</label>
-              <input type="email" name="email" className={styles.input} placeholder="john@example.com" required />
-            </div>
-
-            {activeType === "Artists" && (
-              <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                <label className={styles.label}>Portfolio / Social Link</label>
-                <input type="url" name="portfolio" className={styles.input} placeholder="https://instagram.com/yourhandle" />
+          ) : (
+            <form className={styles.form} onSubmit={handleSubmit} key={activeType}>
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>
+                  Full Name <span className={styles.asterisk}>*</span>
+                </label>
+                <input type="text" name="name" className={styles.input} placeholder="John Doe" required />
               </div>
-            )}
 
-            {activeType === "Careers" && (
-              <>
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>
+                  Email Address <span className={styles.asterisk}>*</span>
+                </label>
+                <input type="email" name="email" className={styles.input} placeholder="john@example.com" required />
+              </div>
+
+              {activeType === "Artists" && (
                 <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                  <label className={styles.label}>Position Interested In</label>
-                  <input type="text" name="position" className={styles.input} placeholder="e.g. Talent Manager" />
+                  <label className={styles.label}>Portfolio / Social Link</label>
+                  <input type="url" name="portfolio" className={styles.input} placeholder="https://instagram.com/yourhandle" />
                 </div>
-                <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                  <label className={styles.label}>Upload Resume / CV</label>
-                  <div className={styles.fileInputWrapper}>
-                    <input
-                      type="file"
-                      className={styles.fileInput}
-                      accept=".pdf,.doc,.docx"
-                      onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
-                    />
+              )}
+
+              {activeType === "Careers" && (
+                <>
+                  <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                    <label className={styles.label}>Position Interested In</label>
+                    <input type="text" name="position" className={styles.input} placeholder="e.g. Talent Manager" />
                   </div>
+                  <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                    <label className={styles.label}>
+                      Upload Resume / CV <span className={styles.asterisk}>*</span>
+                    </label>
+                    <div className={styles.fileInputWrapper}>
+                      <input
+                        type="file"
+                        className={styles.fileInput}
+                        accept=".pdf,.doc,.docx"
+                        onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
+                        required
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeType === "Business" && (
+                <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+                  <label className={styles.label}>Company / Brand Name</label>
+                  <input type="text" name="company" className={styles.input} placeholder="Your Company Ltd." />
                 </div>
-              </>
-            )}
+              )}
 
-            {activeType === "Business" && (
               <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-                <label className={styles.label}>Company / Brand Name</label>
-                <input type="text" name="company" className={styles.input} placeholder="Your Company Ltd." />
+                <label className={styles.label}>
+                  Your Message <span className={styles.asterisk}>*</span>
+                </label>
+                <textarea
+                  name="message"
+                  className={styles.textarea}
+                  placeholder={`Tell us about your ${activeType === "Artists" ? "art" : activeType === "Careers" ? "experience" : "business enquiry"}...`}
+                  required
+                ></textarea>
               </div>
-            )}
 
-            <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-              <label className={styles.label}>Your Message</label>
-              <textarea
-                name="message"
-                className={styles.textarea}
-                placeholder={`Tell us about your ${activeType === "Artists" ? "art" : activeType === "Careers" ? "experience" : "business enquiry"}...`}
-                required
-              ></textarea>
-            </div>
-
-            <button type="submit" className={styles.submitBtn} disabled={isSubmitting || isSubmitted}>
-              {isSubmitting ? "Sending..." : isSubmitted ? "Message Sent!" : "Send Message"}
-            </button>
-          </form>
+              <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </button>
+            </form>
+          )}
         </div>
 
         {/* Contact Info Bar */}
