@@ -1,7 +1,7 @@
 .heroContainer {
   position: relative;
   width: 100%;
-  height: 100dvh;
+  height: 100vh;
   overflow: hidden;
   background-color: var(--pitch-black, #050505);
   display: flex;
@@ -13,7 +13,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100dvh;
+  height: 100vh;
   background-color: var(--pitch-black, #050505);
   display: flex;
   align-items: center;
@@ -89,7 +89,7 @@
 
 .heroContainer.split .leftPanel {
   width: 100%;
-  height: 100dvh;
+  height: 100vh;
   opacity: 0;
   transform: scale(1.2);
   filter: blur(10px);
@@ -189,7 +189,7 @@
   top: 0;
   right: 0;
   width: 100%;
-  height: 100dvh;
+  height: 100vh;
   z-index: 10;
   opacity: 0;
   transition: opacity 1.5s ease-in-out;

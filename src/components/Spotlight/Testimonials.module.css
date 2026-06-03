@@ -3,7 +3,7 @@
 .section {
   position: relative;
   height: 100vh;
-  height: 100dvh;
+  height: 100vh;
   background-color: #050505;
   display: flex;
   align-items: center;
@@ -579,8 +579,8 @@
 
   .modalContent {
     width: 95vw;
-    height: 70dvh;
-    max-height: 70dvh;
+    height: 70vh;
+    max-height: 70vh;
     max-width: 95vw;
     border-radius: 0.75rem;
   }
