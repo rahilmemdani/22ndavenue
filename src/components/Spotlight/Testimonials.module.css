@@ -477,10 +477,10 @@
 
 @media (max-width: 768px) {
   .section {
-    padding: 2rem 0 5rem;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
+    padding: 2rem 0 0;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
   }
 
   .container {
