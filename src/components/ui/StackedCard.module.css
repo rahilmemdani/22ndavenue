@@ -1,4 +1,5 @@
 .stackedCard {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   width: 100%;
@@ -19,10 +20,16 @@
 /* Extra enforcement for iOS/Android where sticky + video combos can leak */
 @media (max-width: 768px) {
   .stackedCard {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    position: relative;
-    top: auto;
+    /* Remove GPU hacks that break position: sticky on mobile Safari */
+    transform: none;
+    -webkit-transform: none;
     will-change: auto;
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+    
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: 100vh;
   }
 }

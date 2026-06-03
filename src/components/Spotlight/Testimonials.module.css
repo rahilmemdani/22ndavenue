@@ -478,10 +478,9 @@
 @media (max-width: 768px) {
   .section {
     padding: 2rem 0 5rem;
-    height: auto;
-    min-height: auto;
-    overflow: visible;
-    /* Allow vertical scroll overflow */
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
   }
 
   .container {
