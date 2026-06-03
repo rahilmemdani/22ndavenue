@@ -644,3 +644,7 @@
     font-size: 0.7rem;
   }
 }
+
+.officeAddress {
+  white-space: pre-line;
+}
