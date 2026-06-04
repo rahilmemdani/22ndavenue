@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { Instagram, Linkedin, ArrowUpRight, Mail, MapPin } from "lucide-react";
 import { useContactModal } from "@/components/ui/ContactModalContext";
@@ -23,43 +24,50 @@ const socials = [
   },
 ];
 
-const offices = [
+const regions = [
   {
-    city: "Mumbai",
-    region: "India",
-    tag: "Global HQ",
-    address: `16th Floor, Aston Building,
+    name: "INDIA",
+    offices: [
+      {
+        city: "Mumbai",
+        tag: "Global HQ",
+        address: `16th Floor, Aston Building,
 Sundervan Complex,
 Andheri West, Mumbai 400053`,
-    mapLink: "https://www.google.com/maps/search/?api=1&query=22nd+Avenue+Talent+Management+Aston+Building+Andheri+West+Mumbai",
-    isHQ: true,
+        mapLink: "https://www.google.com/maps/search/?api=1&query=22nd+Avenue+Talent+Management+Aston+Building+Andheri+West+Mumbai",
+      },
+      {
+        city: "Delhi",
+        address: `Flat No. J-236,
+Sarita Vihar,
+New Delhi - 110076`,
+        mapLink: "https://www.google.com/maps/search/?api=1&query=Flat+No.+J-236,+Sarita+Vihar,+New+Delhi+-+110076",
+      }
+    ]
   },
   {
-    city: "Sydney",
-    region: "Australia",
-    tag: "APAC HQ",
-    address: "14th Floor, 3 Parramatta Square, Parramatta NSW 2150",
-    mapLink: "https://www.google.com/maps/search/?api=1&query=3+Parramatta+Square+Parramatta+NSW+2150+Australia",
-    isHQ: true,
+    name: "SINGAPORE",
+    offices: [
+      {
+        city: "Singapore",
+        address: `3 Shenton Way,
+#19-02,
+Shenton House
+Singapore ( 068805)`,
+        mapLink: "https://www.google.com/maps/search/?api=1&query=3+Shenton+Way,+Shenton+House,+Singapore",
+      }
+    ]
   },
   {
-    city: "Melbourne",
-    region: "Australia",
-    address: "5, 3-70 Main Street, Pakenham, VIC 3810",
-    mapLink: "https://www.google.com/maps/search/?api=1&query=3-70+Main+Street+Pakenham+VIC+3810+Australia",
-  },
-  {
-    city: "Gold Coast",
-    region: "Australia",
-    address: "16, Gunyah Grove, Ashmore, QLD 4214",
-    mapLink: "https://www.google.com/maps/search/?api=1&query=16+Gunyah+Grove+Ashmore+QLD+4214+Australia",
-  },
-  {
-    city: "Auckland",
-    region: "New Zealand",
-    address: "6 Mappin Place, Chatswood, Auckland 0626",
-    mapLink: "https://www.google.com/maps/search/?api=1&query=6+Mappin+Place+Chatswood+Auckland+New+Zealand",
-  },
+    name: "AUSTRALIA",
+    offices: [
+      {
+        city: "Sydney",
+        address: "14th Floor, 3 Parramatta Square, Parramatta NSW 2150",
+        mapLink: "https://www.google.com/maps/search/?api=1&query=3+Parramatta+Square+Parramatta+NSW+2150+Australia",
+      }
+    ]
+  }
 ];
 
 export function Footer() {
@@ -131,76 +139,36 @@ export function Footer() {
             </div>
 
             <div className={styles.addressGrid}>
-              {/* ── INDIA ── */}
-              <div className={styles.countryCol}>
-                <div className={styles.countryHeader}>
-                  <span className={styles.officeRegion}>INDIA</span>
-                  <span className={styles.badgeHQ}>Global HQ</span>
-                </div>
-                <a
-                  href={offices[0].mapLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.addressCol}
-                  title={`View ${offices[0].city} office`}
-                >
-                  <div className={styles.cityRow}>
-                    <MapPin size={12} className={styles.mapIcon} />
-                    <h4 className={styles.officeCity}>{offices[0].city}</h4>
-                    <ArrowUpRight size={11} className={styles.cityArrow} />
-                  </div>
-                  <p className={styles.officeAddress}>{offices[0].address}</p>
-                </a>
-              </div>
-
-              <div className={styles.verticalDivider} />
-
-              {/* ── AUSTRALIA ── */}
-              <div className={styles.countryCol}>
-                <div className={styles.countryHeader}>
-                  <span className={styles.officeRegion}>AUSTRALIA</span>
-                </div>
-                {offices.slice(1, 4).map((office) => (
-                  <a
-                    key={office.city}
-                    href={office.mapLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.addressCol}
-                    title={`View ${office.city} office`}
-                  >
-                    <div className={styles.cityRow}>
-                      <MapPin size={12} className={styles.mapIcon} />
-                      <h4 className={styles.officeCity}>{office.city}</h4>
-                      <ArrowUpRight size={11} className={styles.cityArrow} />
+              {regions.map((region, index) => (
+                <React.Fragment key={region.name}>
+                  <div className={styles.countryCol}>
+                    <div className={styles.countryHeader}>
+                      <span className={styles.officeRegion}>{region.name}</span>
                     </div>
-                    <p className={styles.officeAddress}>{office.address}</p>
-                  </a>
-                ))}
-              </div>
-
-              <div className={styles.verticalDivider} />
-
-              {/* ── NEW ZEALAND ── */}
-              <div className={styles.countryCol}>
-                <div className={styles.countryHeader}>
-                  <span className={styles.officeRegion}>NEW ZEALAND</span>
-                </div>
-                <a
-                  href={offices[4].mapLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.addressCol}
-                  title={`View ${offices[4].city} office`}
-                >
-                  <div className={styles.cityRow}>
-                    <MapPin size={12} className={styles.mapIcon} />
-                    <h4 className={styles.officeCity}>{offices[4].city}</h4>
-                    <ArrowUpRight size={11} className={styles.cityArrow} />
+                    {region.offices.map((office) => (
+                      <a
+                        key={office.city}
+                        href={office.mapLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.addressCol}
+                        title={`View ${office.city} office`}
+                      >
+                        <div className={styles.cityRow}>
+                          <MapPin size={12} className={styles.mapIcon} />
+                          <h4 className={styles.officeCity}>{office.city}</h4>
+                          {office.tag && <span className={styles.badgeHQ}>{office.tag}</span>}
+                          <ArrowUpRight size={11} className={styles.cityArrow} />
+                        </div>
+                        <p className={styles.officeAddress}>{office.address}</p>
+                      </a>
+                    ))}
                   </div>
-                  <p className={styles.officeAddress}>{offices[4].address}</p>
-                </a>
-              </div>
+                  {index < regions.length - 1 && (
+                    <div className={styles.verticalDivider} />
+                  )}
+                </React.Fragment>
+              ))}
             </div>
           </div>
         </div>
