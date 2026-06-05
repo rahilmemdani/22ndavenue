@@ -24,49 +24,34 @@ const socials = [
   },
 ];
 
-const regions = [
+const offices = [
   {
-    name: "INDIA",
-    offices: [
-      {
-        city: "Mumbai",
-        tag: "Global HQ",
-        address: `16th Floor, Aston Building,
+    city: "Mumbai",
+    tag: "GLOBAL HQ",
+    address: `16th Floor, Aston Building,
 Sundervan Complex,
 Andheri West, Mumbai 400053`,
-        mapLink: "https://www.google.com/maps/search/?api=1&query=22nd+Avenue+Talent+Management+Aston+Building+Andheri+West+Mumbai",
-      },
-      {
-        city: "Delhi",
-        address: `Flat No. J-236,
-Sarita Vihar,
-New Delhi - 110076`,
-        mapLink: "https://www.google.com/maps/search/?api=1&query=Flat+No.+J-236,+Sarita+Vihar,+New+Delhi+-+110076",
-      }
-    ]
+    mapLink: "https://www.google.com/maps/search/?api=1&query=22nd+Avenue+Talent+Management+Aston+Building+Andheri+West+Mumbai",
   },
   {
-    name: "SINGAPORE",
-    offices: [
-      {
-        city: "Singapore",
-        address: `3 Shenton Way,
+    city: "Delhi",
+    address: `Flat No. J-236,
+Sarita Vihar,
+New Delhi - 110076`,
+    mapLink: "https://www.google.com/maps/search/?api=1&query=Flat+No.+J-236,+Sarita+Vihar,+New+Delhi+-+110076",
+  },
+  {
+    city: "Singapore",
+    address: `3 Shenton Way,
 #19-02,
 Shenton House
 Singapore ( 068805)`,
-        mapLink: "https://www.google.com/maps/search/?api=1&query=3+Shenton+Way,+Shenton+House,+Singapore",
-      }
-    ]
+    mapLink: "https://www.google.com/maps/search/?api=1&query=3+Shenton+Way,+Shenton+House,+Singapore",
   },
   {
-    name: "AUSTRALIA",
-    offices: [
-      {
-        city: "Sydney",
-        address: "14th Floor, 3 Parramatta Square, Parramatta NSW 2150",
-        mapLink: "https://www.google.com/maps/search/?api=1&query=3+Parramatta+Square+Parramatta+NSW+2150+Australia",
-      }
-    ]
+    city: "Sydney",
+    address: "14th Floor, 3 Parramatta Square, Parramatta NSW 2150",
+    mapLink: "https://www.google.com/maps/search/?api=1&query=3+Parramatta+Square+Parramatta+NSW+2150+Australia",
   }
 ];
 
@@ -139,35 +124,30 @@ export function Footer() {
             </div>
 
             <div className={styles.addressGrid}>
-              {regions.map((region, index) => (
-                <React.Fragment key={region.name}>
-                  <div className={styles.countryCol}>
-                    <div className={styles.countryHeader}>
-                      <span className={styles.officeRegion}>{region.name}</span>
+              {offices.map((office, index) => (
+                <div key={office.city} className={styles.countryCol}>
+                  <a
+                    href={office.mapLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.addressCol}
+                    title={`View ${office.city} office`}
+                  >
+                    <div className={styles.badgeWrapper}>
+                      {office.tag && (
+                        <span className={office.tag === "APAC HQ" ? styles.badgeAPAC : styles.badgeHQ}>
+                          {office.tag}
+                        </span>
+                      )}
                     </div>
-                    {region.offices.map((office) => (
-                      <a
-                        key={office.city}
-                        href={office.mapLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.addressCol}
-                        title={`View ${office.city} office`}
-                      >
-                        <div className={styles.cityRow}>
-                          <MapPin size={12} className={styles.mapIcon} />
-                          <h4 className={styles.officeCity}>{office.city}</h4>
-                          {office.tag && <span className={styles.badgeHQ}>{office.tag}</span>}
-                          <ArrowUpRight size={11} className={styles.cityArrow} />
-                        </div>
-                        <p className={styles.officeAddress}>{office.address}</p>
-                      </a>
-                    ))}
-                  </div>
-                  {index < regions.length - 1 && (
-                    <div className={styles.verticalDivider} />
-                  )}
-                </React.Fragment>
+                    <div className={styles.cityRow}>
+                      <MapPin size={12} className={styles.mapIcon} />
+                      <h4 className={styles.officeCity}>{office.city}</h4>
+                      <ArrowUpRight size={11} className={styles.cityArrow} />
+                    </div>
+                    <p className={styles.officeAddress}>{office.address}</p>
+                  </a>
+                </div>
               ))}
             </div>
           </div>
