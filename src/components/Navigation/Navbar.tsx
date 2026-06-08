@@ -61,7 +61,6 @@ const navItems: NavItem[] = [
   { name: "Testimonies", path: "/#testimonials-section" },
   { name: "Services", path: "/#services-section" },
   { name: "Showrunners", path: "/#showrunners-section" },
-  { name: "Global Footprint", path: "/#global-footprint" },
 ];
 
 export function Navbar() {
