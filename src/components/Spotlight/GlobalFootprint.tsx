@@ -101,7 +101,7 @@ export function GlobalFootprint({ data }: { data?: { image: string } }) {
   const activeTooltipIndex = hoveredIndex !== null ? hoveredIndex : activeIndex;
 
   return (
-    <section className={styles.section} ref={sectionRef}>
+    <section className={styles.section} ref={sectionRef} id="global-footprint">
       <div className={styles.container}>
         <ScrollReveal direction="up">
           <h2 className={styles.title}>

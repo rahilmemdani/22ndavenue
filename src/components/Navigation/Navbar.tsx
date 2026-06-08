@@ -61,6 +61,7 @@ const navItems: NavItem[] = [
   { name: "Testimonies", path: "/#testimonials-section" },
   { name: "Services", path: "/#services-section" },
   { name: "Showrunners", path: "/#showrunners-section" },
+  { name: "Global Footprint", path: "/#global-footprint" },
 ];
 
 export function Navbar() {
@@ -80,7 +81,7 @@ export function Navbar() {
   const { scrollY } = useScroll();
   const lastYRef = useRef(0);
 
-  // Scrollspy logic to highlight active section in Navbar
+  // Scrollspy: sort sections by actual DOM position, find which one owns the current scroll
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -88,32 +89,62 @@ export function Navbar() {
       .filter(item => item.path.startsWith("/#"))
       .map(item => item.path.replace("/#", ""));
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveSection(`/#${entry.target.id}`);
-          }
-        });
-      },
-      { rootMargin: "-20% 0px -20% 0px", threshold: 0.2 } 
-    );
+    const getActiveSection = () => {
+      if (window.scrollY < 80) {
+        setActiveSection(prev => prev !== "/" ? "/" : prev);
+        return;
+      }
 
-    sectionIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+      // Collect all sections with their actual document-top position, sorted by DOM order
+      const sections = sectionIds
+        .map(id => {
+          const el = document.getElementById(id);
+          if (!el) return null;
+          const docTop = el.getBoundingClientRect().top + window.scrollY;
+          return { id, docTop };
+        })
+        .filter((s): s is { id: string; docTop: number } => s !== null)
+        .sort((a, b) => a.docTop - b.docTop);
 
-    const handleScroll = () => {
-      if (window.scrollY < 100) {
-        setActiveSection("/");
+      if (sections.length === 0) return;
+
+      // Near-bottom fallback: if within 80px of page bottom, activate last section
+      const nearBottom =
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
+
+      let currentId: string | null = nearBottom
+        ? sections[sections.length - 1].id
+        : null;
+
+      if (!nearBottom) {
+        // A section becomes active once its top has passed 40% down the viewport
+        const triggerY = window.scrollY + window.innerHeight * 0.4;
+        for (const { id, docTop } of sections) {
+          if (triggerY >= docTop) currentId = id;
+        }
+      }
+
+      if (currentId) {
+        const next = `/#${currentId}`;
+        setActiveSection(prev => prev !== next ? next : prev);
       }
     };
-    window.addEventListener("scroll", handleScroll);
+
+    let rafId: number | null = null;
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        getActiveSection();
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    getActiveSection();
 
     return () => {
-      observer.disconnect();
       window.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, []);
 

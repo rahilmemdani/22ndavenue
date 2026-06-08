@@ -99,11 +99,11 @@ export default async function HomePage() {
       </div>
 
       <div className="content-layer" style={{ zIndex: 6 }}>
-        <GlobalFootprint data={footprintData} />
+        <Showrunners data={showrunnersData} />
       </div>
 
       <div className="content-layer" style={{ zIndex: 7 }}>
-        <Showrunners data={showrunnersData} />
+        <GlobalFootprint data={footprintData} />
       </div>
     </div>
   );
