@@ -310,11 +310,22 @@
   transition-delay: 1.5s;
 }
 
-/* Mobile Responsiveness & Performance */
 @media (max-width: 1024px) {
   .splashText {
     gap: 0.25rem;
-    font-size: clamp(3.75rem, 15vw, 5.8rem);
+    font-size: clamp(0.9rem, 4vw, 2rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .splashText {
+    font-size: clamp(1rem, 5vw, 1.6rem);
+    letter-spacing: 0.1em;
+    word-spacing: 0.2em;
+    gap: 1rem;
+  }
+  .splashLogo {
+    height: clamp(180px, 50vw, 350px);
   }
 }
 
