@@ -59,7 +59,8 @@ const navItems: NavItem[] = [
   { name: "Our Collabs", path: "/#featured-artists" },
   { name: "Showcase", path: "/#showcase-section" },
   { name: "Testimonies", path: "/#testimonials-section" },
-  { name: "Services", path: "/#services-section" }
+  { name: "Services", path: "/#services-section" },
+  { name: "Showrunners", path: "/#showrunners-section" },
 ];
 
 export function Navbar() {
@@ -134,8 +135,9 @@ export function Navbar() {
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastYRef.current;
 
-    if (latest > 30) setIsScrolled(true);
-    else setIsScrolled(false);
+    // -- isScrolled gate: only setState if crossing the 30px boundary --
+    const newScrolled = latest > 30;
+    if (newScrolled !== isScrolled) setIsScrolled(newScrolled);
 
     if (latest > 100) setIsForceOpenAtTop(false);
 
@@ -148,11 +150,16 @@ export function Navbar() {
         setIsHidden(true);
       }
     } else {
-      // Mobile logic: Regular show/hide
-      if (latest > 100 && diff > 4 && !isMobileMenuOpen) {
-        setIsHidden(true);
-      } else if (diff < -4 || latest < 100) {
-        setIsHidden(false);
+      // Mobile: only setState when crossing clear thresholds, skip tiny movements
+      const absDiff = Math.abs(diff);
+      if (absDiff < 6) {
+        lastYRef.current = latest;
+        return; // Skip tiny movements — no setState, no re-render
+      }
+      if (latest > 100 && diff > 6 && !isMobileMenuOpen) {
+        if (!isHidden) setIsHidden(true);
+      } else if (diff < -6 || latest < 100) {
+        if (isHidden) setIsHidden(false);
       }
     }
     

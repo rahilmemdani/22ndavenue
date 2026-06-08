@@ -74,18 +74,18 @@ export default async function HomePage() {
   }
 
   return (
-    <main style={{ position: 'relative' }}>
+    <div style={{ position: 'relative' }}>
       {/* Hero — sticky on desktop, normal flow on mobile */}
       <div className="hero-sticky-wrapper">
         <TransformationHero data={heroData} />
       </div>
       
-      <div style={{ position: 'relative', zIndex: 2, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
+      <div className="content-layer" style={{ zIndex: 2 }}>
         <AboutHome data={aboutData} />
         <StatsBand />
       </div>
       
-      <div style={{ position: 'relative', zIndex: 3, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
+      <div className="content-layer" style={{ zIndex: 3 }}>
         <FeaturedArtists data={collabsData} />
         <MicDropMoments data={momentsData} />
       </div>
@@ -94,17 +94,17 @@ export default async function HomePage() {
         <Testimonials data={testimonialsData} />
       </StackedCard>
 
-      <div style={{ position: 'relative', zIndex: 5, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
+      <div className="content-layer" style={{ zIndex: 5 }}>
         <Services data={servicesData} />
       </div>
 
-      <div style={{ position: 'relative', zIndex: 6, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
+      <div className="content-layer" style={{ zIndex: 6 }}>
         <GlobalFootprint data={footprintData} />
       </div>
 
-      <div style={{ position: 'relative', zIndex: 7, backgroundColor: '#050505', transform: 'translateZ(0)', isolation: 'isolate', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}>
+      <div className="content-layer" style={{ zIndex: 7 }}>
         <Showrunners data={showrunnersData} />
       </div>
-    </main>
+    </div>
   );
 }

@@ -205,6 +205,29 @@ html {
   }
 }
 
+/* Content sections: GPU-composited on desktop for sticky hero layering,
+   plain on mobile to avoid competing compositing layers that cause scroll jank */
+.content-layer {
+  position: relative;
+  z-index: 2; /* Must be above sticky hero (z-index: 1) */
+  background-color: #050505;
+  /* Desktop: force GPU layer for correct stacking over sticky hero */
+  transform: translateZ(0);
+  isolation: isolate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .content-layer {
+    /* Mobile: no GPU layers — single flat scroll surface for buttery performance */
+    transform: none;
+    isolation: auto;
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+  }
+}
+
 body {
   font-family: var(--font-body);
   background-color: var(--bg-primary);
@@ -215,6 +238,13 @@ body {
   width: 100%;
   min-height: 100vh;
   overscroll-behavior-y: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    /* Let the browser handle vertical scroll natively — prevents JS interference */
+    touch-action: pan-y;
+  }
 }
 
 a {

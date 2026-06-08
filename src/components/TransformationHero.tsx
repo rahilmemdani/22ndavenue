@@ -104,56 +104,63 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
     };
   }, [isSplit]);
 
-  const [isVideoVisible, setIsVideoVisible] = useState(true);
+  // Ref to the right panel DOM element so we can mutate style directly (no React re-render)
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+  const isPastThresholdRef = useRef(false);
+  const isMutedRef = useRef(true);
 
-  // Use scroll listener with requestAnimationFrame to mute/pause video on mobile
-  // and hide video when scrolled past on desktop
+  // Scroll handler: direct DOM mutation only — zero React setState during scroll
   useEffect(() => {
-    if (!videoRef.current) return;
+    if (!isSplit) return; // Don't attach until hero animation is done
 
-    let ticking = false;
+    let rafId: number | null = null;
 
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const heroHeight = containerRef.current?.offsetHeight || window.innerHeight;
-          const scrolled = window.scrollY;
-          // 80% through the hero section
-          const threshold = heroHeight * 0.8;
-          const isPast = scrolled > threshold;
+      if (rafId !== null) return; // Already scheduled
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        const heroHeight = containerRef.current?.offsetHeight || window.innerHeight;
+        const scrolled = window.scrollY;
+        const threshold = heroHeight * 0.8;
+        const isPast = scrolled > threshold;
 
-          setIsVideoVisible((prev) => {
-            if (isPast && prev) {
-              // Scrolled past 80%: mute + pause
-              if (videoRef.current && !videoRef.current.paused) {
-                videoRef.current.pause();
-              }
-              if (videoRef.current) {
-                videoRef.current.muted = true;
-                setIsMuted(true);
-              }
-              return false;
-            } else if (!isPast && !prev) {
-              // Scrolled back: resume (only if hero animation done)
-              if (videoRef.current && videoRef.current.paused && isSplit) {
-                videoRef.current.play().catch(() => {});
-              }
-              return true;
+        if (isPast && !isPastThresholdRef.current) {
+          isPastThresholdRef.current = true;
+          // Mute + pause video — direct DOM, no setState
+          if (videoRef.current) {
+            if (!videoRef.current.paused) videoRef.current.pause();
+            if (!isMutedRef.current) {
+              videoRef.current.muted = true;
+              isMutedRef.current = true;
+              setIsMuted(true); // Only setState for UI button icon — acceptable, rare
             }
-            return prev;
-          });
-
-          ticking = false;
-        });
-        ticking = true;
-      }
+          }
+          // Hide right panel via direct style — no React re-render
+          if (rightPanelRef.current) {
+            rightPanelRef.current.style.opacity = '0';
+            rightPanelRef.current.style.pointerEvents = 'none';
+          }
+        } else if (!isPast && isPastThresholdRef.current) {
+          isPastThresholdRef.current = false;
+          // Resume video
+          if (videoRef.current && videoRef.current.paused) {
+            videoRef.current.play().catch(() => {});
+          }
+          // Show right panel
+          if (rightPanelRef.current) {
+            rightPanelRef.current.style.opacity = '';
+            rightPanelRef.current.style.pointerEvents = '';
+          }
+        }
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Trigger check immediately
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, [isSplit]);
 
@@ -187,11 +194,8 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
 
       {/* Right Panel: Showcase Reel */}
       <div 
+        ref={rightPanelRef}
         className={styles.rightPanel} 
-        style={{ 
-          opacity: isVideoVisible ? undefined : 0, 
-          pointerEvents: isVideoVisible ? 'auto' : 'none' 
-        }}
       >
         <div className={styles.videoContainer}>
           <video

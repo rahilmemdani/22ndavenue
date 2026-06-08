@@ -61,10 +61,13 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   const scrollToTop = () => {
-    if (window.innerWidth <= 1024 && sectionRef.current) {
-      // Use 'instant' — smooth scroll causes intermediate frames
-      // where the GPU compositor briefly exposes the sticky hero video
-      const y = sectionRef.current.getBoundingClientRect().top + window.scrollY;
+    if (!sectionRef.current) return;
+    const y = sectionRef.current.getBoundingClientRect().top + window.scrollY;
+    if (window.innerWidth <= 768) {
+      // Phone: smooth scroll to section top for a polished feel
+      window.scrollTo({ top: y, behavior: "smooth" });
+    } else if (window.innerWidth <= 1024) {
+      // Tablet: instant to avoid sticky hero compositor flicker
       window.scrollTo({ top: y, behavior: "instant" as ScrollBehavior });
     }
   };
