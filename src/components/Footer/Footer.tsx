@@ -50,7 +50,9 @@ Singapore ( 068805)`,
   },
   {
     city: "Sydney",
-    address: "14th Floor, 3 Parramatta Square, Parramatta NSW 2150",
+    address: `14th Floor,
+3 Parramatta Square,
+Parramatta NSW 2150`,
     mapLink: "https://www.google.com/maps/search/?api=1&query=3+Parramatta+Square+Parramatta+NSW+2150+Australia",
   }
 ];
