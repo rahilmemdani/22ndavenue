@@ -106,7 +106,8 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
 
   const [isVideoVisible, setIsVideoVisible] = useState(true);
 
-  // Use scroll listener with requestAnimationFrame to hide video when scrolled past
+  // Use scroll listener with requestAnimationFrame to mute/pause video on mobile
+  // and hide video when scrolled past on desktop
   useEffect(() => {
     if (!videoRef.current) return;
 
@@ -115,21 +116,25 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          // If we've scrolled past 80% of the viewport height, hide the video
-          const threshold = window.innerHeight * 0.8;
-          const isPast = window.scrollY > threshold;
+          const heroHeight = containerRef.current?.offsetHeight || window.innerHeight;
+          const scrolled = window.scrollY;
+          // 80% through the hero section
+          const threshold = heroHeight * 0.8;
+          const isPast = scrolled > threshold;
 
           setIsVideoVisible((prev) => {
             if (isPast && prev) {
-              // Hero is mostly out of view: Pause video and hide
+              // Scrolled past 80%: mute + pause
               if (videoRef.current && !videoRef.current.paused) {
                 videoRef.current.pause();
+              }
+              if (videoRef.current) {
                 videoRef.current.muted = true;
                 setIsMuted(true);
               }
               return false;
             } else if (!isPast && !prev) {
-              // Hero is back in view: Resume video and show
+              // Scrolled back: resume (only if hero animation done)
               if (videoRef.current && videoRef.current.paused && isSplit) {
                 videoRef.current.play().catch(() => {});
               }
@@ -137,7 +142,7 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
             }
             return prev;
           });
-          
+
           ticking = false;
         });
         ticking = true;

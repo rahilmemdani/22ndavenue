@@ -75,8 +75,8 @@ export default async function HomePage() {
 
   return (
     <main style={{ position: 'relative' }}>
-      {/* Background Video Layer */}
-      <div style={{ position: 'sticky', top: 0, zIndex: 1 }}>
+      {/* Hero — sticky on desktop, normal flow on mobile */}
+      <div className="hero-sticky-wrapper">
         <TransformationHero data={heroData} />
       </div>
       

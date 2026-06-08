@@ -190,6 +190,21 @@ html {
   }
 }
 
+/* Hero wrapper: sticky on desktop so sections scroll over it,
+   normal on mobile so it scrolls away cleanly before the next section */
+.hero-sticky-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .hero-sticky-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+}
+
 body {
   font-family: var(--font-body);
   background-color: var(--bg-primary);
