@@ -510,12 +510,14 @@
     justify-self: center;
   }
 
+  /* Center the OUR PRESENCE header */
   .addressHeader {
-    justify-content: flex-start;
+    justify-content: center;
+    text-align: center;
   }
 
   .addressHeaderLine {
-    display: block;
+    display: none;
   }
 
   /* Hide vertical dividers between desktop columns */
@@ -523,68 +525,59 @@
     display: none;
   }
 
-  /* Stack country columns vertically */
+  /* Grid: 2 cols so first row = Mumbai + Delhi side by side */
   .addressGrid {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 0;
     width: 100%;
-    align-items: stretch;
   }
 
-  /* Each country section */
+  /* Each country section — no borders/blocks */
   .countryCol {
     padding: 0;
     flex-direction: column;
     gap: 0;
-    border-bottom: none;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
     width: 100%;
-  }
-
-  .countryCol:last-child {
-    border-bottom: none;
-  }
-
-  /* Country header row */
-  .countryHeader {
-    flex-direction: row;
-    border-bottom: none;
-    border-right: none;
-    border-top: none;
-    padding: 0.9rem 0 0.7rem;
-    margin-bottom: 0;
-    min-width: unset;
-    gap: 0.5rem;
-    width: 100%;
-  }
-
-  .countryCol:first-child .countryHeader {
-    padding-top: 0;
   }
 
   .addressCol {
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
     gap: 0.2rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.85rem 0;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     width: 100%;
+    box-sizing: border-box;
   }
 
-  .countryCol:last-child .addressCol {
+  /* Left column (Mumbai, Singapore) — right padding for gap */
+  .countryCol:nth-child(odd) .addressCol {
+    padding-right: 1rem;
+  }
+
+  /* Right column (Delhi, Sydney) — left padding for gap */
+  .countryCol:nth-child(even) .addressCol {
+    padding-left: 0.5rem;
+  }
+
+  /* Last two items (row 2) — no bottom divider */
+  .countryCol:nth-child(3) .addressCol,
+  .countryCol:nth-child(4) .addressCol {
     border-bottom: none;
-    padding-bottom: 0.4rem;
   }
 
   .cityRow {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   /* Show address on phone — smaller font */
   .officeAddress {
     display: block;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     color: rgba(255, 255, 255, 0.5);
     line-height: 1.55;
     margin: 0;
