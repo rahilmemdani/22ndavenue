@@ -81,7 +81,7 @@ export function Navbar() {
   const { scrollY } = useScroll();
   const lastYRef = useRef(0);
 
-  // Scrollspy: sort sections by actual DOM position, find which one owns the current scroll
+  // Scrollspy: sort sections by real document position (offsetTop, not getBCR which breaks with sticky)
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -89,26 +89,35 @@ export function Navbar() {
       .filter(item => item.path.startsWith("/#"))
       .map(item => item.path.replace("/#", ""));
 
+    // Walk offsetParent chain to get true document top — unaffected by sticky ancestors
+    const getDocTop = (el: HTMLElement): number => {
+      let top = 0;
+      let cur: HTMLElement | null = el;
+      while (cur) {
+        top += cur.offsetTop;
+        cur = cur.offsetParent as HTMLElement | null;
+      }
+      return top;
+    };
+
     const getActiveSection = () => {
       if (window.scrollY < 80) {
         setActiveSection(prev => prev !== "/" ? "/" : prev);
         return;
       }
 
-      // Collect all sections with their actual document-top position, sorted by DOM order
       const sections = sectionIds
         .map(id => {
           const el = document.getElementById(id);
           if (!el) return null;
-          const docTop = el.getBoundingClientRect().top + window.scrollY;
-          return { id, docTop };
+          return { id, docTop: getDocTop(el) };
         })
         .filter((s): s is { id: string; docTop: number } => s !== null)
         .sort((a, b) => a.docTop - b.docTop);
 
       if (sections.length === 0) return;
 
-      // Near-bottom fallback: if within 80px of page bottom, activate last section
+      // Near-bottom fallback: activate last section when page can't scroll further
       const nearBottom =
         window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
 
@@ -117,7 +126,6 @@ export function Navbar() {
         : null;
 
       if (!nearBottom) {
-        // A section becomes active once its top has passed 40% down the viewport
         const triggerY = window.scrollY + window.innerHeight * 0.4;
         for (const { id, docTop } of sections) {
           if (triggerY >= docTop) currentId = id;
