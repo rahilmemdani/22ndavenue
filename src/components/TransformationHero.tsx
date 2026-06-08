@@ -184,9 +184,8 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
               <span className={`${styles.splashWord} ${styles.wordWe}`}>WE</span>{" "}
               <span className={`${styles.splashWord} ${styles.wordAre}`}>ARE</span>
             </div>
-            <span className={`${styles.splashWord} ${styles.splashOutline}`}>22ND</span>
-            <div>
-              <span className={`${styles.splashWord} ${styles.splashGold}`}>AVENUE</span>
+            <div className={`${styles.splashWord} ${styles.splashLogoWrapper}`}>
+              <img src="/assets/hero/logo.png" alt="22nd Avenue Logo" className={styles.splashLogo} />
             </div>
           </h2>
         </div>
