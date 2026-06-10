@@ -30,9 +30,11 @@ export function ScrollReveal({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // On mobile: no spatial movement — only fade opacity to avoid the upward jerk
+  // On mobile: no spatial movement — only fade opacity to avoid the upward jerk.
+  // We must still explicitly set y:0 / x:0 so that if the SSR/first-render
+  // applied desktop offsets (y:40 etc.) before hydration, they get cleared.
   const getInitial = () => {
-    if (isMobile) return { opacity: 0 };
+    if (isMobile) return { opacity: 0, y: 0, x: 0 };
     switch (direction) {
       case "up": return { opacity: 0, y: 40 };
       case "left": return { opacity: 0, x: -40 };
@@ -42,7 +44,7 @@ export function ScrollReveal({
   };
 
   const getAnimate = () => {
-    if (isMobile) return { opacity: 1 };
+    if (isMobile) return { opacity: 1, y: 0, x: 0 };
     switch (direction) {
       case "up": return { opacity: 1, y: 0 };
       case "left": return { opacity: 1, x: 0 };
