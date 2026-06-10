@@ -30,11 +30,18 @@ export function ScrollReveal({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // On mobile: no spatial movement — only fade opacity to avoid the upward jerk.
-  // We must still explicitly set y:0 / x:0 so that if the SSR/first-render
-  // applied desktop offsets (y:40 etc.) before hydration, they get cleared.
+  // MOBILE: Skip Framer Motion entirely — no IntersectionObserver, no animation,
+  // no repaints. This eliminates the jerk on real phone hardware completely.
+  if (isMobile) {
+    return (
+      <div className={className} style={{ width }}>
+        {children}
+      </div>
+    );
+  }
+
+  // DESKTOP: Full Framer Motion scroll-reveal animations (unchanged)
   const getInitial = () => {
-    if (isMobile) return { opacity: 0, y: 0, x: 0 };
     switch (direction) {
       case "up": return { opacity: 0, y: 40 };
       case "left": return { opacity: 0, x: -40 };
@@ -44,7 +51,6 @@ export function ScrollReveal({
   };
 
   const getAnimate = () => {
-    if (isMobile) return { opacity: 1, y: 0, x: 0 };
     switch (direction) {
       case "up": return { opacity: 1, y: 0 };
       case "left": return { opacity: 1, x: 0 };
@@ -59,8 +65,8 @@ export function ScrollReveal({
       whileInView={getAnimate()}
       viewport={{ once: true, amount: threshold }}
       transition={{ 
-        duration: isMobile ? 0.5 : 0.8, 
-        delay: delay / 1000, // delay is passed in ms previously, Framer expects seconds
+        duration: 0.8, 
+        delay: delay / 1000,
         ease: [0.16, 1, 0.3, 1] 
       }}
       className={className}
