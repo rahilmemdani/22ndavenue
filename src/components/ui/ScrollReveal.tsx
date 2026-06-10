@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface ScrollRevealProps {
@@ -20,8 +20,19 @@ export function ScrollReveal({
   threshold = 0.15,
   width = "auto" as "fit-content" | "100%",
 }: ScrollRevealProps) {
-  
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // On mobile: no spatial movement — only fade opacity to avoid the upward jerk
   const getInitial = () => {
+    if (isMobile) return { opacity: 0 };
     switch (direction) {
       case "up": return { opacity: 0, y: 40 };
       case "left": return { opacity: 0, x: -40 };
@@ -31,6 +42,7 @@ export function ScrollReveal({
   };
 
   const getAnimate = () => {
+    if (isMobile) return { opacity: 1 };
     switch (direction) {
       case "up": return { opacity: 1, y: 0 };
       case "left": return { opacity: 1, x: 0 };
@@ -45,7 +57,7 @@ export function ScrollReveal({
       whileInView={getAnimate()}
       viewport={{ once: true, amount: threshold }}
       transition={{ 
-        duration: 0.8, 
+        duration: isMobile ? 0.5 : 0.8, 
         delay: delay / 1000, // delay is passed in ms previously, Framer expects seconds
         ease: [0.16, 1, 0.3, 1] 
       }}

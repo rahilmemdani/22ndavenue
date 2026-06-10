@@ -582,6 +582,33 @@ ol {
   transform: translateX(0);
 }
 
+/* On mobile: remove spatial movement from reveal classes to prevent upward jerk */
+@media (max-width: 768px) {
+  .reveal {
+    transform: none;
+  }
+
+  .reveal.revealed {
+    transform: none;
+  }
+
+  .reveal-left {
+    transform: none;
+  }
+
+  .reveal-left.revealed {
+    transform: none;
+  }
+
+  .reveal-right {
+    transform: none;
+  }
+
+  .reveal-right.revealed {
+    transform: none;
+  }
+}
+
 /* ---------- Stagger delays ---------- */
 .stagger-1 {
   transition-delay: 0.05s;
