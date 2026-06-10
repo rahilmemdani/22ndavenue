@@ -35,35 +35,11 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
   // Play video only after animation completes (isSplit becomes true)
   useEffect(() => {
     if (isSplit && videoRef.current) {
+      videoRef.current.currentTime = 0;
       videoRef.current.play().catch(err => console.log("Play prevented:", err));
     }
   }, [isSplit]);
 
-  // Aggressive autoplay immediately on load to pre-buffer the video
-  useEffect(() => {
-    if (!videoRef.current || !videoSrc) return;
-    const video = videoRef.current;
-
-    const handlePlay = () => {
-      video.play().catch((err) => {
-        console.warn("⚠️ Autoplay blocked, retrying...", err);
-        setTimeout(() => {
-          if (videoRef.current) {
-            videoRef.current.play().catch((e) => console.error("❌ Hero autoplay failed:", e));
-          }
-        }, 150);
-      });
-    };
-
-    video.addEventListener("canplay", handlePlay);
-    if (video.readyState >= 3) {
-      handlePlay();
-    }
-
-    return () => {
-      video.removeEventListener("canplay", handlePlay);
-    };
-  }, [videoSrc]);
 
   useEffect(() => {
     // Prevent browser from restoring previous scroll position on reload
@@ -203,7 +179,6 @@ const TransformationHero = ({ data }: TransformationHeroProps) => {
             src={videoSrc}
             poster={data?.fallbackImage}
             className={styles.showcaseVideo}
-            autoPlay
             loop
             muted={isMuted}
             playsInline
