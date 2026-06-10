@@ -12,15 +12,16 @@ interface Location {
 }
 
 const locations: Location[] = [
-  { name: "Spain", x: 17.8, y: 36.2, description: "International Live Concerts & Arena Shows" },
-  { name: "Puerto Rico", x: 27, y: 51, description: "Artist Bookings & Regional Collaborations" },
-  { name: "United Arab Emirates", x: 50.1, y: 36.3, description: "Mega Festivals & Large Scale Productions" },
-  { name: "Doha", x: 55.6, y: 50.1, description: "High-End Corporate Events & Launch Parties" },
-  { name: "Qatar", x: 58, y: 48.9, description: "Stadium Concerts & International Festivals" },
-  { name: "Kingdom of Saudi Arabia", x: 58.5, y: 42.2, description: "Exclusive Cultural Events & Heritage Shows" },
-  { name: "Bahrain", x: 57.5, y: 54.1, description: "Elite Showcases & Luxury Concert Series" },
+  { name: "Puerto Rico", x: 28, y: 50, description: "Artist Bookings & Regional Collaborations" },
+  { name: "Spain", x: 45, y: 40, description: "International Live Concerts & Arena Shows" },
+  { name: "Bahrain", x: 57.5, y: 47, description: "Elite Showcases & Luxury Concert Series" },
+  { name: "Qatar", x: 58.5, y: 50, description: "Stadium Concerts & International Festivals" },
+  { name: "UAE", x: 60, y: 51, description: "Mega Festivals & Large Scale Productions" },
+  { name: "Saudi Arabia", x: 57.5, y: 53.5, description: "Exclusive Cultural Events & Heritage Shows" },
   { name: "India", x: 64.7, y: 54.5, description: "Global HQ & Nationwide Event Production Hub" },
-  { name: "Singapore", x: 72.8, y: 65.8, description: "Asia-Pacific Tours & Brand Collaborations" },
+  { name: "Thailand", x: 71.5, y: 56, description: "Regional Festivals & Cultural Showcases" },
+  { name: "Singapore", x: 71.5, y: 61.5, description: "Asia-Pacific Tours & Brand Collaborations" },
+  { name: "Malaysia", x: 74, y: 61.5, description: "Concert Tours & Live Entertainment" },
   { name: "Australia", x: 78.7, y: 77.2, description: "Multi-City Arena & Stadium Tours" },
 ];
 
