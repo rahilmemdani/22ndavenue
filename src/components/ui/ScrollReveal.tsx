@@ -30,18 +30,8 @@ export function ScrollReveal({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // MOBILE: Skip Framer Motion entirely — no IntersectionObserver, no animation,
-  // no repaints. This eliminates the jerk on real phone hardware completely.
-  if (isMobile) {
-    return (
-      <div className={className} style={{ width }}>
-        {children}
-      </div>
-    );
-  }
-
-  // DESKTOP: Full Framer Motion scroll-reveal animations (unchanged)
   const getInitial = () => {
+    if (isMobile) return { opacity: 1, y: 0, x: 0 }; // Instantly visible on mobile
     switch (direction) {
       case "up": return { opacity: 0, y: 40 };
       case "left": return { opacity: 0, x: -40 };
@@ -51,6 +41,7 @@ export function ScrollReveal({
   };
 
   const getAnimate = () => {
+    if (isMobile) return { opacity: 1, y: 0, x: 0 };
     switch (direction) {
       case "up": return { opacity: 1, y: 0 };
       case "left": return { opacity: 1, x: 0 };
@@ -65,14 +56,15 @@ export function ScrollReveal({
       whileInView={getAnimate()}
       viewport={{ once: true, amount: threshold }}
       transition={{ 
-        duration: 0.8, 
-        delay: delay / 1000,
+        duration: isMobile ? 0 : 0.8, 
+        delay: isMobile ? 0 : delay / 1000,
         ease: [0.16, 1, 0.3, 1] 
       }}
-      className={className}
+      className={`${className} mobile-no-jerk`}
       style={{ width }}
     >
       {children}
     </motion.div>
   );
 }
+

@@ -36,7 +36,7 @@
   position: relative;
   width: 100%;
   max-width: 720px;
-  max-height: 90vh;
+  max-height: 90svh;
   max-height: 90dvh;
   overflow-y: auto;
   background: #0a0a0a;
@@ -313,7 +313,7 @@
 @media (max-width: 600px) {
   .modal {
     border-radius: 1.25rem;
-    max-height: 95vh;
+    max-height: 95svh;
     max-height: 95dvh;
   }
 

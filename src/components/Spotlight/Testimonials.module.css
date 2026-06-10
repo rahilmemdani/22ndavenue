@@ -2,8 +2,8 @@
 
 .section {
   position: relative;
-  height: 100vh;
-  height: 100vh;
+  height: 100svh;
+  height: 100svh;
   background-color: #050505;
   display: flex;
   align-items: center;
@@ -362,9 +362,9 @@
 .modalContent {
   position: relative;
   width: 90vw;
-  height: 80vh;
+  height: 80svh;
   max-width: 1000px;
-  max-height: 80vh;
+  max-height: 80svh;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
@@ -579,8 +579,8 @@
 
   .modalContent {
     width: 95vw;
-    height: 70vh;
-    max-height: 70vh;
+    height: 70svh;
+    max-height: 70svh;
     max-width: 95vw;
     border-radius: 0.75rem;
   }

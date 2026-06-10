@@ -28,7 +28,7 @@
   content: "";
   position: absolute;
   width: 70vw;
-  height: 70vh;
+  height: 70svh;
   background: radial-gradient(circle, rgba(228, 192, 87, 0.15) 0%, transparent 60%);
   top: -10%;
   left: -10%;
@@ -41,7 +41,7 @@
 .ambientOrb2 {
   position: absolute;
   width: 50vw;
-  height: 50vh;
+  height: 50svh;
   background: radial-gradient(circle, rgba(26, 26, 26, 0.04) 0%, transparent 60%);
   bottom: -10%;
   right: -10%;

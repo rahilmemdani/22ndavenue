@@ -236,7 +236,7 @@ body {
   overflow-x: clip;
   max-width: 100%;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100svh;
   overscroll-behavior-y: none;
 }
 
@@ -313,7 +313,7 @@ ol {
 }
 
 .snap-section {
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -606,6 +606,12 @@ ol {
 
   .reveal-right.revealed {
     transform: none;
+  }
+
+  /* Force override Framer Motion inline styles on mobile to prevent jerk */
+  .mobile-no-jerk {
+    transform: none !important;
+    transition: none !important;
   }
 }
 

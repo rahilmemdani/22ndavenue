@@ -1,13 +1,13 @@
 .heroSequence {
   position: relative;
-  height: 400vh; /* Giving ample time to scrub the 4-frame transformation */
+  height: 400svh; /* Giving ample time to scrub the 4-frame transformation */
   background-color: #000; /* Pure black for the 'Void' effect */
 }
 
 .stickyCanvas {
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 100svh;
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -68,7 +68,7 @@
 
 .imageReveal {
   width: 90vw;
-  height: 80vh;
+  height: 80svh;
   position: relative;
   overflow: hidden;
   background: #000;
@@ -77,7 +77,7 @@
 @media (min-width: 1024px) {
   .imageReveal {
     width: 55vw;
-    height: 90vh;
+    height: 90svh;
     margin-right: 5vw;
   }
 }

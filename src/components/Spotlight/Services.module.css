@@ -480,7 +480,7 @@
 .modal {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100svh;
   max-width: 100%;
   background: #0a0a0a;
   display: flex;
@@ -506,7 +506,7 @@
   .modal {
     width: 92%;
     max-width: 1200px;
-    height: 92vh;
+    height: 92svh;
     border-radius: 1.25rem;
     border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow:
