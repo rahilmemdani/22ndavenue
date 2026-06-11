@@ -20,7 +20,6 @@ export function ScrollReveal({
   threshold = 0.15,
   width = "auto" as "fit-content" | "100%",
 }: ScrollRevealProps) {
-
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -30,41 +29,48 @@ export function ScrollReveal({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const getInitial = () => {
-    if (isMobile) return { opacity: 1, y: 0, x: 0 }; // Instantly visible on mobile
+  // PHONE: plain div, zero animation, zero observers, zero jerk
+  if (isMobile) {
+    return (
+      <div className={className} style={{ width }}>
+        {children}
+      </div>
+    );
+  }
+
+  // DESKTOP: full Framer Motion scroll-reveal (unchanged)
+  const initial = (() => {
     switch (direction) {
       case "up": return { opacity: 0, y: 40 };
       case "left": return { opacity: 0, x: -40 };
       case "right": return { opacity: 0, x: 40 };
       default: return { opacity: 0 };
     }
-  };
+  })();
 
-  const getAnimate = () => {
-    if (isMobile) return { opacity: 1, y: 0, x: 0 };
+  const animate = (() => {
     switch (direction) {
       case "up": return { opacity: 1, y: 0 };
       case "left": return { opacity: 1, x: 0 };
       case "right": return { opacity: 1, x: 0 };
       default: return { opacity: 1 };
     }
-  };
+  })();
 
   return (
     <motion.div
-      initial={getInitial()}
-      whileInView={getAnimate()}
+      initial={initial}
+      whileInView={animate}
       viewport={{ once: true, amount: threshold }}
-      transition={{ 
-        duration: isMobile ? 0 : 0.8, 
-        delay: isMobile ? 0 : delay / 1000,
-        ease: [0.16, 1, 0.3, 1] 
+      transition={{
+        duration: 0.8,
+        delay: delay / 1000,
+        ease: [0.16, 1, 0.3, 1],
       }}
-      className={`${className} mobile-no-jerk`}
+      className={className}
       style={{ width }}
     >
       {children}
     </motion.div>
   );
 }
-

@@ -607,12 +607,6 @@ ol {
   .reveal-right.revealed {
     transform: none;
   }
-
-  /* Force override Framer Motion inline styles on mobile to prevent jerk */
-  .mobile-no-jerk {
-    transform: none !important;
-    transition: none !important;
-  }
 }
 
 /* ---------- Stagger delays ---------- */
