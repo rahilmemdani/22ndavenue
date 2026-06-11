@@ -9,6 +9,7 @@ import { Testimonials } from "@/components/Spotlight/Testimonials";
 import { GlobalFootprint } from "@/components/Spotlight/GlobalFootprint";
 import { Showrunners } from "@/components/Spotlight/Showrunners";
 import { StackedCard } from "@/components/ui/StackedCard";
+import { ContentLayer } from "@/components/ui/ContentLayer";
 
 import { client } from "@/sanity/client";
 import {
@@ -80,31 +81,32 @@ export default async function HomePage() {
         <TransformationHero data={heroData} />
       </div>
       
-      <div className="content-layer" style={{ zIndex: 2 }}>
+      <ContentLayer zIndex={2}>
         <AboutHome data={aboutData} />
         <StatsBand />
-      </div>
+      </ContentLayer>
       
-      <div className="content-layer" style={{ zIndex: 3 }}>
+      <ContentLayer zIndex={3}>
         <FeaturedArtists data={collabsData} />
         <MicDropMoments data={momentsData} />
-      </div>
+      </ContentLayer>
 
       <StackedCard zIndex={4}>
         <Testimonials data={testimonialsData} />
       </StackedCard>
 
-      <div className="content-layer" style={{ zIndex: 5 }}>
+      <ContentLayer zIndex={5}>
         <Services data={servicesData} />
-      </div>
+      </ContentLayer>
 
-      <div className="content-layer" style={{ zIndex: 6 }}>
+      <ContentLayer zIndex={6}>
         <Showrunners data={showrunnersData} />
-      </div>
+      </ContentLayer>
 
-      <div className="content-layer" style={{ zIndex: 7 }}>
+      <ContentLayer zIndex={7}>
         <GlobalFootprint data={footprintData} />
-      </div>
+      </ContentLayer>
     </div>
   );
 }
+

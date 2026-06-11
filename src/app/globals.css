@@ -220,7 +220,10 @@ html {
 
 @media (max-width: 768px) {
   .content-layer {
-    /* Mobile: no GPU layers — single flat scroll surface for buttery performance */
+    /* Mobile: completely flat — no stacking contexts, no compositor layers,
+       no z-index. Behaves like the div doesn't exist. Zero jerk. */
+    position: static;
+    z-index: auto !important; /* Override inline styles */
     transform: none;
     isolation: auto;
     -webkit-backface-visibility: visible;
