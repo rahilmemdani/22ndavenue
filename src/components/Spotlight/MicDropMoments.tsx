@@ -162,6 +162,24 @@ const DEFAULT_CATEGORIES: ShowcaseCategory[] = [
 
 import { getDirectVideoUrl, getDirectImageUrl } from "@/utils/video";
 
+/**
+ * Sanity CDN serves file assets (videos, PDFs, etc.) with
+ * `Content-Disposition: attachment` by default, which prevents
+ * inline playback in <video> elements. Appending `?dl=` (empty
+ * value) to the URL tells Sanity CDN to serve the file inline.
+ * Only applied to cdn.sanity.io URLs; other URLs pass through unchanged.
+ */
+function makeSanityFileInline(url: string): string {
+  if (!url) return url;
+  if (url.includes("cdn.sanity.io") && !url.includes("?")) {
+    return `${url}?dl=`;
+  }
+  if (url.includes("cdn.sanity.io") && !url.includes("dl=")) {
+    return `${url}&dl=`;
+  }
+  return url;
+}
+
 export function MicDropMoments({ data }: MicDropMomentsProps) {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -192,8 +210,11 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
         }
 
         // Resolve videos (prioritize Drive/external URL, fallback to Sanity Asset)
-        const resolvedVideo = getDirectVideoUrl(t.videoUrl || t.videoAsset || t.video);
-        const resolvedMobileVideo = getDirectVideoUrl(t.mobileVideoUrl || t.mobileVideoAsset || t.mobileVideo);
+        // Sanity CDN file URLs need `?dl=` appended to serve inline instead of as attachment
+        const rawVideoUrl = t.videoUrl || t.videoAsset || t.video;
+        const rawMobileVideoUrl = t.mobileVideoUrl || t.mobileVideoAsset || t.mobileVideo;
+        const resolvedVideo = getDirectVideoUrl(rawVideoUrl ? makeSanityFileInline(rawVideoUrl) : undefined);
+        const resolvedMobileVideo = getDirectVideoUrl(rawMobileVideoUrl ? makeSanityFileInline(rawMobileVideoUrl) : undefined);
 
         return {
           id: `${t.title || "Moment"}-${index}`,
