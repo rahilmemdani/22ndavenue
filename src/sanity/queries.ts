@@ -55,6 +55,7 @@ export const testimonialsQuery = groq`*[_type == "testimonials"] | order(_update
 export const servicesQuery = groq`*[_type == "services"] | order(_updatedAt desc)[0] {
   "servicesList": servicesList[] {
     title,
+    enableGallery,
     description,
     "image": select(defined(image.asset) => image.asset->url + "?w=900&h=600&fit=crop&auto=format&q=80&fm=webp"),
     shape,

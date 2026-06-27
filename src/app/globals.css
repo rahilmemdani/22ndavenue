@@ -179,7 +179,6 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
-  overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -240,13 +239,11 @@ body {
   max-width: 100%;
   width: 100%;
   min-height: 100svh;
-  overscroll-behavior-y: none;
 }
 
 @media (max-width: 768px) {
   body {
-    /* Let the browser handle vertical scroll natively — prevents JS interference */
-    touch-action: pan-y;
+    /* Let the browser handle vertical scroll natively */
   }
 }
 

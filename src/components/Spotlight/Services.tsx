@@ -30,6 +30,7 @@ interface ServicesProps {
   data?: {
     servicesList: {
       title: string;
+      enableGallery?: boolean;
       description: string;
       image: string;
       shape: string;
@@ -305,6 +306,7 @@ export function Services({ data }: ServicesProps) {
 
         return {
           ...s,
+          enableGallery: s.enableGallery ?? false,
           image: s.image || defaultService?.image || "",
           shape: s.shape || "shapeDiamond",
           gallery,
@@ -334,11 +336,19 @@ export function Services({ data }: ServicesProps) {
     return () => { unlockScroll(); };
   }, [selectedService]);
 
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+
   const handleCarouselScroll = useCallback(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    const itemWidth = el.scrollWidth / services.length;
-    setMobileCardIndex(Math.min(Math.round(el.scrollLeft / itemWidth), services.length - 1));
+    if (scrollTimeout.current) return;
+    
+    scrollTimeout.current = setTimeout(() => {
+      const el = carouselRef.current;
+      if (el) {
+        const itemWidth = el.scrollWidth / services.length;
+        setMobileCardIndex(Math.min(Math.round(el.scrollLeft / itemWidth), services.length - 1));
+      }
+      scrollTimeout.current = null;
+    }, 100);
   }, [services.length]);
 
   const scroll = (dir: "left" | "right") => {
@@ -561,10 +571,14 @@ export function Services({ data }: ServicesProps) {
           >
             {services.map((service, i) => (
               <div key={service.title} className={styles.snapSlide}>
-                <ScrollReveal delay={100 * i} width="100%">
                   <div
                     className={styles.serviceCard}
-                    onClick={() => setSelectedService(service)}
+                    onClick={() => {
+                      if ('enableGallery' in service && service.enableGallery) {
+                        setSelectedService(service);
+                      }
+                    }}
+                    style={{ cursor: 'enableGallery' in service && service.enableGallery ? 'pointer' : 'default' }}
                   >
                     <div className={styles.cardBorderGlow}></div>
                     <div className={`${styles.imageWrapper} ${styles[service.shape]}`}>
@@ -574,16 +588,17 @@ export function Services({ data }: ServicesProps) {
                         <div className={styles.contentInner}>
                           <div className={styles.shimmerLine}></div>
                           <h3 className={styles.serviceTitle}>{service.title}
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <line x1="7" y1="17" x2="17" y2="7"></line>
-                              <polyline points="7 7 17 7 17 17"></polyline>
-                            </svg>
+                            {'enableGallery' in service && service.enableGallery && (
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                              </svg>
+                            )}
                           </h3>
                         </div>
                       </div>
                     </div>
                   </div>
-                </ScrollReveal>
               </div>
             ))}
           </div>

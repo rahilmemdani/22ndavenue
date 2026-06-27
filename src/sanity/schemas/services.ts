@@ -14,6 +14,13 @@ export const services = defineType({
           type: 'object',
           fields: [
             { name: 'title', title: 'Title', type: 'string' },
+            {
+              name: 'enableGallery',
+              title: 'Enable Gallery Popup',
+              description: 'Turn on to allow clicking on this service card to open its gallery popup.',
+              type: 'boolean',
+              initialValue: false
+            },
             { name: 'description', title: 'Description', type: 'text' },
             { name: 'image', title: 'Placeholder Image (Card Cover)', type: 'image', options: { hotspot: true } },
             {
