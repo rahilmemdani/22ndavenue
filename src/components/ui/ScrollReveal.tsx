@@ -20,23 +20,7 @@ export function ScrollReveal({
   threshold = 0.15,
   width = "auto" as "fit-content" | "100%",
 }: ScrollRevealProps) {
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  // PHONE: plain div, zero animation, zero observers, zero jerk
-  if (isMobile) {
-    return (
-      <div className={className} style={{ width }}>
-        {children}
-      </div>
-    );
-  }
 
   // DESKTOP: full Framer Motion scroll-reveal (unchanged)
   const initial = (() => {
@@ -67,7 +51,7 @@ export function ScrollReveal({
         delay: delay / 1000,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className={className}
+      className={`scroll-reveal-wrapper ${className}`}
       style={{ width }}
     >
       {children}

@@ -700,3 +700,12 @@ ol {
 .read-the-docs {
   color: #888;
 }
+/* Disable framer motion scroll reveal on mobile */
+@media (max-width: 768px) {
+  .scroll-reveal-wrapper {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
