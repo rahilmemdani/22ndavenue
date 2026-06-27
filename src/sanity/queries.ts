@@ -82,3 +82,10 @@ export const showrunnersQuery = groq`*[_type == "showrunners"] | order(_updatedA
     bio
   }
 }`
+
+export const statsQuery = groq`*[_type == "stats"] | order(_updatedAt desc)[0] {
+  "statsList": statsList[] {
+    value,
+    label
+  }
+}`

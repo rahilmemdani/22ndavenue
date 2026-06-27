@@ -470,6 +470,14 @@
     font-size: 1.1rem;
   }
 
+  .muteBtn {
+    bottom: auto;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 36px;
+    height: 36px;
+  }
+
   .activeBottomArea {
     animation-delay: 0.15s;
   }

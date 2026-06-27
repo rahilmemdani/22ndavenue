@@ -4,11 +4,20 @@ import { useState, useEffect, useRef } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import styles from "./StatsBand.module.css";
 
-const stats = [
-  { value: 12, suffix: "+", label: "Years of Legacy" },
-  { value: 1000, suffix: "+", label: "Artists Worked With" },
-  { value: 2000, suffix: "+", label: "Shows Managed" }
+const DEFAULT_STATS = [
+  { value: 12, label: "Years of Legacy" },
+  { value: 1000, label: "Artists Worked With" },
+  { value: 2000, label: "Shows Managed" }
 ];
+
+interface StatsBandProps {
+  data?: {
+    statsList: {
+      value: number;
+      label: string;
+    }[];
+  };
+}
 
 function CountUp({ end, suffix }: { end: number; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -49,14 +58,16 @@ function CountUp({ end, suffix }: { end: number; suffix: string }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-export function StatsBand() {
+export function StatsBand({ data }: StatsBandProps) {
+  const activeStats = data?.statsList?.length ? data.statsList : DEFAULT_STATS;
+
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        {stats.map((stat, idx) => (
+        {activeStats.map((stat, idx) => (
           <ScrollReveal key={idx} delay={idx * 150} direction="up" className={styles.statBox}>
             <h2 className={styles.statValue}>
-              <CountUp end={stat.value} suffix={stat.suffix} />
+              <CountUp end={stat.value} suffix="+" />
             </h2>
             <div className={styles.statFooter}>
               {/* <span className={styles.statDot}></span> */}

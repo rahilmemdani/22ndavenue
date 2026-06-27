@@ -20,7 +20,8 @@ import {
   testimonialsQuery,
   servicesQuery,
   footprintQuery,
-  showrunnersQuery
+  showrunnersQuery,
+  statsQuery
 } from "@/sanity/queries";
 
 // Revalidate page on every request to ensure data is loaded as soon as it's changed
@@ -36,6 +37,7 @@ export default async function HomePage() {
   let servicesData = null;
   let footprintData = null;
   let showrunnersData = null;
+  let statsData = null;
 
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 
@@ -51,7 +53,8 @@ export default async function HomePage() {
         client.fetch(testimonialsQuery, {}, { next: { revalidate: 0 } }),
         client.fetch(servicesQuery, {}, { next: { revalidate: 0 } }),
         client.fetch(footprintQuery, {}, { next: { revalidate: 0 } }),
-        client.fetch(showrunnersQuery, {}, { next: { revalidate: 0 } })
+        client.fetch(showrunnersQuery, {}, { next: { revalidate: 0 } }),
+        client.fetch(statsQuery, {}, { next: { revalidate: 0 } })
       ]);
 
       [
@@ -62,7 +65,8 @@ export default async function HomePage() {
         testimonialsData,
         servicesData,
         footprintData,
-        showrunnersData
+        showrunnersData,
+        statsData
       ] = results;
       
       console.log("Sanity fetch successful!");
@@ -83,7 +87,7 @@ export default async function HomePage() {
       
       <ContentLayer zIndex={2}>
         <AboutHome data={aboutData} />
-        <StatsBand />
+        <StatsBand data={statsData} />
       </ContentLayer>
       
       <ContentLayer zIndex={3}>

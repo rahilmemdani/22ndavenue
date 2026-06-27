@@ -6,5 +6,6 @@ import { testimonials } from './testimonials'
 import { services } from './services'
 import { footprint } from './footprint'
 import { showrunners } from './showrunners'
+import { stats } from './stats'
 
-export const schemaTypes = [hero, about, collabs, moments, testimonials, services, footprint, showrunners]
+export const schemaTypes = [hero, about, collabs, moments, testimonials, services, footprint, showrunners, stats]
