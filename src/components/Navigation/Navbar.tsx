@@ -76,6 +76,19 @@ export function Navbar() {
   const isTransparentPage = ["/"].includes(pathname);
   const isHeroVideoPage = ["/"].includes(pathname);
   const shouldHideDesktopNavAtTop = isHeroVideoPage && !isScrolled && !isForceOpenAtTop;
+  const [isHeroAnimating, setIsHeroAnimating] = useState(isHeroVideoPage);
+
+  useEffect(() => {
+    if (isHeroVideoPage) {
+      setIsHeroAnimating(true);
+      const timer = setTimeout(() => {
+        setIsHeroAnimating(false);
+      }, 3800);
+      return () => clearTimeout(timer);
+    } else {
+      setIsHeroAnimating(false);
+    }
+  }, [isHeroVideoPage]);
 
   const { scrollY } = useScroll();
   const lastYRef = useRef(0);
@@ -277,7 +290,14 @@ export function Navbar() {
   };
 
   return (
-    <div className={styles.navSystemWrapper}>
+    <div 
+      className={styles.navSystemWrapper}
+      style={{ 
+        opacity: isHeroAnimating ? 0 : 1, 
+        pointerEvents: isHeroAnimating ? "none" : "auto",
+        transition: "opacity 0.5s ease" 
+      }}
+    >
       <motion.div
         className={styles.smartScrollWrapper}
         animate={{ y: (isHidden && isScrolled) ? "-200px" : "0px" }}
