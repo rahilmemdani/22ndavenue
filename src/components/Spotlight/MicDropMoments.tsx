@@ -236,8 +236,24 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
   const [isSliding, setIsSliding] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  // Callback ref to reliably attach to the active video element and trigger play
+  const setVideoRef = (el: HTMLVideoElement | null) => {
+    videoRef.current = el;
+    if (el) {
+      el.muted = isMuted;
+      // Mobile browsers require a play() call after the element is in the DOM
+      const playPromise = el.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay was prevented — this is expected on some browsers.
+          // The video will play when the user interacts.
+        });
+      }
+    }
+  };
 
   // Mute video if category or slide changes
   useEffect(() => {
@@ -341,14 +357,16 @@ export function MicDropMoments({ data }: MicDropMomentsProps) {
                     {activeIndex === index && (isMobile ? tile.mobileVideo : tile.video) && (
                       <>
                         <video
-                          ref={videoRef}
-                          key={isMobile ? `mobile-${tile.mobileVideo}` : `desktop-${tile.video}`}
+                          ref={setVideoRef}
+                          key={`${activeCategoryIndex}-${index}-${isMobile ? 'mobile' : 'desktop'}-${isMobile ? tile.mobileVideo : tile.video}`}
                           src={isMobile ? tile.mobileVideo : tile.video}
-                          className={styles.bgVideo}
+                          className={`${styles.bgVideo} ${isMobile ? styles.bgVideoMobile : ''}`}
                           autoPlay
                           loop
                           muted={isMuted}
                           playsInline
+                          preload="metadata"
+                          webkit-playsinline="true"
                         />
                         <button 
                           className={styles.muteBtn} 
