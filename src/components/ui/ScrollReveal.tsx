@@ -22,12 +22,20 @@ export function ScrollReveal({
 }: ScrollRevealProps) {
 
 
-  // DESKTOP: full Framer Motion scroll-reveal (unchanged)
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const initial = (() => {
     switch (direction) {
-      case "up": return { opacity: 0, y: 40 };
-      case "left": return { opacity: 0, x: -40 };
-      case "right": return { opacity: 0, x: 40 };
+      case "up": return { opacity: 0, y: isMobile ? 10 : 40 };
+      case "left": return { opacity: 0, x: isMobile ? -10 : -40 };
+      case "right": return { opacity: 0, x: isMobile ? 10 : 40 };
       default: return { opacity: 0 };
     }
   })();

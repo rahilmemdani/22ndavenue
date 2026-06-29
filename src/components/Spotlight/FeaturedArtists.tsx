@@ -47,7 +47,7 @@ const DEFAULT_ARTISTS = [
 
 export function FeaturedArtists({ data }: FeaturedArtistsProps) {
   const baseArtists = data?.artists?.length ? data.artists : DEFAULT_ARTISTS;
-  
+
   const allArtists = baseArtists.map((artist, idx) => ({
     ...artist,
     uniqueKey: `${artist.name}-${idx}`
@@ -56,7 +56,7 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
 
   const ITEMS_PER_SLIDE = 10;
   const totalSlides = Math.max(1, Math.ceil(allArtists.length / ITEMS_PER_SLIDE));
-  
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -81,7 +81,7 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
     scrollToTop();
   };
 
-  const slideChunks = Array.from({ length: totalSlides }, (_, i) => 
+  const slideChunks = Array.from({ length: totalSlides }, (_, i) =>
     allArtists.slice(i * ITEMS_PER_SLIDE, (i + 1) * ITEMS_PER_SLIDE)
   );
 
@@ -115,7 +115,7 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
   return (
     <section ref={sectionRef} className={styles.section} id="featured-artists">
       <div className={styles.wrapper}>
-        
+
         <div className={styles.headerRow}>
           <ScrollReveal direction="up">
             <h2 className={styles.sectionTitle}>
@@ -127,13 +127,13 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
 
         <ScrollReveal delay={200} direction="up" className={styles.carouselReveal}>
           <div className={styles.carouselContainer}>
-            <div 
+            <div
               className={styles.carouselViewport}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <div 
+              <div
                 className={styles.carouselTrack}
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
@@ -175,8 +175,8 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
           {/* Desktop Indicators */}
           <div className={styles.indicatorsDesktop}>
             {Array.from({ length: totalSlides }).map((_, idx) => (
-              <span 
-                key={idx} 
+              <span
+                key={idx}
                 className={`${styles.indicator} ${currentSlide === idx ? styles.activeIndicator : ""}`}
               />
             ))}
@@ -190,8 +190,8 @@ export function FeaturedArtists({ data }: FeaturedArtistsProps) {
           </button>
           <div className={styles.indicators}>
             {Array.from({ length: totalSlides }).map((_, idx) => (
-              <span 
-                key={idx} 
+              <span
+                key={idx}
                 className={`${styles.indicator} ${currentSlide === idx ? styles.activeIndicator : ""}`}
               />
             ))}

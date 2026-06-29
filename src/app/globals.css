@@ -182,11 +182,9 @@ html {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Disable smooth scroll on mobile — it causes jank with sticky/composited layers */
-@media (max-width: 768px) {
-  html {
-    scroll-behavior: auto;
-  }
+/* Enable smooth scroll globally for seamless anchor navigation */
+html {
+  scroll-behavior: smooth;
 }
 
 /* Hero wrapper: sticky on desktop so sections scroll over it,
@@ -208,7 +206,8 @@ html {
    plain on mobile to avoid competing compositing layers that cause scroll jank */
 .content-layer {
   position: relative;
-  z-index: 2; /* Must be above sticky hero (z-index: 1) */
+  z-index: 2;
+  /* Must be above sticky hero (z-index: 1) */
   background-color: #050505;
   /* Desktop: force GPU layer for correct stacking over sticky hero */
   transform: translateZ(0);
@@ -222,7 +221,8 @@ html {
     /* Mobile: completely flat — no stacking contexts, no compositor layers,
        no z-index. Behaves like the div doesn't exist. Zero jerk. */
     position: static;
-    z-index: auto !important; /* Override inline styles */
+    z-index: auto !important;
+    /* Override inline styles */
     transform: none;
     isolation: auto;
     -webkit-backface-visibility: visible;
@@ -700,6 +700,7 @@ ol {
 .read-the-docs {
   color: #888;
 }
+
 /* Disable framer motion scroll reveal on mobile */
 @media (max-width: 768px) {
   .scroll-reveal-wrapper {

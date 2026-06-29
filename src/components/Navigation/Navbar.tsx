@@ -449,9 +449,19 @@ export function Navbar() {
                       <div className={styles.mobileDrawerLinkRow}>
                         <Link
                           href={item.path}
-                          onClick={() => {
-                            setIsMobileMenuOpen(false);
+                          onClick={(e) => {
                             setActiveSection(item.path);
+                            setIsMobileMenuOpen(false);
+                            if (item.path.startsWith("/#") && pathname === "/") {
+                              e.preventDefault();
+                              const id = item.path.replace("/#", "");
+                              setTimeout(() => {
+                                const element = document.getElementById(id);
+                                if (element) {
+                                  element.scrollIntoView({ behavior: "smooth", block: "start" });
+                                }
+                              }, 300);
+                            }
                           }}
                           className={`${styles.mobileDrawerLink} ${
                             (pathname === '/' ? activeSection === item.path : pathname === item.path)
